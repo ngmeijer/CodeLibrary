@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Game_Local_Events.Local_Events.Animations;
-using Game_Local_Events.Local_Events.Base;
-using Game_Local_Events.Local_Events.Tutorial;
 using Prototyping.AI.Scripts;
 using UnityEngine;
 using AiStates;
@@ -130,7 +127,6 @@ public class SkunkController : MonoBehaviour
         agent.speed = dataFile.ChaseSpeed;
         chaseState.Target = priorityTarget.Key;
         handleStateSwitch(chaseState);
-        LocalEvents.instance.Raise(new SkunkPlayStateAnimation(FSMStates.CHASE));
     }
 
     private void handleAttackStateSwitch()
@@ -139,14 +135,12 @@ public class SkunkController : MonoBehaviour
 
         attackState.Target = priorityTarget.Key;
         handleStateSwitch(attackState);
-        LocalEvents.instance.Raise(new SkunkPlayStateAnimation(FSMStates.ATTACK));
     }
 
     private void handlePatrolStateSwitch()
     {
         agent.speed = dataFile.NormalMoveSpeed;
         handleStateSwitch(patrolState);
-        LocalEvents.instance.Raise(new SkunkPlayStateAnimation(FSMStates.PATROL));
     }
 
     private void handleStateSwitch(AI_State pState)
