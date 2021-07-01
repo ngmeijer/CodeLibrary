@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(playerSettings.sprintKey))
         {
-            playerSettings.moveSpeed = playerSettings.sprintSpeed;
+            PlayerSettings.moveSpeed = playerSettings.sprintSpeed;
         }
         else
         {
