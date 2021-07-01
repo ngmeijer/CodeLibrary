@@ -48,6 +48,8 @@ public class VoxelMapVisualization : MonoBehaviour
 
         if (showAllVoxels) drawAllVoxels();
         if (showColliderVoxels && !showAllVoxels) drawColliderVoxels();
+
+        if (voxelCalculator == null) return;
         if (showMapDimensions) drawGridOuterBorders();
         if (showVoxelSize) drawVoxelSample();
     }

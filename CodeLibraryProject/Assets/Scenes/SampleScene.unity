@@ -487,8 +487,8 @@ Transform:
   m_LocalPosition: {x: 100, y: 0, z: 100}
   m_LocalScale: {x: 25, y: 25, z: 25}
   m_Children: []
-  m_Father: {fileID: 9029849120240395102}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1269929467
 GameObject:
@@ -900,8 +900,8 @@ Transform:
   - {fileID: 1269929471}
   - {fileID: 1558651365}
   - {fileID: 92543996}
-  m_Father: {fileID: 9029849120240395102}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &245994071552352501
 BoxCollider:
@@ -3084,8 +3084,6 @@ Transform:
   m_Children:
   - {fileID: 9029849121100975172}
   - {fileID: 9029849119486402133}
-  - {fileID: 973896007}
-  - {fileID: 2021995795}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3248,12 +3246,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 200
+  sceneWidth: 211
   sceneHeight: 90
   sceneDepth: 200
   voxelSize: 7.5
   meshColliderAccuracy: 4
-  TotalExpectedVoxels: 8533
+  TotalExpectedVoxels: 9002
   voxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   onVoxelsCalculated:
     m_PersistentCalls:
