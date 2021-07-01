@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b4bdb0da95eec49b88c99e60c909db, type: 3}
+  m_Name: Skunk
+  m_EditorClassIdentifier: 
+  MaxSight: 62
+  MinRandomValue: 0.01
+  MaxRandomValue: 0.1
+  UtilityInterval: 1
+  PathCalculationInterval: 0.25
+  raycastTags:
+    keys: 
+    values: []
+  StoppingDistance: 0.1
+  NormalMoveSpeed: 6.5
+  ChaseSpeed: 15
+  MinWalkRange: 12
+  MaxWalkRange: 50
+  AttackRange: 5.5
+  AttackSpeed: 1
+  SightVisuals: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.078431375}
+  Distance_PlayerFactor: 50
+  Type_PlayerFactor: 4
+  Distance_BeeFactor: 10
+  Type_BeeFactor: 2
+  Type_SkunkFactor: 1.59
+  Distance_SkunkFactor: 2.91

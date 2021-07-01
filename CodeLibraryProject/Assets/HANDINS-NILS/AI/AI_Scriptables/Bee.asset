@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b4bdb0da95eec49b88c99e60c909db, type: 3}
+  m_Name: Bee
+  m_EditorClassIdentifier: 
+  MaxSight: 0
+  MinRandomValue: 0.01
+  MaxRandomValue: 0.1
+  UtilityInterval: 0.5
+  PathCalculationInterval: 0.1
+  raycastTags:
+    keys: 
+    values: []
+  StoppingDistance: 1
+  NormalMoveSpeed: 8
+  ChaseSpeed: 40
+  MinWalkRange: 2.5
+  MaxWalkRange: 10
+  AttackRange: 2
+  AttackSpeed: 3
+  SightVisuals: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  Distance_PlayerFactor: 0
+  Type_PlayerFactor: 0
+  Distance_BeeFactor: 0
+  Type_BeeFactor: 0
+  Type_SkunkFactor: 0
+  Distance_SkunkFactor: 0
