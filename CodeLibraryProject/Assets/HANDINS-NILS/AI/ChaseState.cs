@@ -8,7 +8,6 @@ using UnityEngine.AI;
 public class ChaseState : AI_State, IAgentPathFunctions
 {
     private float Radius;
-    public Vector3 targetGroundPosition;
 
     public override void EnterState()
     {
@@ -25,8 +24,8 @@ public class ChaseState : AI_State, IAgentPathFunctions
         }
 
         CurrentPath = new NavMeshPath();
-        Radius = Properties.MaxSight * 2;
-        Agent.speed = Properties.ChaseSpeed;
+        Radius = properties.MaxSight * 2;
+        agent.speed = properties.ChaseSpeed;
         shouldUpdate = true;
         StartCoroutine(SetPath());
     }
@@ -41,7 +40,7 @@ public class ChaseState : AI_State, IAgentPathFunctions
     public IEnumerator SetPath()
     {
         if (isAgentNull) yield break;
-        if (!Agent.isOnNavMesh)
+        if (!agent.isOnNavMesh)
         {
             Debug.Log("NavMesh is not valid.");
             yield break;
@@ -49,18 +48,15 @@ public class ChaseState : AI_State, IAgentPathFunctions
         if (Target == null) yield break;
         if (!shouldUpdate) yield break;
 
-        yield return new WaitForSeconds(Properties.PathCalculationInterval);
+        yield return new WaitForSeconds(properties.PathCalculationInterval);
 
         if (NavMesh.SamplePosition(Target.transform.position, out NavMeshHit hit, 20f, 1))
         {
             Debug.Log("found sample point");
-            if (Agent.CalculatePath(hit.position, CurrentPath))
+            if (agent.CalculatePath(hit.position, CurrentPath))
             {
                 if (CurrentPath.status == NavMeshPathStatus.PathComplete)
-                {
-                    targetGroundPosition = hit.position;
-                    Agent.SetPath(CurrentPath);
-                }
+                    agent.SetPath(CurrentPath);
             }
         }
 

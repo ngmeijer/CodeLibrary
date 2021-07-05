@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b4bdb0da95eec49b88c99e60c909db, type: 3}
   m_Name: Skunk
   m_EditorClassIdentifier: 
-  MaxSight: 62
+  MaxSight: 50
   MinRandomValue: 0.01
   MaxRandomValue: 0.1
-  UtilityInterval: 1
-  PathCalculationInterval: 0.25
+  UtilityInterval: 0.01
+  PathCalculationInterval: 0.01
   raycastTags:
     keys: 
     values: []
   StoppingDistance: 0.1
-  NormalMoveSpeed: 6.5
-  ChaseSpeed: 15
-  MinWalkRange: 12
-  MaxWalkRange: 50
+  NormalMoveSpeed: 25
+  ChaseSpeed: 40
+  MinWalkRange: 18.34
+  MaxWalkRange: 36.3
   AttackRange: 5.5
   AttackSpeed: 1
   SightVisuals: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.078431375}

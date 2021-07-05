@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,6 +16,7 @@ public class VoxelCollisionOverlapCheck : MonoBehaviour
 
     [SerializeField] private Event_OnVoxelCollisionFinished onColliderDetectionFinished;
     [SerializeField] private VoxelGridCalculator calculator;
+    [SerializeField] private string[] tagsToCompare;
 
     private void Awake()
     {
@@ -50,9 +52,7 @@ public class VoxelCollisionOverlapCheck : MonoBehaviour
 
             for (int colliderIndex = 0; colliderIndex < allColliders.Length; colliderIndex++)
             {
-                if (allColliders[colliderIndex].CompareTag("Ignore") 
-                    || allColliders[colliderIndex].CompareTag("Bee_NPC")
-                    || allColliders[colliderIndex].CompareTag("Player"))
+                if (tagsToCompare.Contains(allColliders[colliderIndex].tag))
                     continue;
 
                 currentVoxel.IsTraversable = false;

@@ -9,23 +9,21 @@ using UnityEngine.AI;
 
 public class SkunkController : MonoBehaviour
 {
-    [SerializeField] private AI_ScrObject dataFile;
+    public AI_ScrObject Properties;
+    public NavMeshAgent Agent;
     [SerializeField] private Transform rayCastOrigin;
 
     [ReadOnly] public AI_State CurrentState;
 
-    [Header("FSM States")] 
     [SerializeField] private AttackState attackState;
     [SerializeField] private PatrolState patrolState;
     [SerializeField] private ChaseState chaseState;
     [SerializeField] private BoredState boredState;
     [SerializeField] private IdleState idleState;
 
-    [SerializeField]
     private SerializableDictionary<GameObject, float> targetUtilities = new SerializableDictionary<GameObject, float>();
 
     private SkunkAnimationHandler animationHandler;
-    private NavMeshAgent agent;
     private float interactionTimer;
     private float distanceToPlayer;
     private bool hasTarget;
@@ -40,8 +38,8 @@ public class SkunkController : MonoBehaviour
     private void Start()
     {
         animationHandler = GetComponent<SkunkAnimationHandler>();
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = dataFile.NormalMoveSpeed;
+        Agent = GetComponent<NavMeshAgent>();
+        Agent.speed = Properties.NormalMoveSpeed;
 
         defineGizmoGUIStyles();
         findTargets();
@@ -72,14 +70,14 @@ public class SkunkController : MonoBehaviour
 
     private IEnumerator checkTargetDistance()
     {
-        yield return new WaitForSeconds(dataFile.UtilityInterval);
+        yield return new WaitForSeconds(Properties.UtilityInterval);
 
         for (int i = 0; i < targets.Count; i++)
         {
             float distanceToAgent = Vector3.Distance(rayCastOrigin.position, targets[i].transform.position);
 
             //Skip utility value calculation if target is out of sightRange.
-            if (distanceToAgent > dataFile.MaxSight)
+            if (distanceToAgent > Properties.MaxSight)
                 continue;
 
             //Calculate utility values for all valid targets here.
@@ -103,14 +101,14 @@ public class SkunkController : MonoBehaviour
         float distanceToPriorityTarget = Vector3.Distance(transform.position, priorityTarget.Key.transform.position);
 
         //Inside attacking range
-        if (distanceToPriorityTarget < dataFile.AttackRange)
+        if (distanceToPriorityTarget < Properties.AttackRange)
         {
             handleAttackStateSwitch();
             return;
         }
 
         //Outside attacking range, but inside sight range.
-        if (distanceToPriorityTarget < dataFile.MaxSight)
+        if (distanceToPriorityTarget < Properties.MaxSight)
         {
             handleChaseStateSwitch();
             return;
@@ -124,7 +122,7 @@ public class SkunkController : MonoBehaviour
     {
         if (CurrentState == chaseState) return;
 
-        agent.speed = dataFile.ChaseSpeed;
+        Agent.speed = Properties.ChaseSpeed;
         chaseState.Target = priorityTarget.Key;
         handleStateSwitch(chaseState);
     }
@@ -139,7 +137,7 @@ public class SkunkController : MonoBehaviour
 
     private void handlePatrolStateSwitch()
     {
-        agent.speed = dataFile.NormalMoveSpeed;
+        Agent.speed = Properties.NormalMoveSpeed;
         handleStateSwitch(patrolState);
     }
 
@@ -156,30 +154,32 @@ public class SkunkController : MonoBehaviour
     private float calculateUtility(Vector3 pTargetPosition)
     {
         //Don't shoot out rays in every possible direction all the time... instead, gather a list of NPCs/targets ONCE, check distance, if in range, calculate Utility to determine most important target.
-        return Utility.Calculate(dataFile, rayCastOrigin.position, pTargetPosition);
+        return Utility.Calculate(Properties, rayCastOrigin.position, pTargetPosition);
     }
 
     #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Gizmos.color = dataFile.SightVisuals;
-        Gizmos.DrawSphere(transform.position, dataFile.MaxSight);
-        UnityEditor.Handles.Label(transform.position + (transform.right * -dataFile.MaxSight), $"Sight: {dataFile.MaxSight}m");
+        if (Properties.Equals(null)) return;
+        
+        Gizmos.color = Properties.SightVisuals;
+        Gizmos.DrawSphere(transform.position, Properties.MaxSight);
+        UnityEditor.Handles.Label(transform.position + (transform.right * -Properties.MaxSight), $"Sight: {Properties.MaxSight}m");
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, dataFile.AttackRange);
-        UnityEditor.Handles.Label(transform.position + (transform.right * -dataFile.AttackRange),
-            $"AttackRange: {dataFile.AttackRange}m");
+        Gizmos.DrawWireSphere(transform.position, Properties.AttackRange);
+        UnityEditor.Handles.Label(transform.position + (transform.right * -Properties.AttackRange),
+            $"AttackRange: {Properties.AttackRange}m");
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, dataFile.MaxWalkRange);
-        UnityEditor.Handles.Label(transform.position + (transform.right * -dataFile.MaxWalkRange),
-            $"MaxWalkRange: {dataFile.MaxWalkRange}m");
+        Gizmos.DrawWireSphere(transform.position, Properties.MaxWalkRange);
+        UnityEditor.Handles.Label(transform.position + (transform.right * -Properties.MaxWalkRange),
+            $"MaxWalkRange: {Properties.MaxWalkRange}m");
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, dataFile.MinWalkRange);
-        UnityEditor.Handles.Label(transform.position + (transform.right * -dataFile.MinWalkRange),
-            $"MinWalkRange: {dataFile.MinWalkRange}m");
+        Gizmos.DrawWireSphere(transform.position, Properties.MinWalkRange);
+        UnityEditor.Handles.Label(transform.position + (transform.right * -Properties.MinWalkRange),
+            $"MinWalkRange: {Properties.MinWalkRange}m");
 
         if (CurrentState != null) 
         {

@@ -7,7 +7,6 @@ namespace AiStates
     public class AttackState : AI_State
     {
         private float Radius;
-        [SerializeField] private MeshCollider attackCollider;
 
         public override void EnterState()
         {
@@ -17,8 +16,8 @@ namespace AiStates
                 return;
             }
             
-            Radius = Properties.AttackRange * 2;
-            Agent.isStopped = true;
+            Radius = properties.AttackRange * 2;
+            agent.isStopped = true;
 
             shouldUpdate = true;
             StartCoroutine(handleAttackAction());
@@ -36,9 +35,7 @@ namespace AiStates
         {
             if (!shouldUpdate) yield break;
             
-            
-            
-            yield return new WaitForSeconds(Properties.AttackSpeed);
+            yield return new WaitForSeconds(properties.AttackSpeed);
             Debug.Log("Attacking.");
 
             StartCoroutine(handleAttackAction());
@@ -46,7 +43,7 @@ namespace AiStates
 
         public override void ExitState()
         {
-            Agent.isStopped = false;
+            agent.isStopped = false;
             shouldUpdate = false;
             controller.ReceiveStateExit();
         }

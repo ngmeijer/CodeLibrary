@@ -25,7 +25,11 @@ namespace Prototyping.AI.Scripts
             }
 
             CurrentPath = new NavMeshPath();
-            Agent.speed = Properties.NormalMoveSpeed;
+            agent.speed = properties.NormalMoveSpeed;
+            
+            parentTransform = ParentGameObject.transform;
+            parentPosition = parentTransform.position;
+            
             shouldUpdate = true;
         }
 
@@ -43,42 +47,42 @@ namespace Prototyping.AI.Scripts
                 Debug.Log("Agent component is not assigned.");
                 yield break;
             }
-            if (!Agent.isOnNavMesh)
+            if (!agent.isOnNavMesh)
             {
                 Debug.Log("NavMesh is not valid.");
                 yield break;
             }
-            if (Agent.hasPath) yield break;
-
-            randomPatrolPoint = getRandomTarget();
+            if (agent.hasPath) yield break;
             
-            if (Agent.pathStatus == NavMeshPathStatus.PathComplete) {
-                Agent.enabled = false;
-                Agent.enabled = true;
+            while (randomPatrolPoint == Vector3.zero)
+            {
+                randomPatrolPoint = getRandomTarget();
             }
-
-            if (Agent.CalculatePath(randomPatrolPoint, CurrentPath))
+            
+            //Calculates the best path for the point
+            if (agent.CalculatePath(randomPatrolPoint, CurrentPath))
             {
                 if (CurrentPath.status != NavMeshPathStatus.PathInvalid && CurrentPath.status != NavMeshPathStatus.PathPartial) 
-                    Agent.SetPath(CurrentPath);
+                    agent.SetPath(CurrentPath);
             }
+            //No path available? Get new point
             else randomPatrolPoint = getRandomTarget();
         }
 
         private Vector3 getRandomTarget()
         {
-            float randomMultiplier = Random.Range(Properties.MinWalkRange, Properties.MaxWalkRange);
+            float randomMultiplier = Random.Range(properties.MinWalkRange, properties.MaxWalkRange);
             Vector3 randomDirection = Random.insideUnitSphere * randomMultiplier;
             
-            //Get the rough direction to go in.
-            randomDirection += Parent.transform.position;
-            NavMeshHit hit;
-            
-            //Find a suitable point on the NavMesh using the given rough direction.
-            NavMesh.SamplePosition(randomDirection, out hit, Properties.MaxWalkRange, 1);
-            Vector3 finalPosition = hit.position;
+            //Get the rough relative direction to go in.
+            randomDirection += ParentGameObject.transform.position;
 
-            return finalPosition;
+            NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, properties.MaxWalkRange, 1);
+            float distanceToCandidatePoint = Vector3.Distance(parentPosition, hit.position);
+            if (distanceToCandidatePoint < properties.MinWalkRange)
+                return Vector3.zero;
+            
+            return hit.position;
         }
 
         public override void ExitState()

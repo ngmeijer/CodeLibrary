@@ -21,7 +21,7 @@ MonoBehaviour:
     keys: 
     values: []
   StoppingDistance: 1
-  NormalMoveSpeed: 8
+  NormalMoveSpeed: 35
   ChaseSpeed: 40
   MinWalkRange: 2.5
   MaxWalkRange: 10

@@ -17,12 +17,13 @@ namespace AiStates
 
     public abstract class AI_State : MonoBehaviour
     {
-        public FSMStates allStates;
-        public GameObject Target;
-        public GameObject Parent;
-        public AI_ScrObject Properties;
+        [HideInInspector] public GameObject Target;
+        [HideInInspector] public GameObject ParentGameObject;
+        protected Transform parentTransform;
+        protected Vector3 parentPosition;
+        protected AI_ScrObject properties;
 
-        public NavMeshAgent Agent;
+        protected NavMeshAgent agent;
         public NavMeshPath CurrentPath;
         protected SkunkController controller;
         
@@ -32,9 +33,12 @@ namespace AiStates
                 
         private void Start()
         {
-            isPropertiesNull = Properties == null;
-            isAgentNull = Agent == null;
+            isPropertiesNull = properties == null;
+            isAgentNull = agent == null;
             controller = GetComponentInParent<SkunkController>();
+            agent = controller.Agent;
+            properties = controller.Properties;
+            ParentGameObject = transform.parent.gameObject;
         }
 
         public abstract void EnterState();
