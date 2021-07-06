@@ -6,13 +6,15 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [ExecuteInEditMode]
-public class VoxelCollisionOverlapCheck : MonoBehaviour
+public class VoxelObstacleCalculator : MonoBehaviour
 {
     private VoxelContainer currentVoxel;
     private VoxelGridCalculator calculator;
 
     [SerializeField] private string[] tagsToCompare;
-    [ReadOnlyInspector] [SerializeField] private float calculationTimeTaken;
+    [ReadOnlyInspector] [SerializeField] [Tooltip("Time in milliseconds")] private float calculationTimeMilliseconds;
+    [ReadOnlyInspector] [SerializeField] [Tooltip("Time in seconds")] private float calculationTimeSeconds;
+    [ReadOnlyInspector] [SerializeField] private int octreeIterations;
 
     private void Awake()
     {
@@ -59,7 +61,23 @@ public class VoxelCollisionOverlapCheck : MonoBehaviour
         }
 
         calculator.CalculateNeighboursAfterCollisionDetection();
+        calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
+        calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
+    }
 
-        calculationTimeTaken = Time.realtimeSinceStartup - startTime * 1000f;
+    private void handleOctreeDivisionIteration()
+    {
+        //Get map dimensions
+        float[] mapDimensions = calculator.GetMapDimensions();
+        //Create collider size
+        Vector3 startSize = new Vector3(mapDimensions[0], mapDimensions[1], mapDimensions[2]);
+        
+        //Calculate "displacement" counts (how many times should the Physics.Overlap function be repeated
+        //For loop the Physics.Overlap with given count & size.
+    }
+
+    private void calculateIterationCount()
+    {
+        
     }
 }

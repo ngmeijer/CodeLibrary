@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [ExecuteInEditMode]
-[RequireComponent(typeof(VoxelMapVisualization), typeof(VoxelCollisionOverlapCheck))]
+[RequireComponent(typeof(VoxelMapVisualization), typeof(VoxelObstacleCalculator))]
 public class VoxelGridCalculator : MonoBehaviour
 {
     [Space(150)] [SerializeField] [Range(1, 1000)]
@@ -22,11 +22,11 @@ public class VoxelGridCalculator : MonoBehaviour
     public VoxelGridData voxelGridSaveFile;
 
     private Vector3 pos;
-    private VoxelCollisionOverlapCheck collisionChecker;
+    private VoxelObstacleCalculator collisionChecker;
 
     private void Awake()
     {
-        collisionChecker = GetComponent<VoxelCollisionOverlapCheck>();
+        collisionChecker = GetComponent<VoxelObstacleCalculator>();
     }
 
     private void Update()
@@ -37,7 +37,17 @@ public class VoxelGridCalculator : MonoBehaviour
     public void RecalculateVoxelGrid()
     {
         if (voxelGridSaveFile == null)
+        {
+            Debug.Log("VoxelGridData save file reference is null.");
             return;
+        }
+
+        if (collisionChecker == null)
+        {
+            Debug.Log("VoxelObstacleCalculator reference is null.");
+            return;
+        }
+
         ClearVoxelData();
         divideLevelIntoVoxels();
         collisionChecker.StartCollisionCheck();
@@ -73,10 +83,12 @@ public class VoxelGridCalculator : MonoBehaviour
             for (int y = 0; y < voxelCountY; y++)
                 for (int z = 0; z < voxelCountZ; z++)
                 {
-                    VoxelContainer voxel = new VoxelContainer();
-                    voxel.Position = new Vector3(pos.x + (voxelSize * x), pos.y + (voxelSize * y),
-                        pos.z + (voxelSize * z));
-                    voxel.ID = voxelID;
+                    VoxelContainer voxel = new VoxelContainer
+                    {
+                        Position = new Vector3(pos.x + (voxelSize * x), pos.y + (voxelSize * y),
+                            pos.z + (voxelSize * z)),
+                        ID = voxelID
+                    };
                     voxelID++;
 
                     voxelGridSaveFile.AllVoxels.Add(voxel.ID, voxel);

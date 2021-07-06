@@ -1853,7 +1853,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9029849119486402133
 Transform:
   m_ObjectHideFlags: 0
@@ -2575,12 +2575,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 211
-  sceneHeight: 90
+  sceneWidth: 200
+  sceneHeight: 100
   sceneDepth: 200
-  voxelSize: 7.5
+  voxelSize: 10
   meshColliderAccuracy: 4
-  totalExpectedVoxels: 9002
+  totalExpectedVoxels: 4000
   voxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
 --- !u!114 &9029849121100975176
 MonoBehaviour:
@@ -2598,7 +2598,8 @@ MonoBehaviour:
   - Player
   - Bee_NPC
   - Skunk_NPC
-  calculationTimeTaken: 0
+  calculationTimeMilliseconds: 3714.9353
+  calculationTimeSeconds: 3.7149353
 --- !u!4 &9029849121190770400
 Transform:
   m_ObjectHideFlags: 0
