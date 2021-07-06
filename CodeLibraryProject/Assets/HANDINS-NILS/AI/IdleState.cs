@@ -6,8 +6,9 @@ namespace AiStates
 {
     public class IdleState : AI_State
     {
-        public override void EnterState()
+        public override IEnumerator EnterState()
         {
+            yield return null;
             shouldUpdate = true;
         }
 

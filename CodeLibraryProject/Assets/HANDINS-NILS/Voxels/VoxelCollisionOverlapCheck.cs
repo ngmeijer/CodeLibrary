@@ -1,26 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-
-[Serializable]
-public class Event_OnVoxelCollisionFinished : UnityEvent
-{
-}
 
 [ExecuteInEditMode]
 public class VoxelCollisionOverlapCheck : MonoBehaviour
 {
     private VoxelContainer currentVoxel;
+    private VoxelGridCalculator calculator;
 
-    [SerializeField] private Event_OnVoxelCollisionFinished onColliderDetectionFinished;
-    [SerializeField] private VoxelGridCalculator calculator;
     [SerializeField] private string[] tagsToCompare;
+    [ReadOnlyInspector] [SerializeField] private float calculationTimeTaken;
 
     private void Awake()
     {
-        calculator = FindObjectOfType<VoxelGridCalculator>();
+        calculator = GetComponent<VoxelGridCalculator>();
     }
 
     public void StartCollisionCheck()
@@ -62,8 +58,8 @@ public class VoxelCollisionOverlapCheck : MonoBehaviour
             }
         }
 
-        onColliderDetectionFinished?.Invoke();
+        calculator.CalculateNeighboursAfterCollisionDetection();
 
-        // Debug.Log($"Voxel cost detection with optimization time taken: {(Time.realtimeSinceStartup - startTime) * 1000f} ms");
+        calculationTimeTaken = Time.realtimeSinceStartup - startTime * 1000f;
     }
 }

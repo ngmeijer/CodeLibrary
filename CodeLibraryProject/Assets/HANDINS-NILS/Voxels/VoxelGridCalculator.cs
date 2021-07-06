@@ -4,13 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[Serializable]
-public class Event_OnVoxelsCalculated : UnityEvent
-{
-}
-
 [ExecuteInEditMode]
-[RequireComponent(typeof(VoxelMapVisualization))]
+[RequireComponent(typeof(VoxelMapVisualization), typeof(VoxelCollisionOverlapCheck))]
 public class VoxelGridCalculator : MonoBehaviour
 {
     [Space(150)] [SerializeField] [Range(1, 1000)]
@@ -18,24 +13,25 @@ public class VoxelGridCalculator : MonoBehaviour
 
     [SerializeField] [Range(1, 100)] private float sceneHeight = 50;
     [SerializeField] [Range(1, 1000)] private float sceneDepth = 50;
-
     [SerializeField] [Range(1f, 50f)] private float voxelSize;
-
     [SerializeField] [Range(1, 5)] public int meshColliderAccuracy = 4;
 
-    /*[ReadOnly]*/
-    public int TotalExpectedVoxels = 0;
+    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
 
     public float VoxelSize { get; private set; }
     public VoxelGridData voxelGridSaveFile;
 
-    [Space(20)] [SerializeField] private Event_OnVoxelsCalculated onVoxelsCalculated;
-
     private Vector3 pos;
+    private VoxelCollisionOverlapCheck collisionChecker;
+
+    private void Awake()
+    {
+        collisionChecker = GetComponent<VoxelCollisionOverlapCheck>();
+    }
 
     private void Update()
     {
-        TotalExpectedVoxels = (int) ((sceneWidth / voxelSize) * (sceneHeight / voxelSize) * (sceneDepth / voxelSize));
+        totalExpectedVoxels = (int) ((sceneWidth / voxelSize) * (sceneHeight / voxelSize) * (sceneDepth / voxelSize));
     }
 
     public void RecalculateVoxelGrid()
@@ -44,7 +40,7 @@ public class VoxelGridCalculator : MonoBehaviour
             return;
         ClearVoxelData();
         divideLevelIntoVoxels();
-        onVoxelsCalculated?.Invoke();
+        collisionChecker.StartCollisionCheck();
     }
 
     public void ClearVoxelData()
@@ -74,18 +70,19 @@ public class VoxelGridCalculator : MonoBehaviour
         int voxelID = 0;
 
         for (int x = 0; x < voxelCountX; x++)
-        for (int y = 0; y < voxelCountY; y++)
-        for (int z = 0; z < voxelCountZ; z++)
-        {
-            VoxelContainer voxel = new VoxelContainer();
-            voxel.Position = new Vector3(pos.x + (voxelSize * x), pos.y + (voxelSize * y),
-                pos.z + (voxelSize * z));
-            voxel.ID = voxelID;
-            voxelID++;
+            for (int y = 0; y < voxelCountY; y++)
+                for (int z = 0; z < voxelCountZ; z++)
+                {
+                    VoxelContainer voxel = new VoxelContainer();
+                    voxel.Position = new Vector3(pos.x + (voxelSize * x), pos.y + (voxelSize * y),
+                        pos.z + (voxelSize * z));
+                    voxel.ID = voxelID;
+                    voxelID++;
 
-            voxelGridSaveFile.AllVoxels.Add(voxel.ID, voxel);
-            voxelGridSaveFile.TraversableVoxels.Add(voxel.ID, voxel);
-        }
+                    voxelGridSaveFile.AllVoxels.Add(voxel.ID, voxel);
+                    voxelGridSaveFile.TraversableVoxels.Add(voxel.ID, voxel);
+                }
+        
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(voxelGridSaveFile);
 #endif
@@ -103,7 +100,7 @@ public class VoxelGridCalculator : MonoBehaviour
 
     private Vector3[] defineNeighbourVoxelPositions(Vector3 voxelPos)
     {
-        Vector3[] positions = new[]
+        Vector3[] positions =
         {
             //North
             new Vector3(voxelPos.x, voxelPos.y + voxelSize, voxelPos.z),

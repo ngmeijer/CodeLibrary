@@ -10,26 +10,25 @@ namespace Prototyping.AI.Scripts
     {
         private Vector3 randomPatrolPoint;
 
-        public override void EnterState()
+        public override IEnumerator EnterState()
         {
+            yield return null;
+            
             if (isPropertiesNull)
             {
                 Debug.Log("No AI_ScrObject Properties valid reference in PatrolState.");
-                return;
+                yield break;
             }
             
             if (isAgentNull)
             {
                 Debug.Log("No NavMeshAgent valid reference in PatrolState.");
-                return;
+                yield break;
             }
 
             CurrentPath = new NavMeshPath();
             agent.speed = properties.NormalMoveSpeed;
-            
-            parentTransform = ParentGameObject.transform;
-            parentPosition = parentTransform.position;
-            
+
             shouldUpdate = true;
         }
 

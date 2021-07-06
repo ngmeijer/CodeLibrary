@@ -18,7 +18,7 @@ namespace AiStates
     public abstract class AI_State : MonoBehaviour
     {
         [HideInInspector] public GameObject Target;
-        [HideInInspector] public GameObject ParentGameObject;
+        public GameObject ParentGameObject;
         protected Transform parentTransform;
         protected Vector3 parentPosition;
         protected AI_ScrObject properties;
@@ -31,7 +31,7 @@ namespace AiStates
         protected bool isAgentNull;
         protected bool isPropertiesNull;
                 
-        private void Start()
+        private void Awake()
         {
             isPropertiesNull = properties == null;
             isAgentNull = agent == null;
@@ -39,9 +39,11 @@ namespace AiStates
             agent = controller.Agent;
             properties = controller.Properties;
             ParentGameObject = transform.parent.gameObject;
+            parentTransform = ParentGameObject.transform;
+            parentPosition = parentTransform.position;
         }
 
-        public abstract void EnterState();
+        public abstract IEnumerator EnterState();
         
         protected abstract void Update();
 

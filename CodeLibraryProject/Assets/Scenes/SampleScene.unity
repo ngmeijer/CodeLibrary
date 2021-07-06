@@ -1352,7 +1352,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
   ParentGameObject: {fileID: 0}
-  targetGroundPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &6540952328535110962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1367,7 +1366,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
   ParentGameObject: {fileID: 0}
-  attackCollider: {fileID: 0}
 --- !u!114 &6540952328535110963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2479,69 +2477,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &9029849120528802028
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9029849120528802032}
-  - component: {fileID: 9029849120528802034}
-  m_Layer: 0
-  m_Name: '[ VOXEL COLLIDER ]'
-  m_TagString: Ignore
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9029849120528802032
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9029849120528802028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 99, y: 4, z: 99}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 9029849121100975172}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9029849120528802034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9029849120528802028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a1cdbbb87e8d8147b8528d3d18357d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onColliderDetectionFinished:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9029849121100975175}
-        m_TargetAssemblyTypeName: VoxelGridCalculator, Assembly-CSharp
-        m_MethodName: CalculateNeighboursAfterCollisionDetection
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
-  calculator: {fileID: 9029849121100975175}
-  tagsToCompare:
-  - Player
-  - Bee_NPC
-  - Skunk_NPC
 --- !u!4 &9029849120743235256
 Transform:
   m_ObjectHideFlags: 0
@@ -2583,8 +2518,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 9029849120528802032}
+  m_Children: []
   m_Father: {fileID: 9029849120240395102}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2620,6 +2554,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9029849121100975172}
   - component: {fileID: 9029849121100975175}
+  - component: {fileID: 9029849121100975176}
   - component: {fileID: 9029849121100975173}
   m_Layer: 0
   m_Name: '[ PROTOTYPE ] VoxelTool'
@@ -2645,23 +2580,25 @@ MonoBehaviour:
   sceneDepth: 200
   voxelSize: 7.5
   meshColliderAccuracy: 4
-  TotalExpectedVoxels: 9002
+  totalExpectedVoxels: 9002
   voxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
-  onVoxelsCalculated:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9029849120528802034}
-        m_TargetAssemblyTypeName: VoxelCollisionOverlapCheck, Assembly-CSharp
-        m_MethodName: StartCollisionCheck
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+--- !u!114 &9029849121100975176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9029849121100975174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cdbbb87e8d8147b8528d3d18357d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagsToCompare:
+  - Player
+  - Bee_NPC
+  - Skunk_NPC
+  calculationTimeTaken: 0
 --- !u!4 &9029849121190770400
 Transform:
   m_ObjectHideFlags: 0

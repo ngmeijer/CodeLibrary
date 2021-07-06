@@ -9,18 +9,20 @@ public class ChaseState : AI_State, IAgentPathFunctions
 {
     private float Radius;
 
-    public override void EnterState()
+    public override IEnumerator EnterState()
     {
+        yield return null;
+        
         if (isPropertiesNull)
         {
             Debug.Log("No AI_ScrObject Properties valid reference in PatrolState.");
-            return;
+            yield break;
         }
             
         if (isAgentNull)
         {
             Debug.Log("No NavMeshAgent valid reference in PatrolState.");
-            return;
+            yield break;
         }
 
         CurrentPath = new NavMeshPath();

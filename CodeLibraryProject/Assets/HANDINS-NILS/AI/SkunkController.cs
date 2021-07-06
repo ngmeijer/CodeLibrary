@@ -146,7 +146,7 @@ public class SkunkController : MonoBehaviour
         if (CurrentState != null) CurrentState.ExitState();
     
         CurrentState = pState;
-        CurrentState.EnterState();
+        StartCoroutine(CurrentState.EnterState());
     }
 
     public void ReceiveStateExit()=> CurrentState = null;

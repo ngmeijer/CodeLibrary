@@ -7,8 +7,9 @@ namespace AiStates
 {
     public class BoredState : AI_State
     {
-        public override void EnterState()
+        public override IEnumerator EnterState()
         {
+            yield return null;
             //When the skunk hasn't interacted with the player for too long, it will search for the player and attempt to attack him.
             //Get player position
             

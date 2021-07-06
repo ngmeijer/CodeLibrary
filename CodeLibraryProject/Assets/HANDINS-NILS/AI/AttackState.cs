@@ -8,12 +8,13 @@ namespace AiStates
     {
         private float Radius;
 
-        public override void EnterState()
+        public override IEnumerator EnterState()
         {
+            yield return null;
             if (isPropertiesNull)
             {
                 Debug.Log("No AI_ScrObject Properties valid reference in AttackState.");
-                return;
+                yield break;
             }
             
             Radius = properties.AttackRange * 2;
