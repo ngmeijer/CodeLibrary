@@ -10,16 +10,18 @@ public class VoxelGridCalculator : MonoBehaviour
 {
     [Space(150)] [SerializeField] [Range(1, 1000)]
     private float sceneWidth = 50;
-
     [SerializeField] [Range(1, 100)] private float sceneHeight = 50;
     [SerializeField] [Range(1, 1000)] private float sceneDepth = 50;
+    [ReadOnlyInspector] [SerializeField] private Vector3 sceneDimensions;
+    
+    [Space(25)]
     [SerializeField] [Range(1f, 50f)] private float voxelSize;
     [SerializeField] [Range(1, 5)] public int meshColliderAccuracy = 4;
 
     [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
     
     public VoxelGridData voxelGridSaveFile;
-
+    
     private Vector3 pos;
     private VoxelObstacleCalculator collisionChecker;
 
@@ -31,6 +33,7 @@ public class VoxelGridCalculator : MonoBehaviour
     private void Update()
     {
         totalExpectedVoxels = (int) ((sceneWidth / voxelSize) * (sceneHeight / voxelSize) * (sceneDepth / voxelSize));
+        sceneDimensions = new Vector3(sceneWidth, sceneHeight, sceneDepth);
     }
 
     public void RecalculateVoxelGrid()
