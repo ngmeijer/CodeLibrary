@@ -8,8 +8,8 @@ public class VoxelMapVisualization : MonoBehaviour
 {
     private VoxelGridCalculator voxelCalculator;
     private List<VoxelContainer> usedList;
-    private float[] mapDimensions;
-    private float voxelSize;
+    private float[] tempMapDimensions;
+    private float currentVoxelSize;
     private Vector3 voxelVisualSize;
     private Vector3 startingVoxelPosition;
 
@@ -46,8 +46,8 @@ public class VoxelMapVisualization : MonoBehaviour
     {
         if (!showVisualization) return;
 
-        voxelSize = saveFile.VoxelSize;
-        voxelVisualSize = new Vector3(voxelSize, voxelSize, voxelSize);
+        currentVoxelSize = saveFile.VoxelSize;
+        voxelVisualSize = new Vector3(currentVoxelSize, currentVoxelSize, currentVoxelSize);
 
         if (showColliderVoxels) drawColliderVoxels();
 
@@ -81,32 +81,39 @@ public class VoxelMapVisualization : MonoBehaviour
 
     private void drawGridOuterBorders()
     {
-        mapDimensions = voxelCalculator.GetMapDimensions();
+        tempMapDimensions = voxelCalculator.GetMapDimensions();
+        float[] currentMapDimensions = saveFile.MapDimensions;
 
-        int voxelCountX = (int)Math.Ceiling((mapDimensions[0] / voxelSize));
-        int voxelCountY = (int)Math.Ceiling((mapDimensions[1] / voxelSize));
-        int voxelCountZ = (int)Math.Ceiling((mapDimensions[2] / voxelSize));
+        float tempVoxelSize = voxelCalculator.GetVoxelSize();
+
+        int tempVoxelCountX = (int)Math.Ceiling((tempMapDimensions[0] / tempVoxelSize));
+        int tempVoxelCountY = (int)Math.Ceiling((tempMapDimensions[1] / tempVoxelSize));
+        int tempVoxelCountZ = (int)Math.Ceiling((tempMapDimensions[2] / tempVoxelSize));
         
-        Vector3 gridStartPosition = startingVoxelPosition - new Vector3(voxelSize / 2, voxelSize / 2, voxelSize / 2);
-        Vector3 mapCenter = new Vector3(mapDimensions[0] / 2 - voxelSize / 2, mapDimensions[1] / 2
-                                                                              - voxelSize / 2,
-            mapDimensions[2] / 2 - voxelSize / 2);
+        int currentVoxelCountX = (int)Math.Ceiling((currentMapDimensions[0] / currentVoxelSize));
+        int currentVoxelCountY = (int)Math.Ceiling((currentMapDimensions[1] / currentVoxelSize));
+        int currentVoxelCountZ = (int)Math.Ceiling((currentMapDimensions[2] / currentVoxelSize));
+
+        Vector3 gridStartPosition = startingVoxelPosition - new Vector3(currentVoxelSize / 2, currentVoxelSize / 2, currentVoxelSize / 2);
+        Vector3 mapCenter = new Vector3(tempMapDimensions[0] / 2 - currentVoxelSize / 2, tempMapDimensions[1] / 2
+                                                                              - currentVoxelSize / 2,
+            tempMapDimensions[2] / 2 - currentVoxelSize / 2);
         Gizmos.color = borderColour;
         Gizmos.DrawWireCube(mapCenter + transform.position,
-            new Vector3(mapDimensions[0], mapDimensions[1], mapDimensions[2]));
+            new Vector3(tempMapDimensions[0], tempMapDimensions[1], tempMapDimensions[2]));
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(gridStartPosition, gridStartPosition + (transform.right * mapDimensions[0]));
-        Gizmos.DrawLine(gridStartPosition, gridStartPosition + (transform.up * mapDimensions[1]));
-        Gizmos.DrawLine(gridStartPosition, gridStartPosition + (transform.forward * mapDimensions[2]));
+        Gizmos.DrawLine(gridStartPosition, gridStartPosition + (transform.right * tempMapDimensions[0]));
+        Gizmos.DrawLine(gridStartPosition, gridStartPosition + (transform.up * tempMapDimensions[1]));
+        Gizmos.DrawLine(gridStartPosition, gridStartPosition + (transform.forward * tempMapDimensions[2]));
 
 #if UNITY_EDITOR
-        UnityEditor.Handles.Label(transform.position + (transform.right * mapDimensions[0]),
-            $"Grid width: {mapDimensions[0]}m.\nVoxel count: {voxelCountX}");
-        UnityEditor.Handles.Label(transform.position + (transform.up * mapDimensions[1]),
-            $"Grid height: {mapDimensions[1]}m.\nVoxel count: {voxelCountY}");
-        UnityEditor.Handles.Label(transform.position + (transform.forward * mapDimensions[2]),
-            $"Grid depth: {mapDimensions[2]}m.\nVoxel count: {voxelCountZ}");
+        UnityEditor.Handles.Label(transform.position + (transform.right * tempMapDimensions[0]),
+            $"Grid width: {tempMapDimensions[0]}m.\nCurrent voxel count: {currentVoxelCountX}. \nExpected voxel count: {tempVoxelCountX}");
+        UnityEditor.Handles.Label(transform.position + (transform.up * tempMapDimensions[1]),
+            $"Grid width: {tempMapDimensions[0]}m.\nCurrent voxel count: {currentVoxelCountY}. \nExpected voxel count: {tempVoxelCountY}");
+        UnityEditor.Handles.Label(transform.position + (transform.forward * tempMapDimensions[2]),
+            $"Grid width: {tempMapDimensions[0]}m.\nCurrent voxel count: {currentVoxelCountZ}. \nExpected voxel count: {tempVoxelCountZ}");
 #endif
     }
 
