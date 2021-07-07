@@ -21,7 +21,7 @@ public class VoxelObstacleCalculator : MonoBehaviour
         calculator = GetComponent<VoxelGridCalculator>();
     }
 
-    public void StartCollisionCheck()
+    public void StartCollisionCheck(float pVoxelSize)
     {
         if (calculator == null)
         {
@@ -33,9 +33,8 @@ public class VoxelObstacleCalculator : MonoBehaviour
         
         Dictionary<int, VoxelContainer> allVoxels = calculator.voxelGridSaveFile.AllVoxels;
 
-        float voxelSize = calculator.VoxelSize;
         float meshColliderAccuracy = calculator.meshColliderAccuracy;
-        float colliderSizeAxis = voxelSize / meshColliderAccuracy;
+        float colliderSizeAxis = pVoxelSize / meshColliderAccuracy;
 
         Vector3 colliderSize = new Vector3(colliderSizeAxis, colliderSizeAxis, colliderSizeAxis);
 

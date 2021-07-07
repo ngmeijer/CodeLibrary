@@ -17,8 +17,7 @@ public class VoxelGridCalculator : MonoBehaviour
     [SerializeField] [Range(1, 5)] public int meshColliderAccuracy = 4;
 
     [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
-
-    public float VoxelSize { get; private set; }
+    
     public VoxelGridData voxelGridSaveFile;
 
     private Vector3 pos;
@@ -50,7 +49,7 @@ public class VoxelGridCalculator : MonoBehaviour
 
         ClearVoxelData();
         divideLevelIntoVoxels();
-        collisionChecker.StartCollisionCheck();
+        collisionChecker.StartCollisionCheck(voxelSize);
     }
 
     public void ClearVoxelData()
@@ -67,8 +66,6 @@ public class VoxelGridCalculator : MonoBehaviour
 
     private void divideLevelIntoVoxels()
     {
-        VoxelSize = voxelSize;
-
         float voxelCountX = sceneWidth / voxelSize;
         float voxelCountY = sceneHeight / voxelSize;
         float voxelCountZ = sceneDepth / voxelSize;
