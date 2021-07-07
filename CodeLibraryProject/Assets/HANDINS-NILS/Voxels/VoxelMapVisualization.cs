@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,6 +83,10 @@ public class VoxelMapVisualization : MonoBehaviour
     {
         mapDimensions = voxelCalculator.GetMapDimensions();
 
+        int voxelCountX = (int)Math.Ceiling((mapDimensions[0] / voxelSize));
+        int voxelCountY = (int)Math.Ceiling((mapDimensions[1] / voxelSize));
+        int voxelCountZ = (int)Math.Ceiling((mapDimensions[2] / voxelSize));
+        
         Vector3 gridStartPosition = startingVoxelPosition - new Vector3(voxelSize / 2, voxelSize / 2, voxelSize / 2);
         Vector3 mapCenter = new Vector3(mapDimensions[0] / 2 - voxelSize / 2, mapDimensions[1] / 2
                                                                               - voxelSize / 2,
@@ -97,11 +102,11 @@ public class VoxelMapVisualization : MonoBehaviour
 
 #if UNITY_EDITOR
         UnityEditor.Handles.Label(transform.position + (transform.right * mapDimensions[0]),
-            $"{$"Grid width: {mapDimensions[0]}"}");
+            $"Grid width: {mapDimensions[0]}m.\nVoxel count: {voxelCountX}");
         UnityEditor.Handles.Label(transform.position + (transform.up * mapDimensions[1]),
-            $"{$"Grid height: {mapDimensions[1]}"}");
+            $"Grid height: {mapDimensions[1]}m.\nVoxel count: {voxelCountY}");
         UnityEditor.Handles.Label(transform.position + (transform.forward * mapDimensions[2]),
-            $"{$"Grid depth: {mapDimensions[2]}"}");
+            $"Grid depth: {mapDimensions[2]}m.\nVoxel count: {voxelCountZ}");
 #endif
     }
 
