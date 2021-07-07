@@ -49,7 +49,8 @@ public class VoxelGridCalculator : MonoBehaviour
             Debug.Log("VoxelObstacleCalculator reference is null.");
             return;
         }
-
+        
+        //VoxelGridProgressBar.ShowProgressBar();
         ClearVoxelData();
         divideLevelIntoVoxels();
         collisionChecker.StartCollisionCheck(voxelSize);
