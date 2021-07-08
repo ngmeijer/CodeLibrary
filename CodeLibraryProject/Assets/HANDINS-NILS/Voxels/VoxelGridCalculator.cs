@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -61,7 +62,7 @@ public class VoxelGridCalculator : MonoBehaviour
 
         ClearVoxelData();
         divideLevelIntoVoxels();
-        collisionChecker.StartCollisionCheck(voxelSize);
+        //collisionChecker.StartCollisionCheck(voxelSize);
     }
 
     public void ClearVoxelData()
@@ -84,12 +85,8 @@ public class VoxelGridCalculator : MonoBehaviour
 
         int voxelID = 0;
 
-        ProgressBar.MaxVoxelCount = totalExpectedVoxels;
-
-        Debug.Log($"X: {voxelCountX}");
-        Debug.Log($"Y: {voxelCountY}");
-        Debug.Log($"Z: {voxelCountZ}");
-
+        ProgressBar.MaxVoxelIndex = totalExpectedVoxels - 1;
+        
         for (int x = 0; x < voxelCountX; x++)
             for (int y = 0; y < voxelCountY; y++)
                 for (int z = 0; z < voxelCountZ; z++)
@@ -100,7 +97,7 @@ public class VoxelGridCalculator : MonoBehaviour
                             pos.z + (voxelSize * z)),
                         ID = voxelID
                     };
-                    //ProgressBar.ShowVoxelCreateProgress(voxelID);
+                    ProgressBar.ShowVoxelCreateProgress(voxelID);
 
                     voxelGridSaveFile.AllVoxels.Add(voxel.ID, voxel);
                     voxelGridSaveFile.TraversableVoxels.Add(voxel.ID, voxel);
@@ -110,6 +107,9 @@ public class VoxelGridCalculator : MonoBehaviour
 
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(voxelGridSaveFile);
+        
+        ProgressBar.HasFinishedProcess = true;
+        ProgressBar.ShowVoxelCreateProgress(voxelID);
 #endif
     }
 

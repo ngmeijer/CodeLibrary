@@ -3,23 +3,23 @@ using System.Threading;
 using UnityEditor;
 using UnityEngine;
 
-// Shows a progress bar for the specified number of seconds.
-public class VoxelGridProgressBar : EditorWindow
+public class ProgressBar : EditorWindow
 {
     private VoxelGridCalculator calculator;
-    public static float MaxVoxelCount;
+    public static float MaxVoxelIndex;
+    public static bool HasFinishedProcess;
 
-    public static void ShowProgressBar(int pCurrentVoxelIndex)
+    public static void ShowVoxelCreateProgress(int pCurrentVoxelIndex)
     {
-        while (pCurrentVoxelIndex < MaxVoxelCount)
-        {
-            EditorUtility.DisplayProgressBar("Voxel creation progress",
-                $"Creating voxels... {pCurrentVoxelIndex}/{MaxVoxelCount}",
-                pCurrentVoxelIndex / MaxVoxelCount);
-            return;
-        }
+        EditorUtility.DisplayProgressBar("Voxel creation progress",
+            $"Creating voxels... {pCurrentVoxelIndex}/{MaxVoxelIndex}",
+            pCurrentVoxelIndex / MaxVoxelIndex);
+
+        if (pCurrentVoxelIndex < MaxVoxelIndex) return;
+        if (!HasFinishedProcess) return;
 
         EditorUtility.ClearProgressBar();
+        HasFinishedProcess = false;
     }
 }
 #endif
