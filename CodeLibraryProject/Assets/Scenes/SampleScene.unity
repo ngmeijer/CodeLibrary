@@ -2576,13 +2576,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 100
+  sceneWidth: 200
   sceneHeight: 100
-  sceneDepth: 100
-  sceneDimensions: {x: 100, y: 100, z: 100}
+  sceneDepth: 200
+  sceneDimensions: {x: 200, y: 100, z: 200}
   voxelSize: 10
   meshColliderAccuracy: 4
-  totalExpectedVoxels: 1000
+  totalExpectedVoxels: 4000
   voxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
 --- !u!114 &9029849121100975176
 MonoBehaviour:
@@ -2600,8 +2600,8 @@ MonoBehaviour:
   - Player
   - Bee_NPC
   - Skunk_NPC
-  calculationTimeMilliseconds: 56.274414
-  calculationTimeSeconds: 0.056274414
+  calculationTimeMilliseconds: 14394.257
+  calculationTimeSeconds: 14.394257
   octreeIterations: 0
 --- !u!4 &9029849121190770400
 Transform:

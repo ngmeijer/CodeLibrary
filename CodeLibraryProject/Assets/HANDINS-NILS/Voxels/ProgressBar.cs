@@ -21,5 +21,18 @@ public class ProgressBar : EditorWindow
         EditorUtility.ClearProgressBar();
         HasFinishedProcess = false;
     }
+
+    public static void ShowVoxelCollisionProgress(int pCurrentVoxelIndex)
+    {
+        EditorUtility.DisplayProgressBar("Voxel collision detection progress",
+            $"Detecting if voxels are traversable... {pCurrentVoxelIndex}/{MaxVoxelIndex}",
+            pCurrentVoxelIndex / MaxVoxelIndex);
+
+        if (pCurrentVoxelIndex < MaxVoxelIndex) return;
+        if (!HasFinishedProcess) return;
+
+        EditorUtility.ClearProgressBar();
+        HasFinishedProcess = false;
+    }
 }
 #endif

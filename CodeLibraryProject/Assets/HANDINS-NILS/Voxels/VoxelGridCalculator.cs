@@ -62,7 +62,7 @@ public class VoxelGridCalculator : MonoBehaviour
 
         ClearVoxelData();
         divideLevelIntoVoxels();
-        //collisionChecker.StartCollisionCheck(voxelSize);
+        collisionChecker.StartCollisionCheck(voxelSize);
     }
 
     public void ClearVoxelData()

@@ -32,36 +32,41 @@ public class VoxelObstacleCalculator : MonoBehaviour
         float startTime = Time.realtimeSinceStartup;
         
         Dictionary<int, VoxelContainer> allVoxels = calculator.voxelGridSaveFile.AllVoxels;
+        SerializableDictionary<int, VoxelContainer> colliderVoxels = calculator.voxelGridSaveFile.ColliderVoxels;
 
         float meshColliderAccuracy = calculator.meshColliderAccuracy;
         float colliderSizeAxis = pVoxelSize / meshColliderAccuracy;
 
         Vector3 colliderSize = new Vector3(colliderSizeAxis, colliderSizeAxis, colliderSizeAxis);
 
+        ProgressBar.MaxVoxelIndex = allVoxels.Count - 1;
         for (int voxelIndex = 0; voxelIndex < allVoxels.Count; voxelIndex++)
         {
+            ProgressBar.ShowVoxelCollisionProgress(voxelIndex);
             currentVoxel = allVoxels[voxelIndex];
-            if (!currentVoxel.IsTraversable)
-                continue;
 
             Collider[] allColliders = Physics.OverlapBox(currentVoxel.Position,
                 colliderSize);
 
-            for (int colliderIndex = 0; colliderIndex < allColliders.Length; colliderIndex++)
+            foreach (Collider foundCollider in allColliders)
             {
-                if (tagsToCompare.Contains(allColliders[colliderIndex].tag))
+                if (tagsToCompare.Contains(foundCollider.tag))
                     continue;
 
                 currentVoxel.IsTraversable = false;
-                if(!calculator.voxelGridSaveFile.ColliderVoxels.ContainsKey(currentVoxel.ID))
-                    calculator.voxelGridSaveFile.ColliderVoxels.Add(currentVoxel.ID, currentVoxel);
+                if(!colliderVoxels.ContainsKey(currentVoxel.ID))
+                    colliderVoxels.Add(currentVoxel.ID, currentVoxel);
                 calculator.voxelGridSaveFile.TraversableVoxels.Remove(currentVoxel.ID);
             }
         }
 
-        calculator.CalculateNeighboursAfterCollisionDetection();
+        //Calculating neighbours takes up 99% of time.
+        //calculator.CalculateNeighboursAfterCollisionDetection();
         calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
         calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
+        
+        ProgressBar.HasFinishedProcess = true;
+        ProgressBar.ShowVoxelCollisionProgress(allVoxels.Count - 1);
     }
 
     private void handleOctreeDivisionIteration()
