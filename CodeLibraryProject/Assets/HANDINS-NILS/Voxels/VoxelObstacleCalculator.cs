@@ -61,7 +61,7 @@ public class VoxelObstacleCalculator : MonoBehaviour
         }
 
         //Calculating neighbours takes up 99% of time.
-        //calculator.CalculateNeighboursAfterCollisionDetection();
+        calculator.CalculateNeighboursAfterCollisionDetection();
         calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
         calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
         

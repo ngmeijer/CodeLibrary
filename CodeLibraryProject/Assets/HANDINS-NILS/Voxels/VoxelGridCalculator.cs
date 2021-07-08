@@ -21,7 +21,7 @@ public class VoxelGridCalculator : MonoBehaviour
 
     [SerializeField] [Range(1, 5)] public int meshColliderAccuracy = 4;
 
-    [ReadOnlyInspector] [SerializeField] private float totalExpectedVoxels = 0;
+    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
 
     public VoxelGridData voxelGridSaveFile;
 
@@ -115,12 +115,19 @@ public class VoxelGridCalculator : MonoBehaviour
 
     public void CalculateNeighboursAfterCollisionDetection()
     {
+        int currentVoxelIndex = 0;
+        ProgressBar.MaxVoxelIndex = voxelGridSaveFile.TraversableVoxels.Count - 1;
         foreach (KeyValuePair<int, VoxelContainer> voxel in voxelGridSaveFile.TraversableVoxels)
         {
+            currentVoxelIndex++;
             VoxelContainer currentVoxel = voxel.Value;
+            ProgressBar.ShowVoxelNeighbourProgress(currentVoxelIndex);
             List<int> neighbourVoxelIDs = calculateNeighbourVoxels(currentVoxel);
             currentVoxel.NeighbourVoxelIDs = neighbourVoxelIDs;
         }
+        
+        ProgressBar.HasFinishedProcess = true;
+        ProgressBar.ShowVoxelNeighbourProgress(ProgressBar.MaxVoxelIndex);
     }
 
     private Vector3[] defineNeighbourVoxelPositions(Vector3 pVoxelPos)
