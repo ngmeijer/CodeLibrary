@@ -10,20 +10,25 @@ public class VoxelGridCalculator : MonoBehaviour
 {
     [Space(150)] [SerializeField] [Range(1, 1000)]
     private float sceneWidth = 50;
+
     [SerializeField] [Range(1, 100)] private float sceneHeight = 50;
     [SerializeField] [Range(1, 1000)] private float sceneDepth = 50;
     [ReadOnlyInspector] [SerializeField] private Vector3 sceneDimensions;
-    
-    [Space(25)]
-    [SerializeField] [Range(1f, 50f)] private float voxelSize;
+
+    [Space(25)] [SerializeField] [Range(1f, 50f)]
+    private float voxelSize;
+
     [SerializeField] [Range(1, 5)] public int meshColliderAccuracy = 4;
 
-    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
-    
+    [ReadOnlyInspector] [SerializeField] private float totalExpectedVoxels = 0;
+
     public VoxelGridData voxelGridSaveFile;
-    
+
     private Vector3 pos;
     private VoxelObstacleCalculator collisionChecker;
+    private int voxelCountX;
+    private int voxelCountY;
+    private int voxelCountZ;
 
     private void Awake()
     {
@@ -32,7 +37,11 @@ public class VoxelGridCalculator : MonoBehaviour
 
     private void Update()
     {
-        totalExpectedVoxels = (int) ((sceneWidth / voxelSize) * (sceneHeight / voxelSize) * (sceneDepth / voxelSize));
+        voxelCountX = (int) Math.Ceiling((sceneWidth / voxelSize));
+        voxelCountY = (int) Math.Ceiling((sceneHeight / voxelSize));
+        voxelCountZ = (int) Math.Ceiling((sceneDepth / voxelSize));
+
+        totalExpectedVoxels = voxelCountX * voxelCountY * voxelCountZ;
         sceneDimensions = new Vector3(sceneWidth, sceneHeight, sceneDepth);
     }
 
@@ -49,8 +58,7 @@ public class VoxelGridCalculator : MonoBehaviour
             Debug.Log("VoxelObstacleCalculator reference is null.");
             return;
         }
-        
-        //VoxelGridProgressBar.ShowProgressBar();
+
         ClearVoxelData();
         divideLevelIntoVoxels();
         collisionChecker.StartCollisionCheck(voxelSize);
@@ -70,15 +78,17 @@ public class VoxelGridCalculator : MonoBehaviour
 
     private void divideLevelIntoVoxels()
     {
-        float voxelCountX = sceneWidth / voxelSize;
-        float voxelCountY = sceneHeight / voxelSize;
-        float voxelCountZ = sceneDepth / voxelSize;
-
         pos = transform.position;
         voxelGridSaveFile.VoxelSize = voxelSize;
         voxelGridSaveFile.MapDimensions = new float[3] {sceneWidth, sceneHeight, sceneDepth};
 
         int voxelID = 0;
+
+        ProgressBar.MaxVoxelCount = totalExpectedVoxels;
+
+        Debug.Log($"X: {voxelCountX}");
+        Debug.Log($"Y: {voxelCountY}");
+        Debug.Log($"Z: {voxelCountZ}");
 
         for (int x = 0; x < voxelCountX; x++)
             for (int y = 0; y < voxelCountY; y++)
@@ -90,12 +100,14 @@ public class VoxelGridCalculator : MonoBehaviour
                             pos.z + (voxelSize * z)),
                         ID = voxelID
                     };
-                    voxelID++;
+                    //ProgressBar.ShowVoxelCreateProgress(voxelID);
 
                     voxelGridSaveFile.AllVoxels.Add(voxel.ID, voxel);
                     voxelGridSaveFile.TraversableVoxels.Add(voxel.ID, voxel);
+
+                    voxelID++;
                 }
-        
+
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(voxelGridSaveFile);
 #endif
@@ -111,25 +123,25 @@ public class VoxelGridCalculator : MonoBehaviour
         }
     }
 
-    private Vector3[] defineNeighbourVoxelPositions(Vector3 voxelPos)
+    private Vector3[] defineNeighbourVoxelPositions(Vector3 pVoxelPos)
     {
         Vector3[] positions =
         {
             //North
-            new Vector3(voxelPos.x, voxelPos.y + voxelSize, voxelPos.z),
+            new Vector3(pVoxelPos.x, pVoxelPos.y + voxelSize, pVoxelPos.z),
 
             //East
-            new Vector3(voxelPos.x + voxelSize, voxelPos.y, voxelPos.z),
+            new Vector3(pVoxelPos.x + voxelSize, pVoxelPos.y, pVoxelPos.z),
 
             //South
-            new Vector3(voxelPos.x, voxelPos.y - voxelSize, voxelPos.z),
+            new Vector3(pVoxelPos.x, pVoxelPos.y - voxelSize, pVoxelPos.z),
 
             //West
-            new Vector3(voxelPos.x - voxelSize, voxelPos.y, voxelPos.z),
+            new Vector3(pVoxelPos.x - voxelSize, pVoxelPos.y, pVoxelPos.z),
 
             //Center
-            new Vector3(voxelPos.x, voxelPos.y, voxelPos.z + voxelSize),
-            new Vector3(voxelPos.x, voxelPos.y, voxelPos.z - voxelSize),
+            new Vector3(pVoxelPos.x, pVoxelPos.y, pVoxelPos.z + voxelSize),
+            new Vector3(pVoxelPos.x, pVoxelPos.y, pVoxelPos.z - voxelSize),
         };
 
         return positions;
