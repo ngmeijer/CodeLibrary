@@ -11,9 +11,6 @@ public class VoxelObstacleCalculator : MonoBehaviour
     private VoxelContainer currentVoxel;
     private VoxelGridCalculator calculator;
 
-    [SerializeField] private string[] tagsToCompare;
-    [ReadOnlyInspector] [SerializeField] [Tooltip("Time in milliseconds")] private float calculationTimeMilliseconds;
-    [ReadOnlyInspector] [SerializeField] [Tooltip("Time in seconds")] private float calculationTimeSeconds;
     [ReadOnlyInspector] [SerializeField] private int octreeIterations;
 
     private void Awake()
@@ -29,15 +26,11 @@ public class VoxelObstacleCalculator : MonoBehaviour
             return;
         }
 
-        float startTime = Time.realtimeSinceStartup;
-        
+        string[] tags = calculator.ColliderTagsToCompare;
         Dictionary<int, VoxelContainer> allVoxels = calculator.voxelGridSaveFile.AllVoxels;
         SerializableDictionary<int, VoxelContainer> colliderVoxels = calculator.voxelGridSaveFile.ColliderVoxels;
 
-        float meshColliderAccuracy = calculator.meshColliderAccuracy;
-        float colliderSizeAxis = pVoxelSize / meshColliderAccuracy;
-
-        Vector3 colliderSize = new Vector3(colliderSizeAxis, colliderSizeAxis, colliderSizeAxis);
+        Vector3 colliderSize = new Vector3(pVoxelSize / 2, pVoxelSize / 2, pVoxelSize / 2);
 
         ProgressBar.MaxVoxelIndex = allVoxels.Count - 1;
         for (int voxelIndex = 0; voxelIndex < allVoxels.Count; voxelIndex++)
@@ -60,11 +53,8 @@ public class VoxelObstacleCalculator : MonoBehaviour
             }
         }
 
-        //Calculating neighbours takes up 99% of time.
         calculator.CalculateNeighboursAfterCollisionDetection();
-        calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
-        calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
-        
+
         ProgressBar.HasFinishedProcess = true;
         ProgressBar.ShowVoxelCollisionProgress(allVoxels.Count - 1);
     }

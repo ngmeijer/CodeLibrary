@@ -9,27 +9,34 @@ using UnityEngine.Events;
 [RequireComponent(typeof(VoxelMapVisualization), typeof(VoxelObstacleCalculator))]
 public class VoxelGridCalculator : MonoBehaviour
 {
-    [Space(150)] [SerializeField] [Range(1, 1000)]
+    [Space(75)] [SerializeField] [Range(1, 1000)]
     private float sceneWidth = 50;
 
-    [SerializeField] [Range(1, 100)] private float sceneHeight = 50;
+    [SerializeField] [Range(1, 500)] private float sceneHeight = 50;
     [SerializeField] [Range(1, 1000)] private float sceneDepth = 50;
-    [ReadOnlyInspector] [SerializeField] private Vector3 sceneDimensions;
+    [ReadOnlyInspector] [SerializeField] private Vector3 sceneDimensionsVector;
+    private float[] mapDimensionsFloat;
 
     [Space(25)] [SerializeField] [Range(1f, 50f)]
     private float voxelSize;
-
-    [SerializeField] [Range(1, 5)] public int meshColliderAccuracy = 4;
-
-    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
-
+    
     public VoxelGridData voxelGridSaveFile;
+    public string[] ColliderTagsToCompare;
 
+    //Public variables
+
+    //Private variables
     private Vector3 pos;
     private VoxelObstacleCalculator collisionChecker;
     private int voxelCountX;
     private int voxelCountY;
     private int voxelCountZ;
+
+    [Header("Grid properties")]
+    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
+    [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
+    [ReadOnlyInspector] [SerializeField] private float calculationTimeMilliseconds;
+    [ReadOnlyInspector] [SerializeField] private float calculationTimeSeconds;
 
     private void Awake()
     {
@@ -43,11 +50,13 @@ public class VoxelGridCalculator : MonoBehaviour
         voxelCountZ = (int) Math.Ceiling((sceneDepth / voxelSize));
 
         totalExpectedVoxels = voxelCountX * voxelCountY * voxelCountZ;
-        sceneDimensions = new Vector3(sceneWidth, sceneHeight, sceneDepth);
+        sceneDimensionsVector = new Vector3(sceneWidth, sceneHeight, sceneDepth);
     }
 
     public void RecalculateVoxelGrid()
     {
+        float startTime = Time.realtimeSinceStartup;
+
         if (voxelGridSaveFile == null)
         {
             Debug.Log("VoxelGridData save file reference is null.");
@@ -63,6 +72,9 @@ public class VoxelGridCalculator : MonoBehaviour
         ClearVoxelData();
         divideLevelIntoVoxels();
         collisionChecker.StartCollisionCheck(voxelSize);
+        
+        calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
+        calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
     }
 
     public void ClearVoxelData()
@@ -107,6 +119,8 @@ public class VoxelGridCalculator : MonoBehaviour
 
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(voxelGridSaveFile);
+
+        totalCurrentVoxels = voxelGridSaveFile.AllVoxels.Count;
         
         ProgressBar.HasFinishedProcess = true;
         ProgressBar.ShowVoxelCreateProgress(voxelID);
@@ -117,6 +131,7 @@ public class VoxelGridCalculator : MonoBehaviour
     {
         int currentVoxelIndex = 0;
         ProgressBar.MaxVoxelIndex = voxelGridSaveFile.TraversableVoxels.Count - 1;
+        mapDimensionsFloat = GetMapDimensions();
         foreach (KeyValuePair<int, VoxelContainer> voxel in voxelGridSaveFile.TraversableVoxels)
         {
             currentVoxelIndex++;
@@ -159,13 +174,12 @@ public class VoxelGridCalculator : MonoBehaviour
     {
         List<int> neighbourVoxels = new List<int>();
 
-        float[] dimensions = GetMapDimensions();
         Vector3[] directions = defineNeighbourVoxelPositions(pCurrentVoxel.Position);
 
-        for (int i = 0; i < directions.Length; i++)
+        foreach (Vector3 voxelNeighbourDirection in directions)
         {
-            VoxelContainer voxel = VoxelPositionHandler.GetVoxelFromWorldPos(voxelGridSaveFile.AllVoxels, directions[i],
-                transform.position, dimensions, voxelSize);
+            VoxelContainer voxel = VoxelPositionHandler.GetVoxelFromWorldPos(voxelGridSaveFile.AllVoxels, voxelNeighbourDirection,
+                transform.position, mapDimensionsFloat, voxelSize);
 
             if ((voxel != null) && (!neighbourVoxels.Contains(voxel.ID)))
                 neighbourVoxels.Add(voxel.ID);

@@ -23,7 +23,7 @@ public class VoxelScriptEditor : UnityEditor.Editor
         GUI.backgroundColor = Color.green;
         GUIStyle recalculateBtnStyle = new GUIStyle(GUI.skin.button);
         recalculateBtnStyle.fontSize = 15;
-        if (GUI.Button(new Rect(10, 35, inspectorWidth - 30, 50), "Recalculate voxels", recalculateBtnStyle))
+        if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 50), "Recalculate voxels", recalculateBtnStyle))
         {
             GUI.backgroundColor = Color.green;
             myTarget.RecalculateVoxelGrid();
@@ -35,7 +35,7 @@ public class VoxelScriptEditor : UnityEditor.Editor
         GUI.backgroundColor = Color.red;
         GUIStyle clearBtnStyle = new GUIStyle(GUI.skin.button);
         clearBtnStyle.fontSize = 15;
-        if (GUI.Button(new Rect(10, 100, inspectorWidth - 30, 50), "Clear voxels", clearBtnStyle))
+        if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 50), "Clear voxels", clearBtnStyle))
             myTarget.ClearVoxelData();
     }
 }
