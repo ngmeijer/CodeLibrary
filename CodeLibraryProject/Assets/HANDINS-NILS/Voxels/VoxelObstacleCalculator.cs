@@ -10,9 +10,7 @@ public class VoxelObstacleCalculator : MonoBehaviour
 {
     private VoxelContainer currentVoxel;
     private VoxelGridCalculator calculator;
-
-    [ReadOnlyInspector] [SerializeField] private int octreeIterations;
-
+    
     private void Awake()
     {
         calculator = GetComponent<VoxelGridCalculator>();
@@ -27,8 +25,8 @@ public class VoxelObstacleCalculator : MonoBehaviour
         }
 
         string[] tags = calculator.ColliderTagsToCompare;
-        Dictionary<int, VoxelContainer> allVoxels = calculator.voxelGridSaveFile.AllVoxels;
-        SerializableDictionary<int, VoxelContainer> colliderVoxels = calculator.voxelGridSaveFile.ColliderVoxels;
+        Dictionary<int, VoxelContainer> allVoxels = calculator.VoxelGridSaveFile.AllVoxels;
+        SerializableDictionary<int, VoxelContainer> colliderVoxels = calculator.VoxelGridSaveFile.ColliderVoxels;
 
         Vector3 colliderSize = new Vector3(pVoxelSize / 2, pVoxelSize / 2, pVoxelSize / 2);
 
@@ -43,13 +41,13 @@ public class VoxelObstacleCalculator : MonoBehaviour
 
             foreach (Collider foundCollider in allColliders)
             {
-                if (tagsToCompare.Contains(foundCollider.tag))
+                if (tags.Contains(foundCollider.tag))
                     continue;
 
                 currentVoxel.IsTraversable = false;
                 if(!colliderVoxels.ContainsKey(currentVoxel.ID))
                     colliderVoxels.Add(currentVoxel.ID, currentVoxel);
-                calculator.voxelGridSaveFile.TraversableVoxels.Remove(currentVoxel.ID);
+                calculator.VoxelGridSaveFile.TraversableVoxels.Remove(currentVoxel.ID);
             }
         }
 

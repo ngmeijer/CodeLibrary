@@ -9,40 +9,37 @@ using UnityEngine.Events;
 [RequireComponent(typeof(VoxelMapVisualization), typeof(VoxelObstacleCalculator))]
 public class VoxelGridCalculator : MonoBehaviour
 {
-    [Space(75)] [SerializeField] [Range(1, 1000)]
-    private float sceneWidth = 50;
-
+    //Serialized fields
+    [Header("Grid settings")] [Space(70)]
+    [SerializeField] [Range(1, 1000)] private float sceneWidth = 50;
     [SerializeField] [Range(1, 500)] private float sceneHeight = 50;
     [SerializeField] [Range(1, 1000)] private float sceneDepth = 50;
     [ReadOnlyInspector] [SerializeField] private Vector3 sceneDimensionsVector;
-    private float[] mapDimensionsFloat;
 
-    [Space(25)] [SerializeField] [Range(1f, 50f)]
-    private float voxelSize;
-    
-    public VoxelGridData voxelGridSaveFile;
+    [Space(15)] 
+    [SerializeField] [Range(1f, 50f)] private float voxelSize;
+
+    //Public fields
+    public VoxelGridData VoxelGridSaveFile;
     public string[] ColliderTagsToCompare;
 
-    //Public variables
-
-    //Private variables
+    //Private fields
     private Vector3 pos;
     private VoxelObstacleCalculator collisionChecker;
     private int voxelCountX;
     private int voxelCountY;
     private int voxelCountZ;
+    private float[] mapDimensionsFloat;
 
     [Header("Grid properties")]
     [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
     [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
+    [Space]
     [ReadOnlyInspector] [SerializeField] private float calculationTimeMilliseconds;
     [ReadOnlyInspector] [SerializeField] private float calculationTimeSeconds;
 
-    private void Awake()
-    {
-        collisionChecker = GetComponent<VoxelObstacleCalculator>();
-    }
-
+    private void Awake() => collisionChecker = GetComponent<VoxelObstacleCalculator>();
+    
     private void Update()
     {
         voxelCountX = (int) Math.Ceiling((sceneWidth / voxelSize));
@@ -57,7 +54,7 @@ public class VoxelGridCalculator : MonoBehaviour
     {
         float startTime = Time.realtimeSinceStartup;
 
-        if (voxelGridSaveFile == null)
+        if (VoxelGridSaveFile == null)
         {
             Debug.Log("VoxelGridData save file reference is null.");
             return;
@@ -80,20 +77,20 @@ public class VoxelGridCalculator : MonoBehaviour
     public void ClearVoxelData()
     {
         Console.Clear();
-        voxelGridSaveFile.AllVoxels.Clear();
-        voxelGridSaveFile.ColliderVoxels.Clear();
-        voxelGridSaveFile.TraversableVoxels.Clear();
+        VoxelGridSaveFile.AllVoxels.Clear();
+        VoxelGridSaveFile.ColliderVoxels.Clear();
+        VoxelGridSaveFile.TraversableVoxels.Clear();
 
 #if UNITY_EDITOR
-        UnityEditor.EditorUtility.ClearDirty(voxelGridSaveFile);
+        UnityEditor.EditorUtility.ClearDirty(VoxelGridSaveFile);
 #endif
     }
 
     private void divideLevelIntoVoxels()
     {
         pos = transform.position;
-        voxelGridSaveFile.VoxelSize = voxelSize;
-        voxelGridSaveFile.MapDimensions = new float[3] {sceneWidth, sceneHeight, sceneDepth};
+        VoxelGridSaveFile.VoxelSize = voxelSize;
+        VoxelGridSaveFile.MapDimensions = new float[3] {sceneWidth, sceneHeight, sceneDepth};
 
         int voxelID = 0;
 
@@ -111,16 +108,16 @@ public class VoxelGridCalculator : MonoBehaviour
                     };
                     ProgressBar.ShowVoxelCreateProgress(voxelID);
 
-                    voxelGridSaveFile.AllVoxels.Add(voxel.ID, voxel);
-                    voxelGridSaveFile.TraversableVoxels.Add(voxel.ID, voxel);
+                    VoxelGridSaveFile.AllVoxels.Add(voxel.ID, voxel);
+                    VoxelGridSaveFile.TraversableVoxels.Add(voxel.ID, voxel);
 
                     voxelID++;
                 }
 
 #if UNITY_EDITOR
-        UnityEditor.EditorUtility.SetDirty(voxelGridSaveFile);
+        UnityEditor.EditorUtility.SetDirty(VoxelGridSaveFile);
 
-        totalCurrentVoxels = voxelGridSaveFile.AllVoxels.Count;
+        totalCurrentVoxels = VoxelGridSaveFile.AllVoxels.Count;
         
         ProgressBar.HasFinishedProcess = true;
         ProgressBar.ShowVoxelCreateProgress(voxelID);
@@ -130,9 +127,9 @@ public class VoxelGridCalculator : MonoBehaviour
     public void CalculateNeighboursAfterCollisionDetection()
     {
         int currentVoxelIndex = 0;
-        ProgressBar.MaxVoxelIndex = voxelGridSaveFile.TraversableVoxels.Count - 1;
+        ProgressBar.MaxVoxelIndex = VoxelGridSaveFile.TraversableVoxels.Count - 1;
         mapDimensionsFloat = GetMapDimensions();
-        foreach (KeyValuePair<int, VoxelContainer> voxel in voxelGridSaveFile.TraversableVoxels)
+        foreach (KeyValuePair<int, VoxelContainer> voxel in VoxelGridSaveFile.TraversableVoxels)
         {
             currentVoxelIndex++;
             VoxelContainer currentVoxel = voxel.Value;
@@ -178,7 +175,7 @@ public class VoxelGridCalculator : MonoBehaviour
 
         foreach (Vector3 voxelNeighbourDirection in directions)
         {
-            VoxelContainer voxel = VoxelPositionHandler.GetVoxelFromWorldPos(voxelGridSaveFile.AllVoxels, voxelNeighbourDirection,
+            VoxelContainer voxel = VoxelPositionHandler.GetVoxelFromWorldPos(VoxelGridSaveFile.AllVoxels, voxelNeighbourDirection,
                 transform.position, mapDimensionsFloat, voxelSize);
 
             if ((voxel != null) && (!neighbourVoxels.Contains(voxel.ID)))

@@ -31,12 +31,6 @@ public class VoxelMapVisualization : MonoBehaviour
 
     [SerializeField] private Color borderColour = Color.blue;
 
-    [Header("Octree visuals")] [SerializeField]
-    private bool showOctreeDivisions;
-
-    [SerializeField] private int octreeDivisionDepth;
-    [SerializeField] private Color iterationContainerColour;
-
     private void Start()
     {
         GetCalculatorReference();
@@ -44,6 +38,18 @@ public class VoxelMapVisualization : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (voxelCalculator == null)
+        {
+            Debug.LogError("VoxelGridCalculator reference in VoxelMapVisualization is null.");
+            return;
+        }
+
+        if (voxelCalculator.VoxelGridSaveFile == null)
+        {
+            Debug.LogError("VoxelGridData save file reference in VoxelGridCalculator is null.");
+            return;
+        }
+
         if (!showVisualization) return;
 
         currentVoxelSize = saveFile.VoxelSize;
@@ -54,7 +60,6 @@ public class VoxelMapVisualization : MonoBehaviour
         if (voxelCalculator == null) return;
         if (showMapDimensions) drawGridOuterBorders();
         if (showVoxelSize) drawVoxelSample();
-        if (showOctreeDivisions) drawOctreeDivisions();
     }
 
     private void GetCalculatorReference()
@@ -84,6 +89,7 @@ public class VoxelMapVisualization : MonoBehaviour
         tempMapDimensions = voxelCalculator.GetMapDimensions();
         float[] currentMapDimensions = saveFile.MapDimensions;
 
+        //Required for expectedVoxelCount
         float tempVoxelSize = voxelCalculator.GetVoxelSize();
 
         int tempVoxelCountX = (int)Math.Ceiling((tempMapDimensions[0] / tempVoxelSize));
@@ -119,7 +125,7 @@ public class VoxelMapVisualization : MonoBehaviour
 
     private void drawVoxelSample()
     {
-        if (voxelCalculator.voxelGridSaveFile.AllVoxels.Count <= 0) return;
+        if (saveFile.AllVoxels.Count <= 0) return;
 
         startingVoxelPosition = saveFile.AllVoxels[0].Position;
         Gizmos.color = voxelColour;
@@ -127,19 +133,5 @@ public class VoxelMapVisualization : MonoBehaviour
         UnityEditor.Handles.Label(startingVoxelPosition, "Grid's starting voxel");
 #endif
         Gizmos.DrawCube(startingVoxelPosition, voxelVisualSize);
-    }
-
-    private void drawOctreeDivisions()
-    {
-        if (voxelCalculator.voxelGridSaveFile.OctreeDivisions.Count <= 0) return;
-        SerializableDictionary<int, OctreeContainer> collection =
-            voxelCalculator.voxelGridSaveFile.OctreeDivisions[octreeDivisionDepth];
-        if (collection.Count <= 0) return;
-        if (octreeDivisionDepth >= collection.Count) return;
-
-        for (int i = 0; i < collection.Count; i++)
-        {
-            Gizmos.DrawCube(collection[i].Position, collection[i].OctreeNodeSize);
-        }
     }
 }

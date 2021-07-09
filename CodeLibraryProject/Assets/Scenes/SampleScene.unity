@@ -579,7 +579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269929467}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 41.8, y: 85.5, z: 113}
+  m_LocalPosition: {x: 41.8, y: 85.5, z: 114.25}
   m_LocalScale: {x: 100, y: 185, z: 4}
   m_Children: []
   m_Father: {fileID: 2021995795}
@@ -2576,17 +2576,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 274
+  sceneWidth: 250
   sceneHeight: 100
-  sceneDepth: 299
-  sceneDimensionsVector: {x: 274, y: 100, z: 299}
+  sceneDepth: 250
+  sceneDimensionsVector: {x: 250, y: 100, z: 250}
   voxelSize: 10
-  meshColliderAccuracy: 4
-  voxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
-  totalExpectedVoxels: 8400
-  totalCurrentVoxels: 2520
-  calculationTimeMilliseconds: 1550.293
-  calculationTimeSeconds: 1.550293
+  VoxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
+  ColliderTagsToCompare:
+  - Player
+  - Bee_NPC
+  - Skunk_NPC
+  totalExpectedVoxels: 6250
+  totalCurrentVoxels: 6250
+  calculationTimeMilliseconds: 9772.949
+  calculationTimeSeconds: 9.772949
 --- !u!114 &9029849121100975176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2599,10 +2602,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cdbbb87e8d8147b8528d3d18357d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagsToCompare:
-  - Player
-  - Bee_NPC
-  - Skunk_NPC
   octreeIterations: 0
 --- !u!4 &9029849121190770400
 Transform:
