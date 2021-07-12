@@ -29,6 +29,10 @@ public class VoxelGridCalculator : MonoBehaviour
     private int voxelCountX;
     private int voxelCountY;
     private int voxelCountZ;
+    private int octreeCellCountX;
+    private int octreeCellCountY;
+    private int octreeCellCountZ;
+
     private float[] mapDimensionsFloat;
 
     [Header("Grid properties")]
@@ -68,7 +72,7 @@ public class VoxelGridCalculator : MonoBehaviour
 
         ClearVoxelData();
         divideLevelIntoVoxels();
-        collisionChecker.StartCollisionCheck(voxelSize);
+        //collisionChecker.StartCollisionCheck(voxelSize);
         
         calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
         calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
@@ -124,6 +128,9 @@ public class VoxelGridCalculator : MonoBehaviour
 #endif
     }
 
+    /// <summary>
+    /// This function needs to be optimized.
+    /// </summary>
     public void CalculateNeighboursAfterCollisionDetection()
     {
         int currentVoxelIndex = 0;

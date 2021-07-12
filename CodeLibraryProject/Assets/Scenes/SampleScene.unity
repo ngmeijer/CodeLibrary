@@ -2542,9 +2542,6 @@ MonoBehaviour:
   voxelColour: {r: 1, g: 0.9203187, b: 0, a: 0.23529412}
   showMapDimensions: 1
   borderColour: {r: 0.06722212, g: 0, b: 1, a: 1}
-  showOctreeDivisions: 1
-  octreeDivisionDepth: 0
-  iterationContainerColour: {r: 0.4292453, g: 0.4292453, b: 1, a: 1}
 --- !u!1 &9029849121100975174
 GameObject:
   m_ObjectHideFlags: 0
@@ -2576,20 +2573,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 250
-  sceneHeight: 100
-  sceneDepth: 250
-  sceneDimensionsVector: {x: 250, y: 100, z: 250}
+  sceneWidth: 384
+  sceneHeight: 205
+  sceneDepth: 406
+  sceneDimensionsVector: {x: 384, y: 205, z: 406}
   voxelSize: 10
   VoxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   ColliderTagsToCompare:
   - Player
   - Bee_NPC
   - Skunk_NPC
-  totalExpectedVoxels: 6250
+  totalExpectedVoxels: 33579
   totalCurrentVoxels: 6250
-  calculationTimeMilliseconds: 9772.949
-  calculationTimeSeconds: 9.772949
+  calculationTimeMilliseconds: 9154.907
+  calculationTimeSeconds: 9.154907
 --- !u!114 &9029849121100975176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2602,7 +2599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cdbbb87e8d8147b8528d3d18357d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  octreeIterations: 0
 --- !u!4 &9029849121190770400
 Transform:
   m_ObjectHideFlags: 0

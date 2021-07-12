@@ -150,14 +150,14 @@ public class AI_PathFinder : MonoBehaviour
 
             NativeArray<int> newGCostContainer = new NativeArray<int>(1, Allocator.TempJob);
 
-            NeighbourJob job = new NeighbourJob()
+            AStarDistanceJob distanceJob = new AStarDistanceJob()
             {
                 Voxel1Position = pCurrentVoxel.Position,
                 Voxel2Position = voxel.Value.Position,
                 CurrentVoxelGCost = pCurrentVoxel.Gcost,
                 NewGCostOutput = newGCostContainer
             };
-            JobHandle jobHandle = job.Schedule();
+            JobHandle jobHandle = distanceJob.Schedule();
             jobHandle.Complete();
 
             if (newGCostContainer[0] < voxel.Value.Gcost)
