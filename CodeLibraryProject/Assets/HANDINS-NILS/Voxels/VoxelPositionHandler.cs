@@ -19,39 +19,24 @@ public static class VoxelPositionHandler
         
         foreach (KeyValuePair<int, VoxelContainer> voxel in pAllVoxels)
         {
-            if (checkIfPositionInsideVoxel(gridPosition, voxel.Value.Position, pVoxelSize))
-            {
-                container = voxel.Value;
-                break;
-            }
+            if (!checkIfPositionInsideVoxel(gridPosition, voxel.Value.Position, pVoxelSize)) continue;
+            
+            container = voxel.Value;
+            break;
         }
 
         return container;
     }
 
-    public static List<VoxelContainer> GetVoxelsFromIDs(List<int> pIDArray, List<VoxelContainer> pAllVoxels)
-    {
-        List<VoxelContainer> voxels = new List<VoxelContainer>();
-
-        foreach (VoxelContainer voxel in pAllVoxels)
-            for(int i = 0; i < pIDArray.Count; i++)
-                if (pIDArray[i] == voxel.ID)
-                    voxels.Add(voxel);
-
-        return voxels;
-    }
-
     private static bool checkIfPositionInsideVoxel(Vector3 pGridPosition, Vector3 pVoxelPosition, float pVoxelVisualSize)
     {
-        bool inRange = false;
-
-        bool xInRange = ((pGridPosition.x >= (pVoxelPosition.x - pVoxelVisualSize / 2) && (pGridPosition.x <= (pVoxelPosition.x + pVoxelVisualSize / 2))));
-        bool yInRange = ((pGridPosition.y >= (pVoxelPosition.y - pVoxelVisualSize / 2) && (pGridPosition.y <= (pVoxelPosition.y + pVoxelVisualSize / 2))));;
-        bool zInRange = ((pGridPosition.z >= (pVoxelPosition.z - pVoxelVisualSize / 2) && (pGridPosition.z <= (pVoxelPosition.z + pVoxelVisualSize / 2))));;
+        bool xInRange = pGridPosition.x >= pVoxelPosition.x - pVoxelVisualSize / 2 && pGridPosition.x <= pVoxelPosition.x + pVoxelVisualSize / 2;
+        if (!xInRange) return false;
+        bool yInRange = pGridPosition.y >= pVoxelPosition.y - pVoxelVisualSize / 2 && pGridPosition.y <= pVoxelPosition.y + pVoxelVisualSize / 2;
+        if (!yInRange) return false;
+        bool zInRange = pGridPosition.z >= pVoxelPosition.z - pVoxelVisualSize / 2 && pGridPosition.z <= pVoxelPosition.z + pVoxelVisualSize / 2;
+        if (!yInRange) return false;
         
-        if (xInRange && yInRange && zInRange)
-            inRange = true;
-        
-        return inRange;
+        return true;
     }
 }

@@ -50,9 +50,7 @@ public class VoxelObstacleCalculator : MonoBehaviour
                 calculator.VoxelGridSaveFile.TraversableVoxels.Remove(currentVoxel.ID);
             }
         }
-
-        calculator.CalculateNeighboursAfterCollisionDetection();
-
+        
         ProgressBar.HasFinishedProcess = true;
         ProgressBar.ShowVoxelCollisionProgress(allVoxels.Count - 1);
     }
