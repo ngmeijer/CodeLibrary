@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -12,6 +14,7 @@ public class VoxelMapVisualization : MonoBehaviour
     private float currentVoxelSize;
     private Vector3 voxelVisualSize;
     private Vector3 startingVoxelPosition;
+    private VoxelContainer currentVoxel;
 
     [SerializeField] private VoxelGridData saveFile;
 
@@ -31,15 +34,24 @@ public class VoxelMapVisualization : MonoBehaviour
 
     [SerializeField] private Color borderColour = Color.blue;
 
+    [Header("Neighbour voxels")] [SerializeField]
+    private bool showNeighbourVoxels;
+
+    [SerializeField] private int currentVoxelID;
+    [SerializeField] private Color focusedVoxelColour = Color.yellow;
+    [SerializeField] private Color neighbourVoxelsColour = Color.green;
+
     private void Start()
     {
         GetCalculatorReference();
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (voxelCalculator == null)
         {
+            GetCalculatorReference();
             Debug.LogError("VoxelGridCalculator reference in VoxelMapVisualization is null.");
             return;
         }
@@ -52,15 +64,18 @@ public class VoxelMapVisualization : MonoBehaviour
 
         if (!showVisualization) return;
 
+        currentVoxel = saveFile.AllVoxels[currentVoxelID];
         currentVoxelSize = saveFile.VoxelSize;
         voxelVisualSize = new Vector3(currentVoxelSize, currentVoxelSize, currentVoxelSize);
 
         if (showColliderVoxels) drawColliderVoxels();
-
         if (voxelCalculator == null) return;
         if (showMapDimensions) drawGridOuterBorders();
         if (showVoxelSize) drawVoxelSample();
+        if (showNeighbourVoxels) visualizeNeighbourVoxels();
     }
+
+#endif
 
     private void GetCalculatorReference()
     {
@@ -80,7 +95,28 @@ public class VoxelMapVisualization : MonoBehaviour
             voxel.Value.ActiveColour = voxelWithColliderCol;
 
             Gizmos.color = voxel.Value.ActiveColour;
-            Gizmos.DrawWireCube(voxel.Value.Position, voxelVisualSize);
+            Gizmos.DrawWireCube(voxel.Value.WorldPosition, voxelVisualSize);
+        }
+    }
+
+    private void visualizeNeighbourVoxels()
+    {
+        if (currentVoxel == null)
+            return;
+        if (currentVoxel.neighbourData.neighbourVoxels == null)
+            return;
+
+        Gizmos.color = focusedVoxelColour;
+        Gizmos.DrawCube(currentVoxel.WorldPosition, voxelVisualSize);
+        Handles.Label(currentVoxel.WorldPosition, $"ID: {currentVoxel.ID}");
+
+        Dictionary<int, VoxelContainer> neighbourVoxels = currentVoxel.neighbourData.neighbourVoxels;
+
+        foreach (KeyValuePair<int, VoxelContainer> voxel in neighbourVoxels)
+        {
+            Gizmos.color = neighbourVoxelsColour;
+            Gizmos.DrawCube(voxel.Value.WorldPosition, voxelVisualSize);
+            Handles.Label(voxel.Value.WorldPosition, $"ID: {voxel.Value.ID}");
         }
     }
 
@@ -92,17 +128,18 @@ public class VoxelMapVisualization : MonoBehaviour
         //Required for expectedVoxelCount
         float tempVoxelSize = voxelCalculator.GetVoxelSize();
 
-        int tempVoxelCountX = (int)Math.Ceiling((tempMapDimensions[0] / tempVoxelSize));
-        int tempVoxelCountY = (int)Math.Ceiling((tempMapDimensions[1] / tempVoxelSize));
-        int tempVoxelCountZ = (int)Math.Ceiling((tempMapDimensions[2] / tempVoxelSize));
-        
-        int currentVoxelCountX = (int)Math.Ceiling((currentMapDimensions[0] / currentVoxelSize));
-        int currentVoxelCountY = (int)Math.Ceiling((currentMapDimensions[1] / currentVoxelSize));
-        int currentVoxelCountZ = (int)Math.Ceiling((currentMapDimensions[2] / currentVoxelSize));
+        int tempVoxelCountX = (int) Math.Ceiling((tempMapDimensions[0] / tempVoxelSize));
+        int tempVoxelCountY = (int) Math.Ceiling((tempMapDimensions[1] / tempVoxelSize));
+        int tempVoxelCountZ = (int) Math.Ceiling((tempMapDimensions[2] / tempVoxelSize));
 
-        Vector3 gridStartPosition = startingVoxelPosition - new Vector3(currentVoxelSize / 2, currentVoxelSize / 2, currentVoxelSize / 2);
+        int currentVoxelCountX = (int) Math.Ceiling((currentMapDimensions[0] / currentVoxelSize));
+        int currentVoxelCountY = (int) Math.Ceiling((currentMapDimensions[1] / currentVoxelSize));
+        int currentVoxelCountZ = (int) Math.Ceiling((currentMapDimensions[2] / currentVoxelSize));
+
+        Vector3 gridStartPosition = startingVoxelPosition -
+                                    new Vector3(currentVoxelSize / 2, currentVoxelSize / 2, currentVoxelSize / 2);
         Vector3 mapCenter = new Vector3(tempMapDimensions[0] / 2 - currentVoxelSize / 2, tempMapDimensions[1] / 2
-                                                                              - currentVoxelSize / 2,
+            - currentVoxelSize / 2,
             tempMapDimensions[2] / 2 - currentVoxelSize / 2);
         Gizmos.color = borderColour;
         Gizmos.DrawWireCube(mapCenter + transform.position,
@@ -127,7 +164,7 @@ public class VoxelMapVisualization : MonoBehaviour
     {
         if (saveFile.AllVoxels.Count <= 0) return;
 
-        startingVoxelPosition = saveFile.AllVoxels[0].Position;
+        startingVoxelPosition = saveFile.AllVoxels[0].WorldPosition;
         Gizmos.color = voxelColour;
 #if UNITY_EDITOR
         UnityEditor.Handles.Label(startingVoxelPosition, "Grid's starting voxel");

@@ -107,9 +107,10 @@ public class VoxelGridCalculator : MonoBehaviour
                 {
                     VoxelContainer voxel = new VoxelContainer
                     {
-                        Position = new Vector3(pos.x + (voxelSize * x), pos.y + (voxelSize * y),
+                        WorldPosition = new Vector3(pos.x + (voxelSize * x), pos.y + (voxelSize * y),
                             pos.z + (voxelSize * z)),
-                        ID = voxelID
+                        ID = voxelID,
+                        GridPosition = new Vector3(x,y,z)
                     };
                     ProgressBar.ShowVoxelCreateProgress(voxelID);
 
@@ -150,45 +151,49 @@ public class VoxelGridCalculator : MonoBehaviour
         ProgressBar.ShowVoxelNeighbourProgress(ProgressBar.MaxVoxelIndex);
     }
 
-    private Vector3[] defineNeighbourVoxelPositions(Vector3 pVoxelPos)
-    {
-        Vector3[] positions =
-        {
-            //North
-            new Vector3(pVoxelPos.x, pVoxelPos.y + voxelSize, pVoxelPos.z),
-
-            //East
-            new Vector3(pVoxelPos.x + voxelSize, pVoxelPos.y, pVoxelPos.z),
-
-            //South
-            new Vector3(pVoxelPos.x, pVoxelPos.y - voxelSize, pVoxelPos.z),
-
-            //West
-            new Vector3(pVoxelPos.x - voxelSize, pVoxelPos.y, pVoxelPos.z),
-
-            //Center
-            new Vector3(pVoxelPos.x, pVoxelPos.y, pVoxelPos.z + voxelSize),
-            new Vector3(pVoxelPos.x, pVoxelPos.y, pVoxelPos.z - voxelSize),
-        };
-
-        return positions;
-    }
-
 
     private List<int> calculateNeighbourVoxels(VoxelContainer pCurrentVoxel)
     {
         List<int> neighbourVoxels = new List<int>();
+        Vector3 currentGridPosition = pCurrentVoxel.GridPosition;
+        Vector3 neighbourGridPosition;
+        int convertedNeighbourID;
+        
+        //North
+        neighbourGridPosition = currentGridPosition;
+        neighbourGridPosition.y += 1;
+        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
+        neighbourVoxels.Add(convertedNeighbourID);
 
-        Vector3[] directions = defineNeighbourVoxelPositions(pCurrentVoxel.Position);
+        //East
+        neighbourGridPosition = currentGridPosition;
+        neighbourGridPosition.x -= 1;
+        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
+        neighbourVoxels.Add(convertedNeighbourID);
 
-        foreach (Vector3 voxelNeighbourDirection in directions)
-        {
-            VoxelContainer voxel = VoxelPositionHandler.GetVoxelFromWorldPos(VoxelGridSaveFile.AllVoxels, voxelNeighbourDirection,
-                transform.position, mapDimensionsFloat, voxelSize);
+        //South
+        neighbourGridPosition = currentGridPosition;
+        neighbourGridPosition.y -= 1;
+        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
+        neighbourVoxels.Add(convertedNeighbourID);
 
-            if ((voxel != null) && (!neighbourVoxels.Contains(voxel.ID)))
-                neighbourVoxels.Add(voxel.ID);
-        }
+        //West
+        neighbourGridPosition = currentGridPosition;
+        neighbourGridPosition.x += 1;
+        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
+        neighbourVoxels.Add(convertedNeighbourID);
+
+        //Center front
+        neighbourGridPosition = currentGridPosition;
+        neighbourGridPosition.z += 1;
+        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
+        neighbourVoxels.Add(convertedNeighbourID);
+        
+        //Center back
+        neighbourGridPosition = currentGridPosition;
+        neighbourGridPosition.z -= 1;
+        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
+        neighbourVoxels.Add(convertedNeighbourID);
 
         return neighbourVoxels;
     }

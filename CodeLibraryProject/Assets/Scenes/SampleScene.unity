@@ -905,228 +905,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!4 &245994071880988600
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994071880988607}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 197}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 245994073184794854}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!208 &245994071880988601
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994071880988607}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 5, y: 71.715, z: 205}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
---- !u!1 &245994071880988607
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 245994071880988600}
-  - component: {fileID: 245994071880988601}
-  m_Layer: 0
-  m_Name: West
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &245994071892343376
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994071892343383}
-  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 197, y: 0, z: 391}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 245994073184794854}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!208 &245994071892343377
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994071892343383}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 5, y: 71.715, z: 205}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
---- !u!1 &245994071892343383
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 245994071892343376}
-  - component: {fileID: 245994071892343377}
-  m_Layer: 0
-  m_Name: North
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &245994072204660677
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 245994072204660678}
-  - component: {fileID: 245994072204660679}
-  m_Layer: 0
-  m_Name: South
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &245994072204660678
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994072204660677}
-  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 197, y: 0, z: -3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 245994073184794854}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!208 &245994072204660679
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994072204660677}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 5, y: 71.715, z: 205}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
---- !u!1 &245994073184794853
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 245994073184794854}
-  m_Layer: 0
-  m_Name: Borders
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &245994073184794854
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994073184794853}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 245994071880988600}
-  - {fileID: 245994071892343376}
-  - {fileID: 245994073481047061}
-  - {fileID: 245994072204660678}
-  m_Father: {fileID: 9029849119486402133}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &245994073481047060
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 245994073481047061}
-  - component: {fileID: 245994073481047062}
-  m_Layer: 0
-  m_Name: East
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &245994073481047061
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994073481047060}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 394, y: 0, z: 197}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 245994073184794854}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!208 &245994073481047062
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245994073481047060}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 5, y: 71.715, z: 205}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!114 &331539713925855926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,7 +1412,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &7840559483969581625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,7 +1631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9029849119486402133
 Transform:
   m_ObjectHideFlags: 0
@@ -1867,7 +1645,6 @@ Transform:
   m_Children:
   - {fileID: 7840559483580479400}
   - {fileID: 9029849119713718358}
-  - {fileID: 245994073184794854}
   m_Father: {fileID: 9029849120240395102}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1886,11 +1663,8 @@ MonoBehaviour:
   showVisualization: 1
   showFocusedVoxel: 1
   showCosts: 1
-  currentVoxelID: 3
+  currentVoxelID: 1200
   focusedVoxelColour: {r: 1, g: 1, b: 1, a: 1}
-  showNeighbourVoxels: 1
-  showNeighbourCosts: 1
-  neighbourVoxelsColour: {r: 1, g: 0.187251, b: 0, a: 0.19215687}
   showPath: 1
   startVoxelColour: {r: 0, g: 1, b: 0, a: 0.47058824}
   targetVoxelColour: {r: 1, g: 0, b: 0, a: 0.47058824}
@@ -1911,463 +1685,463 @@ MonoBehaviour:
   voxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   targetVoxel:
     ID: 10011
-    Position: {x: 270, y: 70, z: 110}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 4327000083280000f3260000b32500001c2700001a270000
-    neighbourIDs: 
     Fcost: 480
     Gcost: 480
     Hcost: 0
   startVoxel:
     ID: 1231
-    Position: {x: 30, y: 30, z: 310}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: f704000037060000a704000067030000d0040000ce040000
-    neighbourIDs: 
     Fcost: 992000
     Gcost: 0
     Hcost: 992000
   path:
   - ID: 1591
-    Position: {x: 40, y: 30, z: 310}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 5f0600009f0700000f060000cf0400003806000036060000
-    neighbourIDs: 
     Fcost: 945010
     Gcost: 10
     Hcost: 945000
   - ID: 1951
-    Position: {x: 50, y: 30, z: 310}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: c7070000070900007707000037060000a00700009e070000
-    neighbourIDs: 
     Fcost: 900020
     Gcost: 20
     Hcost: 900000
   - ID: 2311
-    Position: {x: 60, y: 30, z: 310}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 2f0900006f0a0000df0800009f0700000809000006090000
-    neighbourIDs: 
     Fcost: 857030
     Gcost: 30
     Hcost: 857000
   - ID: 2671
-    Position: {x: 70, y: 30, z: 310}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 970a0000d70b0000470a000007090000700a00006e0a0000
-    neighbourIDs: 
     Fcost: 816040
     Gcost: 40
     Hcost: 816000
   - ID: 3031
-    Position: {x: 80, y: 30, z: 310}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: ff0b00003f0d0000af0b00006f0a0000d80b0000d60b0000
-    neighbourIDs: 
     Fcost: 777050
     Gcost: 50
     Hcost: 777000
   - ID: 3030
-    Position: {x: 80, y: 30, z: 300}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: fe0b00003e0d0000ae0b00006e0a0000d70b0000d50b0000
-    neighbourIDs: 
     Fcost: 738060
     Gcost: 60
     Hcost: 738000
   - ID: 3029
-    Position: {x: 80, y: 30, z: 290}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: fd0b00003d0d0000ad0b00006d0a0000d60b0000d40b0000
-    neighbourIDs: 
     Fcost: 701070
     Gcost: 70
     Hcost: 701000
   - ID: 3389
-    Position: {x: 90, y: 30, z: 290}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 650d0000a50e0000150d0000d50b00003e0d00003c0d0000
-    neighbourIDs: 
     Fcost: 664080
     Gcost: 80
     Hcost: 664000
   - ID: 3749
-    Position: {x: 100, y: 30, z: 290}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: cd0e00000d1000007d0e00003d0d0000a60e0000a40e0000
-    neighbourIDs: 
     Fcost: 629090
     Gcost: 90
     Hcost: 629000
   - ID: 3748
-    Position: {x: 100, y: 30, z: 280}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: cc0e00000c1000007c0e00003c0d0000a50e0000a30e0000
-    neighbourIDs: 
     Fcost: 594100
     Gcost: 100
     Hcost: 594000
   - ID: 4108
-    Position: {x: 110, y: 30, z: 280}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 3410000074110000e40f0000a40e00000d1000000b100000
-    neighbourIDs: 
     Fcost: 561110
     Gcost: 110
     Hcost: 561000
   - ID: 4107
-    Position: {x: 110, y: 30, z: 270}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 3310000073110000e30f0000a30e00000c1000000a100000
-    neighbourIDs: 
     Fcost: 528120
     Gcost: 120
     Hcost: 528000
   - ID: 4467
-    Position: {x: 120, y: 30, z: 270}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 9b110000db1200004b1100000b1000007411000072110000
-    neighbourIDs: 
     Fcost: 497130
     Gcost: 130
     Hcost: 497000
   - ID: 4466
-    Position: {x: 120, y: 30, z: 260}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 9a110000da1200004a1100000a1000007311000071110000
-    neighbourIDs: 
     Fcost: 466140
     Gcost: 140
     Hcost: 466000
   - ID: 4826
-    Position: {x: 130, y: 30, z: 260}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 0213000042140000b212000072110000db120000d9120000
-    neighbourIDs: 
     Fcost: 437150
     Gcost: 150
     Hcost: 437000
   - ID: 4825
-    Position: {x: 130, y: 30, z: 250}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 0113000041140000b112000071110000da120000d8120000
-    neighbourIDs: 
     Fcost: 408160
     Gcost: 160
     Hcost: 408000
   - ID: 5185
-    Position: {x: 140, y: 30, z: 250}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 69140000a915000019140000d91200004214000040140000
-    neighbourIDs: 
     Fcost: 381170
     Gcost: 170
     Hcost: 381000
   - ID: 5184
-    Position: {x: 140, y: 30, z: 240}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 68140000a815000018140000d8120000411400003f140000
-    neighbourIDs: 
     Fcost: 354180
     Gcost: 180
     Hcost: 354000
   - ID: 5544
-    Position: {x: 150, y: 30, z: 240}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: d0150000101700008015000040140000a9150000a7150000
-    neighbourIDs: 
     Fcost: 329190
     Gcost: 190
     Hcost: 329000
   - ID: 5543
-    Position: {x: 150, y: 30, z: 230}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: cf1500000f1700007f1500003f140000a8150000a6150000
-    neighbourIDs: 
     Fcost: 304200
     Gcost: 200
     Hcost: 304000
   - ID: 5903
-    Position: {x: 160, y: 30, z: 230}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 3717000077180000e7160000a7150000101700000e170000
-    neighbourIDs: 
     Fcost: 281210
     Gcost: 210
     Hcost: 281000
   - ID: 5902
-    Position: {x: 160, y: 30, z: 220}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 3617000076180000e6160000a61500000f1700000d170000
-    neighbourIDs: 
     Fcost: 258220
     Gcost: 220
     Hcost: 258000
   - ID: 6262
-    Position: {x: 170, y: 30, z: 220}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 9e180000de1900004e1800000e1700007718000075180000
-    neighbourIDs: 
     Fcost: 237230
     Gcost: 230
     Hcost: 237000
   - ID: 6302
-    Position: {x: 170, y: 40, z: 220}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: c6180000061a000076180000361700009f1800009d180000
-    neighbourIDs: 
     Fcost: 230240
     Gcost: 240
     Hcost: 230000
   - ID: 6301
-    Position: {x: 170, y: 40, z: 210}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: c5180000051a000075180000351700009e1800009c180000
-    neighbourIDs: 
     Fcost: 209250
     Gcost: 250
     Hcost: 209000
   - ID: 6661
-    Position: {x: 180, y: 40, z: 210}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 2d1a00006d1b0000dd1900009d180000061a0000041a0000
-    neighbourIDs: 
     Fcost: 190260
     Gcost: 260
     Hcost: 190000
   - ID: 6660
-    Position: {x: 180, y: 40, z: 200}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 2c1a00006c1b0000dc1900009c180000051a0000031a0000
-    neighbourIDs: 
     Fcost: 171270
     Gcost: 270
     Hcost: 171000
   - ID: 7020
-    Position: {x: 190, y: 40, z: 200}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 941b0000d41c0000441b0000041a00006d1b00006b1b0000
-    neighbourIDs: 
     Fcost: 154280
     Gcost: 280
     Hcost: 154000
   - ID: 7019
-    Position: {x: 190, y: 40, z: 190}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 931b0000d31c0000431b0000031a00006c1b00006a1b0000
-    neighbourIDs: 
     Fcost: 137290
     Gcost: 290
     Hcost: 137000
   - ID: 7379
-    Position: {x: 200, y: 40, z: 190}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: fb1c00003b1e0000ab1c00006b1b0000d41c0000d21c0000
-    neighbourIDs: 
     Fcost: 122300
     Gcost: 300
     Hcost: 122000
   - ID: 7378
-    Position: {x: 200, y: 40, z: 180}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: fa1c00003a1e0000aa1c00006a1b0000d31c0000d11c0000
-    neighbourIDs: 
     Fcost: 107310
     Gcost: 310
     Hcost: 107000
   - ID: 7377
-    Position: {x: 200, y: 40, z: 170}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: f91c0000391e0000a91c0000691b0000d21c0000d01c0000
-    neighbourIDs: 
     Fcost: 94320
     Gcost: 320
     Hcost: 94000
   - ID: 7737
-    Position: {x: 210, y: 40, z: 170}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 611e0000a11f0000111e0000d11c00003a1e0000381e0000
-    neighbourIDs: 
     Fcost: 81330
     Gcost: 330
     Hcost: 81000
   - ID: 8097
-    Position: {x: 220, y: 40, z: 170}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: c91f000009210000791f0000391e0000a21f0000a01f0000
-    neighbourIDs: 
     Fcost: 70340
     Gcost: 340
     Hcost: 70000
   - ID: 8096
-    Position: {x: 220, y: 40, z: 160}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: c81f000008210000781f0000381e0000a11f00009f1f0000
-    neighbourIDs: 
     Fcost: 59350
     Gcost: 350
     Hcost: 59000
   - ID: 8095
-    Position: {x: 220, y: 40, z: 150}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: c71f000007210000771f0000371e0000a01f00009e1f0000
-    neighbourIDs: 
     Fcost: 50360
     Gcost: 360
     Hcost: 50000
   - ID: 8094
-    Position: {x: 220, y: 40, z: 140}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: c61f000006210000761f0000361e00009f1f00009d1f0000
-    neighbourIDs: 
     Fcost: 43370
     Gcost: 370
     Hcost: 43000
   - ID: 8454
-    Position: {x: 230, y: 40, z: 140}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 2e2100006e220000de2000009e1f00000721000005210000
-    neighbourIDs: 
     Fcost: 34380
     Gcost: 380
     Hcost: 34000
   - ID: 8814
-    Position: {x: 240, y: 40, z: 140}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 96220000d623000046220000062100006f2200006d220000
-    neighbourIDs: 
     Fcost: 27390
     Gcost: 390
     Hcost: 27000
   - ID: 8854
-    Position: {x: 240, y: 50, z: 140}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: be220000fe2300006e2200002e2100009722000095220000
-    neighbourIDs: 
     Fcost: 22400
     Gcost: 400
     Hcost: 22000
   - ID: 9214
-    Position: {x: 250, y: 50, z: 140}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 2624000066250000d623000096220000ff230000fd230000
-    neighbourIDs: 
     Fcost: 17410
     Gcost: 410
     Hcost: 17000
   - ID: 9213
-    Position: {x: 250, y: 50, z: 130}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 2524000065250000d523000095220000fe230000fc230000
-    neighbourIDs: 
     Fcost: 12420
     Gcost: 420
     Hcost: 12000
   - ID: 9253
-    Position: {x: 250, y: 60, z: 130}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 4d2400008d250000fd230000bd2200002624000024240000
-    neighbourIDs: 
     Fcost: 9430
     Gcost: 430
     Hcost: 9000
   - ID: 9613
-    Position: {x: 260, y: 60, z: 130}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: b5250000f526000065250000252400008e2500008c250000
-    neighbourIDs: 
     Fcost: 6440
     Gcost: 440
     Hcost: 6000
   - ID: 9612
-    Position: {x: 260, y: 60, z: 120}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: b4250000f426000064250000242400008d2500008b250000
-    neighbourIDs: 
     Fcost: 3450
     Gcost: 450
     Hcost: 3000
   - ID: 9652
-    Position: {x: 260, y: 70, z: 120}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: dc2500001c2700008c2500004c240000b5250000b3250000
-    neighbourIDs: 
     Fcost: 2460
     Gcost: 460
     Hcost: 2000
   - ID: 10012
-    Position: {x: 270, y: 70, z: 120}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 4427000084280000f4260000b42500001d2700001b270000
-    neighbourIDs: 
     Fcost: 1470
     Gcost: 470
     Hcost: 1000
   - ID: 10011
-    Position: {x: 270, y: 70, z: 110}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 4327000083280000f3260000b32500001c2700001a270000
-    neighbourIDs: 
     Fcost: 480
     Gcost: 480
     Hcost: 0
   - ID: 10011
-    Position: {x: 270, y: 70, z: 110}
+    WorldPosition: {x: 0, y: 0, z: 0}
+    GridPosition: {x: 0, y: 0, z: 0}
     IsTraversable: 1
     ActiveColour: {r: 0, g: 0, b: 0, a: 0}
     NeighbourVoxelIDs: 4327000083280000f3260000b32500001c2700001a270000
-    neighbourIDs: 
     Fcost: 480
     Gcost: 480
     Hcost: 0
@@ -2429,7 +2203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9029849119713718358
 Transform:
   m_ObjectHideFlags: 0
@@ -2542,6 +2316,10 @@ MonoBehaviour:
   voxelColour: {r: 1, g: 0.9203187, b: 0, a: 0.23529412}
   showMapDimensions: 1
   borderColour: {r: 0.06722212, g: 0, b: 1, a: 1}
+  showNeighbourVoxels: 1
+  currentVoxelID: 115
+  focusedVoxelColour: {r: 0, g: 0.9003985, b: 1, a: 0.47058824}
+  neighbourVoxelsColour: {r: 0.026666403, g: 1, b: 0, a: 0.43137255}
 --- !u!1 &9029849121100975174
 GameObject:
   m_ObjectHideFlags: 0
@@ -2573,20 +2351,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 200
-  sceneHeight: 200
-  sceneDepth: 200
-  sceneDimensionsVector: {x: 200, y: 200, z: 200}
-  voxelSize: 5
+  sceneWidth: 100
+  sceneHeight: 100
+  sceneDepth: 100
+  sceneDimensionsVector: {x: 100, y: 100, z: 100}
+  voxelSize: 10
   VoxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   ColliderTagsToCompare:
   - Player
   - Bee_NPC
   - Skunk_NPC
-  totalExpectedVoxels: 64000
-  totalCurrentVoxels: 64000
-  calculationTimeMilliseconds: 583.8013
-  calculationTimeSeconds: 0.58380127
+  totalExpectedVoxels: 1000
+  totalCurrentVoxels: 1000
+  calculationTimeMilliseconds: 264.89258
+  calculationTimeSeconds: 0.26489258
 --- !u!114 &9029849121100975176
 MonoBehaviour:
   m_ObjectHideFlags: 0

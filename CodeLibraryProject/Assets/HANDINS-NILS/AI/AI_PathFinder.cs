@@ -152,8 +152,8 @@ public class AI_PathFinder : MonoBehaviour
 
             AStarDistanceJob distanceJob = new AStarDistanceJob()
             {
-                Voxel1Position = pCurrentVoxel.Position,
-                Voxel2Position = voxel.Value.Position,
+                Voxel1Position = pCurrentVoxel.WorldPosition,
+                Voxel2Position = voxel.Value.WorldPosition,
                 CurrentVoxelGCost = pCurrentVoxel.Gcost,
                 NewGCostOutput = newGCostContainer
             };
@@ -215,7 +215,7 @@ public class AI_PathFinder : MonoBehaviour
 
         for (int i = 0; i < pPathVoxels.Count; i++)
         {
-            pPathPositions.Add(pPathVoxels[i].Position);
+            pPathPositions.Add(pPathVoxels[i].WorldPosition);
         }
 
         return pPathPositions;
@@ -231,13 +231,13 @@ public class AI_PathFinder : MonoBehaviour
 
         foreach (KeyValuePair<int, VoxelContainer> voxel in traversableVoxels)
         {
-            VoxelPositions.Add(voxel.Value.Position);
+            VoxelPositions.Add(voxel.Value.WorldPosition);
         }
         
         CostCalculationJob job = new CostCalculationJob()
         {
-            StartVoxelPos = pStartVoxel.Position,
-            TargetVoxelPos = pTargetVoxel.Position,
+            StartVoxelPos = pStartVoxel.WorldPosition,
+            TargetVoxelPos = pTargetVoxel.WorldPosition,
             AllVoxelPos = VoxelPositions,
             GCostOutput = gCostContainer,
             FCostOutput = fCostContainer,

@@ -1,18 +1,19 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class VoxelContainer
 {
     public int ID;
-    public Vector3 Position;
+    public Vector3 WorldPosition;
+    public Vector3 GridPosition;
     public bool IsTraversable = true;
     public Color ActiveColour;
 
     public List<int> NeighbourVoxelIDs;
     public VoxelContainer Parent;
 
-    public List<int> neighbourIDs;
     public NeighbourData neighbourData = new NeighbourData();
 
     //total cost = G + H

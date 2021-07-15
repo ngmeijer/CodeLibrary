@@ -36,7 +36,7 @@ public class VoxelObstacleCalculator : MonoBehaviour
             ProgressBar.ShowVoxelCollisionProgress(voxelIndex);
             currentVoxel = allVoxels[voxelIndex];
 
-            Collider[] allColliders = Physics.OverlapBox(currentVoxel.Position,
+            Collider[] allColliders = Physics.OverlapBox(currentVoxel.WorldPosition,
                 colliderSize);
 
             foreach (Collider foundCollider in allColliders)

@@ -19,7 +19,7 @@ public static class VoxelPositionHandler
         
         foreach (KeyValuePair<int, VoxelContainer> voxel in pAllVoxels)
         {
-            if (!checkIfPositionInsideVoxel(gridPosition, voxel.Value.Position, pVoxelSize)) continue;
+            if (!checkIfPositionInsideVoxel(gridPosition, voxel.Value.WorldPosition, pVoxelSize)) continue;
             
             container = voxel.Value;
             break;
@@ -35,7 +35,7 @@ public static class VoxelPositionHandler
         bool yInRange = pGridPosition.y >= pVoxelPosition.y - pVoxelVisualSize / 2 && pGridPosition.y <= pVoxelPosition.y + pVoxelVisualSize / 2;
         if (!yInRange) return false;
         bool zInRange = pGridPosition.z >= pVoxelPosition.z - pVoxelVisualSize / 2 && pGridPosition.z <= pVoxelPosition.z + pVoxelVisualSize / 2;
-        if (!yInRange) return false;
+        if (!zInRange) return false;
         
         return true;
     }
