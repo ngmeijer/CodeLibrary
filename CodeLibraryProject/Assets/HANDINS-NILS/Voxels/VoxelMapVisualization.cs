@@ -115,7 +115,7 @@ public class VoxelMapVisualization : MonoBehaviour
         foreach (KeyValuePair<int, VoxelContainer> voxel in neighbourVoxels)
         {
             Gizmos.color = neighbourVoxelsColour;
-            Gizmos.DrawCube(voxel.Value.WorldPosition, voxelVisualSize);
+            Gizmos.DrawWireCube(voxel.Value.WorldPosition, voxelVisualSize);
             Handles.Label(voxel.Value.WorldPosition, $"ID: {voxel.Value.ID}");
         }
     }

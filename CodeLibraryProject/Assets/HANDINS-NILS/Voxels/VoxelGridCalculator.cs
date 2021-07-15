@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,14 +11,15 @@ using UnityEngine.Events;
 public class VoxelGridCalculator : MonoBehaviour
 {
     //Serialized fields
-    [Header("Grid settings")] [Space(70)]
-    [SerializeField] [Range(1, 1000)] private float sceneWidth = 50;
+    [Header("Grid settings")] [Space(70)] [SerializeField] [Range(1, 1000)]
+    private float sceneWidth = 50;
+
     [SerializeField] [Range(1, 500)] private float sceneHeight = 50;
     [SerializeField] [Range(1, 1000)] private float sceneDepth = 50;
     [ReadOnlyInspector] [SerializeField] private Vector3 sceneDimensionsVector;
 
-    [Space(15)] 
-    [SerializeField] [Range(1f, 50f)] private float voxelSize;
+    [Space(15)] [SerializeField] [Range(1f, 50f)]
+    private float voxelSize;
 
     //Public fields
     public VoxelGridData VoxelGridSaveFile;
@@ -35,15 +37,23 @@ public class VoxelGridCalculator : MonoBehaviour
 
     private float[] mapDimensionsFloat;
 
-    [Header("Grid properties")]
-    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels = 0;
+    private Vector3Int currentGridPosition;
+    private Vector3Int neighbourGridPosition;
+    private int convertedNeighbourID;
+    private VoxelContainer neighbourVoxel;
+
+    [Header("Grid properties")] [ReadOnlyInspector] [SerializeField]
+    private int totalExpectedVoxels = 0;
+
     [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
-    [Space]
-    [ReadOnlyInspector] [SerializeField] private float calculationTimeMilliseconds;
+
+    [Space] [ReadOnlyInspector] [SerializeField]
+    private float calculationTimeMilliseconds;
+
     [ReadOnlyInspector] [SerializeField] private float calculationTimeSeconds;
 
     private void Awake() => collisionChecker = GetComponent<VoxelObstacleCalculator>();
-    
+
     private void Update()
     {
         voxelCountX = (int) Math.Ceiling((sceneWidth / voxelSize));
@@ -100,7 +110,7 @@ public class VoxelGridCalculator : MonoBehaviour
         int voxelID = 0;
 
         ProgressBar.MaxVoxelIndex = totalExpectedVoxels - 1;
-        
+
         for (int x = 0; x < voxelCountX; x++)
             for (int y = 0; y < voxelCountY; y++)
                 for (int z = 0; z < voxelCountZ; z++)
@@ -110,7 +120,7 @@ public class VoxelGridCalculator : MonoBehaviour
                         WorldPosition = new Vector3(pos.x + (voxelSize * x), pos.y + (voxelSize * y),
                             pos.z + (voxelSize * z)),
                         ID = voxelID,
-                        GridPosition = new Vector3(x,y,z)
+                        GridPosition = new Vector3Int(x, y, z)
                     };
                     ProgressBar.ShowVoxelCreateProgress(voxelID);
 
@@ -124,21 +134,17 @@ public class VoxelGridCalculator : MonoBehaviour
         UnityEditor.EditorUtility.SetDirty(VoxelGridSaveFile);
 
         totalCurrentVoxels = VoxelGridSaveFile.AllVoxels.Count;
-        
+
         ProgressBar.HasFinishedProcess = true;
         ProgressBar.ShowVoxelCreateProgress(voxelID);
 #endif
     }
 
-    /// <summary>
-    /// This function needs to be optimized.
-    /// </summary>
     public void CalculateNeighboursAfterCollisionDetection()
     {
         int currentVoxelIndex = 0;
         ProgressBar.MaxVoxelIndex = VoxelGridSaveFile.TraversableVoxels.Count - 1;
-        mapDimensionsFloat = GetMapDimensions();
-        foreach (KeyValuePair<int, VoxelContainer> voxel in VoxelGridSaveFile.TraversableVoxels)
+        foreach (KeyValuePair<int, VoxelContainer> voxel in VoxelGridSaveFile.AllVoxels)
         {
             currentVoxelIndex++;
             VoxelContainer currentVoxel = voxel.Value;
@@ -146,7 +152,7 @@ public class VoxelGridCalculator : MonoBehaviour
             List<int> neighbourVoxelIDs = calculateNeighbourVoxels(currentVoxel);
             currentVoxel.NeighbourVoxelIDs = neighbourVoxelIDs;
         }
-        
+
         ProgressBar.HasFinishedProcess = true;
         ProgressBar.ShowVoxelNeighbourProgress(ProgressBar.MaxVoxelIndex);
     }
@@ -155,45 +161,77 @@ public class VoxelGridCalculator : MonoBehaviour
     private List<int> calculateNeighbourVoxels(VoxelContainer pCurrentVoxel)
     {
         List<int> neighbourVoxels = new List<int>();
-        Vector3 currentGridPosition = pCurrentVoxel.GridPosition;
-        Vector3 neighbourGridPosition;
-        int convertedNeighbourID;
-        
+        currentGridPosition = pCurrentVoxel.GridPosition;
+
         //North
-        neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.y += 1;
-        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
-        neighbourVoxels.Add(convertedNeighbourID);
+        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
+        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
+        {
+            neighbourVoxels.Add(convertedNeighbourID);
+            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
+            if (neighbourVoxel != null)
+                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
+        }
 
         //East
         neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.x -= 1;
-        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
-        neighbourVoxels.Add(convertedNeighbourID);
-
+        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
+        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
+        {
+            neighbourVoxels.Add(convertedNeighbourID);
+            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
+            if (neighbourVoxel != null)
+                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
+        }
         //South
         neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.y -= 1;
-        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
-        neighbourVoxels.Add(convertedNeighbourID);
-
-        //West
+        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
+        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
+        {
+            neighbourVoxels.Add(convertedNeighbourID);
+            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
+            if (neighbourVoxel != null)
+                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
+        }
+        
+        // //West
         neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.x += 1;
-        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
-        neighbourVoxels.Add(convertedNeighbourID);
-
+        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
+        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
+        {
+            neighbourVoxels.Add(convertedNeighbourID);
+            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
+            if (neighbourVoxel != null)
+                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
+        }
+        
         //Center front
         neighbourGridPosition = currentGridPosition;
-        neighbourGridPosition.z += 1;
-        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
-        neighbourVoxels.Add(convertedNeighbourID);
+        neighbourGridPosition.z -= 1;
+        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
+        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
+        {
+            neighbourVoxels.Add(convertedNeighbourID);
+            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
+            if (neighbourVoxel != null)
+                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
+        }
         
         //Center back
         neighbourGridPosition = currentGridPosition;
-        neighbourGridPosition.z -= 1;
-        convertedNeighbourID = (int)(neighbourGridPosition.x + neighbourGridPosition.y + neighbourGridPosition.z);
-        neighbourVoxels.Add(convertedNeighbourID);
+        neighbourGridPosition.z += 1;
+        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
+        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
+        {
+            neighbourVoxels.Add(convertedNeighbourID);
+            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
+            if (neighbourVoxel != null && !pCurrentVoxel.neighbourData.neighbourVoxels.ContainsKey(convertedNeighbourID))
+                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
+        }
 
         return neighbourVoxels;
     }
