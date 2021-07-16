@@ -309,7 +309,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -2249,7 +2249,7 @@ Transform:
   - {fileID: 9029849121100975172}
   - {fileID: 9029849119486402133}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &9029849120743235256
 Transform:
@@ -2317,9 +2317,9 @@ MonoBehaviour:
   showMapDimensions: 1
   borderColour: {r: 0.0666666, g: 0, b: 1, a: 1}
   showNeighbourVoxels: 1
-  currentVoxelID: 526
-  focusedVoxelColour: {r: 0, g: 0.90196085, b: 1, a: 0.47058824}
-  neighbourVoxelsColour: {r: 0.027451038, g: 1, b: 0, a: 0.47058824}
+  currentVoxelID: 0
+  focusedVoxelColour: {r: 0, g: 0.90196085, b: 1, a: 0.40392157}
+  neighbourVoxelsColour: {r: 0.027451038, g: 1, b: 0, a: 0.24705882}
 --- !u!1 &9029849121100975174
 GameObject:
   m_ObjectHideFlags: 0
@@ -2351,11 +2351,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 100
-  sceneHeight: 100
-  sceneDepth: 100
-  sceneDimensionsVector: {x: 100, y: 100, z: 100}
-  voxelSize: 10
+  sceneWidth: 10
+  sceneHeight: 10
+  sceneDepth: 10
+  sceneDimensionsVector: {x: 10, y: 10, z: 10}
+  voxelSize: 1
   VoxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   ColliderTagsToCompare:
   - Player
@@ -2363,8 +2363,8 @@ MonoBehaviour:
   - Skunk_NPC
   totalExpectedVoxels: 1000
   totalCurrentVoxels: 1000
-  calculationTimeMilliseconds: 18.554688
-  calculationTimeSeconds: 0.018554688
+  calculationTimeMilliseconds: 16.601562
+  calculationTimeSeconds: 0.016601562
 --- !u!114 &9029849121100975176
 MonoBehaviour:
   m_ObjectHideFlags: 0

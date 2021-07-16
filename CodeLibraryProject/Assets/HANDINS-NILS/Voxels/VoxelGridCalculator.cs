@@ -163,77 +163,46 @@ public class VoxelGridCalculator : MonoBehaviour
         List<int> neighbourVoxels = new List<int>();
         currentGridPosition = pCurrentVoxel.GridPosition;
 
-        //North
-        neighbourGridPosition.y += 1;
-        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
-        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
-        {
-            neighbourVoxels.Add(convertedNeighbourID);
-            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
-            if (neighbourVoxel != null)
-                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
-        }
-
-        //East
+        //Top
         neighbourGridPosition = currentGridPosition;
-        neighbourGridPosition.x -= 1;
-        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
-        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
-        {
-            neighbourVoxels.Add(convertedNeighbourID);
-            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
-            if (neighbourVoxel != null)
-                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
-        }
-        //South
+        neighbourGridPosition.y += 1;
+        calculateSingleNeighbourVoxelID(pCurrentVoxel, neighbourVoxels, neighbourGridPosition);
+
+        //Bottom
         neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.y -= 1;
-        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
-        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
-        {
-            neighbourVoxels.Add(convertedNeighbourID);
-            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
-            if (neighbourVoxel != null)
-                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
-        }
+        calculateSingleNeighbourVoxelID(pCurrentVoxel, neighbourVoxels, neighbourGridPosition);
         
-        // //West
+        //Left
+        neighbourGridPosition = currentGridPosition;
+        neighbourGridPosition.x -= 1;
+        calculateSingleNeighbourVoxelID(pCurrentVoxel, neighbourVoxels, neighbourGridPosition);
+
+        //Right
         neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.x += 1;
-        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
-        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
-        {
-            neighbourVoxels.Add(convertedNeighbourID);
-            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
-            if (neighbourVoxel != null)
-                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
-        }
+        calculateSingleNeighbourVoxelID(pCurrentVoxel, neighbourVoxels, neighbourGridPosition);
         
         //Center front
         neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.z -= 1;
-        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
-        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
-        {
-            neighbourVoxels.Add(convertedNeighbourID);
-            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
-            if (neighbourVoxel != null)
-                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
-        }
-        
+        calculateSingleNeighbourVoxelID(pCurrentVoxel, neighbourVoxels, neighbourGridPosition);
+
         //Center back
         neighbourGridPosition = currentGridPosition;
         neighbourGridPosition.z += 1;
-        convertedNeighbourID = neighbourGridPosition.x * 100 + neighbourGridPosition.y * 10 + neighbourGridPosition.z;
-        if (neighbourGridPosition.x > 0 && neighbourGridPosition.y > 0 && neighbourGridPosition.z > 0)
-        {
-            neighbourVoxels.Add(convertedNeighbourID);
-            VoxelGridSaveFile.AllVoxels.TryGetValue(convertedNeighbourID, out neighbourVoxel);
-            if (neighbourVoxel != null && !pCurrentVoxel.neighbourData.neighbourVoxels.ContainsKey(convertedNeighbourID))
-                pCurrentVoxel.neighbourData.neighbourVoxels.Add(convertedNeighbourID, neighbourVoxel);
-        }
+        calculateSingleNeighbourVoxelID(pCurrentVoxel, neighbourVoxels, neighbourGridPosition);
 
         return neighbourVoxels;
+    }
+
+    private void calculateSingleNeighbourVoxelID(VoxelContainer pCurrentVoxel, List<int> pNeighbourVoxelIDs,
+        Vector3Int pNeighbourPosition)
+    {
+        convertedNeighbourID = pNeighbourPosition.x * 100 + pNeighbourPosition.y * 10 + pNeighbourPosition.z;
+        if (neighbourGridPosition.x >= 0 && neighbourGridPosition.y >= 0 && neighbourGridPosition.z >= 0)
+            pNeighbourVoxelIDs.Add(convertedNeighbourID);
+            pNeighbourVoxelIDs.Add(convertedNeighbourID);
     }
 
     public float[] GetMapDimensions()

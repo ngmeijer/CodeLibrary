@@ -22,11 +22,4 @@ public class VoxelContainer
     public List<int> NeighbourVoxelIDs;
 
     public VoxelContainer Parent;
-
-    public NeighbourData neighbourData = new NeighbourData();
-}
-
-public class NeighbourData
-{
-    public SerializableDictionary<int, VoxelContainer> neighbourVoxels = new SerializableDictionary<int, VoxelContainer>();
 }

@@ -15,6 +15,8 @@ public class VoxelMapVisualization : MonoBehaviour
     private Vector3 voxelVisualSize;
     private Vector3 startingVoxelPosition;
     private VoxelContainer currentVoxel;
+    private List<VoxelContainer> selectedVoxelNeigbours;
+    private List<int> selectedNeighboursIDs;
 
     [SerializeField] private VoxelGridData saveFile;
 
@@ -63,7 +65,10 @@ public class VoxelMapVisualization : MonoBehaviour
         }
 
         if (!showVisualization) return;
+        if (saveFile.AllVoxels.Count <= 0) return;
 
+
+        currentVoxelID = Mathf.Clamp(currentVoxelID, 0, saveFile.AllVoxels.Count - 1);
         currentVoxel = saveFile.AllVoxels[currentVoxelID];
         currentVoxelSize = saveFile.VoxelSize;
         voxelVisualSize = new Vector3(currentVoxelSize, currentVoxelSize, currentVoxelSize);
@@ -103,20 +108,31 @@ public class VoxelMapVisualization : MonoBehaviour
     {
         if (currentVoxel == null)
             return;
-        if (currentVoxel.neighbourData.neighbourVoxels == null)
-            return;
 
         Gizmos.color = focusedVoxelColour;
         Gizmos.DrawCube(currentVoxel.WorldPosition, voxelVisualSize);
         Handles.Label(currentVoxel.WorldPosition, $"ID: {currentVoxel.ID}");
 
-        Dictionary<int, VoxelContainer> neighbourVoxels = currentVoxel.neighbourData.neighbourVoxels;
+        selectedNeighboursIDs = currentVoxel.NeighbourVoxelIDs;
+        selectedVoxelNeigbours.Clear();
 
-        foreach (KeyValuePair<int, VoxelContainer> voxel in neighbourVoxels)
+        foreach (int id in selectedNeighboursIDs)
         {
+            if (currentVoxelID < 0 || currentVoxelID > saveFile.AllVoxels.Count - 1)
+            {
+                Debug.Log("Exceeding voxel collection limits. Index must range from 0 to the max amount of voxels - 1.");
+                break;
+            }
+            saveFile.AllVoxels.TryGetValue(id, out VoxelContainer neighbour);
+            selectedVoxelNeigbours.Add(neighbour);
+        }
+
+        foreach (VoxelContainer voxel in selectedVoxelNeigbours)
+        {
+            if (voxel == null) continue;
             Gizmos.color = neighbourVoxelsColour;
-            Gizmos.DrawWireCube(voxel.Value.WorldPosition, voxelVisualSize);
-            Handles.Label(voxel.Value.WorldPosition, $"ID: {voxel.Value.ID}");
+            Gizmos.DrawWireCube(voxel.WorldPosition, voxelVisualSize);
+            Handles.Label(voxel.WorldPosition, $"ID: {voxel.ID}");
         }
     }
 
