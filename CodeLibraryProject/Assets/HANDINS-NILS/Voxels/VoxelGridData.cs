@@ -6,10 +6,10 @@ using UnityEngine;
 public class VoxelGridData : ScriptableObject
 {
     public SerializableDictionary<int ,VoxelContainer> AllVoxels = new SerializableDictionary<int, VoxelContainer>();
-    public SerializableDictionary<int, VoxelContainer> ColliderVoxels = new SerializableDictionary<int, VoxelContainer>();
+    [HideInInspector] public SerializableDictionary<int, VoxelContainer> ColliderVoxels = new SerializableDictionary<int, VoxelContainer>();
     [HideInInspector] public SerializableDictionary<int, VoxelContainer> TraversableVoxels = new SerializableDictionary<int, VoxelContainer>();
-    [HideInInspector] public List<SerializableDictionary<int, OctreeContainer>> OctreeDivisions = new List<SerializableDictionary<int, OctreeContainer>>();
-
+    [HideInInspector] public SerializableDictionary<Vector3Int, int> VoxelPositions = new SerializableDictionary<Vector3Int, int>();
+    
     public float VoxelSize;
     public float[] MapDimensions;
 }

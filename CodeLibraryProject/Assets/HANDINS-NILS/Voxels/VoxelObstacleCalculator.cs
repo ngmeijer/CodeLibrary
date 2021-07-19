@@ -30,8 +30,8 @@ public class VoxelObstacleCalculator : MonoBehaviour
 
         Vector3 colliderSize = new Vector3(pVoxelSize / 2, pVoxelSize / 2, pVoxelSize / 2);
 
-        ProgressBar.MaxVoxelIndex = allVoxels.Count - 1;
-        for (int voxelIndex = 0; voxelIndex < allVoxels.Count; voxelIndex++)
+        ProgressBar.MaxVoxelIndex = allVoxels.Count;
+        for (int voxelIndex = 1; voxelIndex < allVoxels.Count; voxelIndex++)
         {
             ProgressBar.ShowVoxelCollisionProgress(voxelIndex);
             currentVoxel = allVoxels[voxelIndex];
@@ -51,8 +51,7 @@ public class VoxelObstacleCalculator : MonoBehaviour
             }
         }
         
-        ProgressBar.HasFinishedProcess = true;
-        ProgressBar.ShowVoxelCollisionProgress(allVoxels.Count - 1);
+        ProgressBar.ShowVoxelCollisionProgress(allVoxels.Count);
     }
 
     private void handleOctreeDivisionIteration()

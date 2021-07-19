@@ -7,7 +7,6 @@ public class ProgressBar : EditorWindow
 {
     private VoxelGridCalculator calculator;
     public static int MaxVoxelIndex;
-    public static bool HasFinishedProcess;
 
     public static void ShowVoxelCreateProgress(int pCurrentVoxelIndex)
     {
@@ -16,10 +15,8 @@ public class ProgressBar : EditorWindow
             (float)pCurrentVoxelIndex / MaxVoxelIndex);
 
         if (pCurrentVoxelIndex < MaxVoxelIndex) return;
-        if (!HasFinishedProcess) return;
 
         EditorUtility.ClearProgressBar();
-        HasFinishedProcess = false;
     }
 
     public static void ShowVoxelCollisionProgress(int pCurrentVoxelIndex)
@@ -29,11 +26,11 @@ public class ProgressBar : EditorWindow
             (float)pCurrentVoxelIndex / MaxVoxelIndex);
 
         if (pCurrentVoxelIndex < MaxVoxelIndex) return;
-        if (!HasFinishedProcess) return;
 
         EditorUtility.ClearProgressBar();
-        HasFinishedProcess = false;
     }
+    
+    
     
     public static void ShowVoxelNeighbourProgress(int pCurrentVoxelIndex)
     {
@@ -42,10 +39,8 @@ public class ProgressBar : EditorWindow
             (float)pCurrentVoxelIndex / MaxVoxelIndex);
 
         if (pCurrentVoxelIndex < MaxVoxelIndex) return;
-        if (!HasFinishedProcess) return;
 
         EditorUtility.ClearProgressBar();
-        HasFinishedProcess = false;
     }
 }
 #endif

@@ -15,7 +15,7 @@ public class VoxelMapVisualization : MonoBehaviour
     private Vector3 voxelVisualSize;
     private Vector3 startingVoxelPosition;
     private VoxelContainer currentVoxel;
-    private List<VoxelContainer> selectedVoxelNeigbours;
+    private List<VoxelContainer> selectedVoxelNeigbours = new List<VoxelContainer>();
     private List<int> selectedNeighboursIDs;
 
     [SerializeField] private VoxelGridData saveFile;
@@ -25,11 +25,6 @@ public class VoxelMapVisualization : MonoBehaviour
 
     [SerializeField] private bool showColliderVoxels = true;
     [SerializeField] private Color voxelWithColliderCol = new Color(1, 0, 0, 0.2f);
-
-    [Header("Voxel size")] [SerializeField]
-    private bool showVoxelSize;
-
-    [SerializeField] private Color voxelColour = Color.yellow;
 
     [Header("Map borders")] [SerializeField]
     private bool showMapDimensions;
@@ -68,7 +63,7 @@ public class VoxelMapVisualization : MonoBehaviour
         if (saveFile.AllVoxels.Count <= 0) return;
 
 
-        currentVoxelID = Mathf.Clamp(currentVoxelID, 0, saveFile.AllVoxels.Count - 1);
+        currentVoxelID = Mathf.Clamp(currentVoxelID, 0, saveFile.AllVoxels.Count);
         currentVoxel = saveFile.AllVoxels[currentVoxelID];
         currentVoxelSize = saveFile.VoxelSize;
         voxelVisualSize = new Vector3(currentVoxelSize, currentVoxelSize, currentVoxelSize);
@@ -76,7 +71,6 @@ public class VoxelMapVisualization : MonoBehaviour
         if (showColliderVoxels) drawColliderVoxels();
         if (voxelCalculator == null) return;
         if (showMapDimensions) drawGridOuterBorders();
-        if (showVoxelSize) drawVoxelSample();
         if (showNeighbourVoxels) visualizeNeighbourVoxels();
     }
 
@@ -111,18 +105,20 @@ public class VoxelMapVisualization : MonoBehaviour
 
         Gizmos.color = focusedVoxelColour;
         Gizmos.DrawCube(currentVoxel.WorldPosition, voxelVisualSize);
-        Handles.Label(currentVoxel.WorldPosition, $"ID: {currentVoxel.ID}");
+        Handles.Label(currentVoxel.WorldPosition, $"ID: {currentVoxel.ID}.\nGrid Position: {currentVoxel.GridPosition}");
 
         selectedNeighboursIDs = currentVoxel.NeighbourVoxelIDs;
         selectedVoxelNeigbours.Clear();
-
+        
         foreach (int id in selectedNeighboursIDs)
         {
-            if (currentVoxelID < 0 || currentVoxelID > saveFile.AllVoxels.Count - 1)
+            if (currentVoxelID < 1 || currentVoxelID > saveFile.AllVoxels.Count)
             {
                 Debug.Log("Exceeding voxel collection limits. Index must range from 0 to the max amount of voxels - 1.");
                 break;
             }
+            if (id < 1 || id > saveFile.AllVoxels.Count) continue;
+            
             saveFile.AllVoxels.TryGetValue(id, out VoxelContainer neighbour);
             selectedVoxelNeigbours.Add(neighbour);
         }
@@ -174,17 +170,5 @@ public class VoxelMapVisualization : MonoBehaviour
         UnityEditor.Handles.Label(transform.position + (transform.forward * tempMapDimensions[2]),
             $"Grid width: {tempMapDimensions[0]}m.\nCurrent voxel count: {currentVoxelCountZ}. \nExpected voxel count: {tempVoxelCountZ}");
 #endif
-    }
-
-    private void drawVoxelSample()
-    {
-        if (saveFile.AllVoxels.Count <= 0) return;
-
-        startingVoxelPosition = saveFile.AllVoxels[0].WorldPosition;
-        Gizmos.color = voxelColour;
-#if UNITY_EDITOR
-        UnityEditor.Handles.Label(startingVoxelPosition, "Grid's starting voxel");
-#endif
-        Gizmos.DrawCube(startingVoxelPosition, voxelVisualSize);
     }
 }

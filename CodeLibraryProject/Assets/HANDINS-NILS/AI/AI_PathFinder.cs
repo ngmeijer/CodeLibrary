@@ -96,12 +96,9 @@ public class AI_PathFinder : MonoBehaviour
         VoxelContainer lastVoxel = startVoxel;
 
         openVoxels.Add(startVoxel.ID, startVoxel);
-        int neighbourCounter = 0;
-        int openVoxelCounter = 0;
 
         while (openVoxels.Count > 0)
         {
-            openVoxelCounter++;
             var sortedFcosts = openVoxels.OrderBy(d => d.Value.Fcost).ToList();
             currentVoxel = sortedFcosts[0].Value;
 
