@@ -23,11 +23,10 @@ public class AI_PathVisuals : MonoBehaviour
     private VoxelContainer currentVoxel;
     private VoxelContainer startVoxel;
     private VoxelContainer targetVoxel;
-    [SerializeField] private AI_Blackboard blackboard;
+    private AI_Blackboard blackboard;
 
     private void Start()
     {
-        getBlackboardReference();
         UpdatePathfindingData();
         showVisualization = true;
     }
@@ -35,17 +34,9 @@ public class AI_PathVisuals : MonoBehaviour
     public void UpdatePathfindingData()
     {
         if (blackboard == null)
-        {
-            Debug.LogError("AI_Blackboard reference is null.");
-            return;
-        }
+            blackboard = GetComponent<AI_Blackboard>();
 
         allTraversableVoxels = blackboard.GetAllTraversableVoxels();
-    }
-
-    private void getBlackboardReference()
-    {
-        UpdatePathfindingData();
     }
 
     private void OnDrawGizmos()
@@ -79,6 +70,8 @@ public class AI_PathVisuals : MonoBehaviour
 
     private void visualizePath()
     {
+        if (blackboard.path.Count == 0) return;
+         
         //Start voxel
         Gizmos.color = startVoxelColour;
 #if UNITY_EDITOR

@@ -13,6 +13,8 @@ public class AI_Blackboard : MonoBehaviour
     
     public Dictionary<int, VoxelContainer> GetAllTraversableVoxels() => 
         voxelGridSaveFile.TraversableVoxels;
+
+    public Dictionary<Vector3Int, int> GetVoxelPositions() => voxelGridSaveFile.VoxelPositions;
     
 
     public float[] GetMapDimensions() => voxelGridSaveFile.MapDimensions;

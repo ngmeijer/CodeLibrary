@@ -30,8 +30,6 @@ public class ProgressBar : EditorWindow
         EditorUtility.ClearProgressBar();
     }
     
-    
-    
     public static void ShowVoxelNeighbourProgress(int pCurrentVoxelIndex)
     {
         EditorUtility.DisplayProgressBar("Voxel neighbour detection progress",

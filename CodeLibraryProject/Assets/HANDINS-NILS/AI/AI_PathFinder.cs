@@ -9,22 +9,19 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
-[Serializable]
-public class Event_OnPathCalculated : UnityEvent
-{
-}
-
 [BurstCompile]
 public class AI_PathFinder : MonoBehaviour
 {
     private Dictionary<int, VoxelContainer> traversableVoxels = new Dictionary<int, VoxelContainer>();
+    private Dictionary<Vector3Int, int> voxelPositions = new Dictionary<Vector3Int, int>();
     private float[] mapDimensions;
     private float voxelSize;
     private Vector3 thisPosition;
-    [SerializeField] private AI_Blackboard blackboard;
-
-    [SerializeField] [Range(5, 200)] private float maxTravelDistanceBetweenVoxels;
-    [SerializeField] private Event_OnPathCalculated onPathCalculated;
+    private AI_Blackboard blackboard;
+    private AI_PathVisuals pathVisualizer;
+    
+    [ReadOnlyInspector] [SerializeField] private float calculationTimeMilliseconds;
+    [ReadOnlyInspector] [SerializeField] private float calculationTimeSeconds;
 
     private void Start()
     {
@@ -34,50 +31,23 @@ public class AI_PathFinder : MonoBehaviour
 
     public void CacheNewMapData()
     {
-        if (blackboard == null)
-        {
-            Debug.LogError("AI_Blackboard reference is null.");
-            return;
-        }
+        if (blackboard == null) blackboard = GetComponent<AI_Blackboard>();
+        if (pathVisualizer == null) pathVisualizer = GetComponent<AI_PathVisuals>();
 
         traversableVoxels = blackboard.GetAllTraversableVoxels();
+        voxelPositions = blackboard.GetVoxelPositions();
         mapDimensions = blackboard.GetMapDimensions();
         voxelSize = blackboard.GetVoxelSize();
     }
 
-    public void DeterminePathLength(Vector3 pAgentPosition, Vector3 pTargetPosition)
-    {
-        //Calculate distance between points
-        float distance = Vector3.Distance(pAgentPosition, pTargetPosition);
-
-        //Calculate if (and how many) divisions are necessary
-        int divisions = (int) (distance / maxTravelDistanceBetweenVoxels);
-
-        //Create temporary waypoints (interpolation?)
-        List<Vector3> waypointList = new List<Vector3> { };
-        for (float i = 1; i < divisions; i++)
-        {
-            Vector3 waypoint = Vector3.Lerp(pAgentPosition, pTargetPosition, i / divisions);
-            waypointList.Add(waypoint);
-        }
-    }
-
-    public void CalculatePath(Vector3 pAgentPosition, Vector3 pTargetPosition, out List<Vector3> pathPositions)
+    public void CalculatePath(Vector3 pAgentPosition, Vector3 pTargetPosition, out List<Vector3> pPathPositions)
     {
         float startTime = Time.realtimeSinceStartup;
 
-        if (traversableVoxels.Count == 0)
-            CacheNewMapData();
-        if (traversableVoxels.Count == 0)
-        {
-            pathPositions = null;
-            return;
-        }
-
-        VoxelContainer startVoxel = VoxelPositionHandler.GetVoxelFromWorldPos(traversableVoxels, pAgentPosition,
-            thisPosition, mapDimensions, voxelSize);
-        VoxelContainer targetVoxel = VoxelPositionHandler.GetVoxelFromWorldPos(traversableVoxels, pTargetPosition,
-            thisPosition, mapDimensions, voxelSize);
+        Vector3Int agentPos = Vector3Int.RoundToInt(pAgentPosition);
+        Vector3Int targetPos = Vector3Int.RoundToInt(pTargetPosition);
+        VoxelContainer startVoxel = getVoxelFromWorldPosition(agentPos);
+        VoxelContainer targetVoxel = getVoxelFromWorldPosition(targetPos);
 
         Debug.Assert(startVoxel != null,
             "StartVoxel is null. Make sure the Transform is inside the grid, and is not in a collider (red) voxel.");
@@ -114,7 +84,7 @@ public class AI_PathFinder : MonoBehaviour
             Dictionary<int, VoxelContainer> neighbourVoxels = linkIDtoNeighbours(currentVoxel);
             if (neighbourVoxels.Count == 0)
             {
-                pathPositions = null;
+                pPathPositions = null;
                 return;
             }
 
@@ -124,14 +94,24 @@ public class AI_PathFinder : MonoBehaviour
         }
 
         List<VoxelContainer> pathVoxels = retracePath(startVoxel, targetVoxel);
-        pathPositions = getPathPositions(pathVoxels);
+        pPathPositions = getPathPositions(pathVoxels);
 
         blackboard.path = pathVoxels;
 
         closedVoxels.Clear();
         openVoxels.Clear();
 
+        calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
+        calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
+
         // Debug.Log($"Pathfinding calculation took: {(Time.realtimeSinceStartup - startTime) * 1000f} ms");
+    }
+
+    private VoxelContainer getVoxelFromWorldPosition(Vector3Int pPosition)
+    {
+        voxelPositions.TryGetValue(pPosition, out int id);
+        traversableVoxels.TryGetValue(id, out VoxelContainer voxel);
+        return voxel;
     }
 
     private void compareNeighbours(Dictionary<int, VoxelContainer> pNeighbourVoxels,
@@ -230,7 +210,7 @@ public class AI_PathFinder : MonoBehaviour
         {
             VoxelPositions.Add(voxel.Value.WorldPosition);
         }
-        
+
         CostCalculationJob job = new CostCalculationJob()
         {
             StartVoxelPos = pStartVoxel.WorldPosition,
