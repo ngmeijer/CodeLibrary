@@ -25,6 +25,7 @@ public class VoxelGridCalculator : MonoBehaviour
     [HideInInspector] public float xAxisDelta;
     [HideInInspector] public float yAxisDelta;
     [HideInInspector] public float zAxisDelta;
+    [HideInInspector] public Vector3 HandlesDelta;
 
     [Header("Grid properties")] 
     [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels;

@@ -2153,17 +2153,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 50
-  sceneHeight: 50
-  sceneDepth: 50
-  sceneDimensionsVector: {x: 50, y: 50, z: 50}
+  sceneWidth: 340
+  sceneHeight: 121
+  sceneDepth: 182
+  sceneDimensionsVector: {x: 302.72775, y: 173.81079, z: 182}
   voxelSize: 1
   VoxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   ColliderTagsToCompare:
   - Player
   - Bee_NPC
   - Skunk_NPC
-  totalExpectedVoxels: 125000
+  handlesDelta: {x: -37.272247, y: 52.81079, z: 0}
+  totalExpectedVoxels: 9595404
   totalCurrentVoxels: 125000
   calculationTimeMilliseconds: 2270.3857
   calculationTimeSeconds: 2.2703857
