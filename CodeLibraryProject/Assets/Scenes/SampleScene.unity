@@ -1440,7 +1440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9029849119486402133
 Transform:
   m_ObjectHideFlags: 0
@@ -2113,14 +2113,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a42a5ba4a031fa4fb6cdf3cacccbbea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   showVisualization: 1
   showVoxels: 0
   voxelWithColliderCol: {r: 1, g: 0, b: 0, a: 1}
   showMapDimensions: 1
   borderColour: {r: 0.0666666, g: 0, b: 1, a: 1}
   showNeighbourVoxels: 1
-  currentVoxelID: 6029
+  currentVoxelID: 14659
   focusedVoxelColour: {r: 0, g: 0.90196085, b: 1, a: 0.40392157}
   neighbourVoxelsColour: {r: 0.027451038, g: 1, b: 0, a: 0.24705882}
 --- !u!1 &9029849121100975174
@@ -2154,21 +2153,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6816f26c5961e4f46ac837f06a42ba1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneWidth: 100
-  sceneHeight: 100
-  sceneDepth: 100
-  sceneDimensionsVector: {x: 100, y: 100, z: 100}
+  sceneWidth: 50
+  sceneHeight: 50
+  sceneDepth: 50
+  sceneDimensionsVector: {x: 50, y: 50, z: 50}
   voxelSize: 1
   VoxelGridSaveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   ColliderTagsToCompare:
   - Player
   - Bee_NPC
   - Skunk_NPC
-  totalExpectedVoxels: 1000000
-  totalCurrentVoxels: 1000000
-  calculationTimeMilliseconds: 26716.797
-  calculationTimeSeconds: 26.716797
-  calculationTimeMinutes: 0.44527996
+  totalExpectedVoxels: 125000
+  totalCurrentVoxels: 125000
+  calculationTimeMilliseconds: 2270.3857
+  calculationTimeSeconds: 2.2703857
+  calculationTimeMinutes: 0.037839763
 --- !u!114 &9029849121100975176
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,15 +22,16 @@ public class VoxelGridCalculator : MonoBehaviour
     public string[] ColliderTagsToCompare;
     public Vector3 CalculatorPosition { get; private set; }
 
-    [Header("Grid properties")] [ReadOnlyInspector] [SerializeField]
-    private int totalExpectedVoxels;
+    [HideInInspector] public float xAxisDelta;
+    [HideInInspector] public float yAxisDelta;
+    [HideInInspector] public float zAxisDelta;
 
+    [Header("Grid properties")] 
+    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels;
     [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
-
-
-    [Space] [ReadOnlyInspector] [SerializeField]
-    private float calculationTimeMilliseconds;
-
+    
+    [Space] 
+    [ReadOnlyInspector] [SerializeField] private float calculationTimeMilliseconds;
     [ReadOnlyInspector] [SerializeField] private float calculationTimeSeconds;
     [ReadOnlyInspector] [SerializeField] private float calculationTimeMinutes;
 
@@ -109,7 +110,7 @@ public class VoxelGridCalculator : MonoBehaviour
     {
         CalculatorPosition = transform.position;
         VoxelGridSaveFile.VoxelSize = voxelSize;
-        VoxelGridSaveFile.MapDimensions = new float[3] {sceneWidth, sceneHeight, sceneDepth};
+        VoxelGridSaveFile.MapDimensions = new float[3] {sceneWidth + xAxisDelta, sceneHeight + yAxisDelta, sceneDepth + zAxisDelta};
 
         int voxelID = 1;
 

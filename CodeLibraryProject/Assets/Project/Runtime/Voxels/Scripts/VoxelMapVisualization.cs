@@ -18,8 +18,6 @@ public class VoxelMapVisualization : MonoBehaviour
     private List<VoxelContainer> selectedVoxelNeigbours = new List<VoxelContainer>();
     private List<int> selectedNeighboursIDs;
 
-    [SerializeField] private VoxelGridData saveFile;
-
     [Header("General visuals")] [SerializeField]
     private bool showVisualization = true;
 
@@ -50,14 +48,20 @@ public class VoxelMapVisualization : MonoBehaviour
         if (voxelCalculator.VoxelGridSaveFile == null) return;
 
         if (!showVisualization) return;
-        if (saveFile.AllVoxels.Count <= 0) return;
+        if (voxelCalculator.VoxelGridSaveFile.AllVoxels.Count <= 0) return;
 
-        currentVoxelID = Mathf.Clamp(currentVoxelID, 0, saveFile.AllVoxels.Count);
-        currentVoxel = saveFile.AllVoxels[currentVoxelID];
-        currentVoxelSize = saveFile.VoxelSize;
+        currentVoxelID = Mathf.Clamp(currentVoxelID, 0, voxelCalculator.VoxelGridSaveFile.AllVoxels.Count);
+        if (currentVoxelID < 1 || currentVoxelID > voxelCalculator.VoxelGridSaveFile.AllVoxels.Count)
+        {
+            Debug.Log(
+                $"Exceeding voxel collection limits. Index must range from 1 to the max amount of voxels ({voxelCalculator.VoxelGridSaveFile.AllVoxels.Count}).");
+        }
+        else currentVoxel = voxelCalculator.VoxelGridSaveFile.AllVoxels[currentVoxelID];
+
+        currentVoxelSize = voxelCalculator.VoxelGridSaveFile.VoxelSize;
         voxelVisualSize = new Vector3(currentVoxelSize, currentVoxelSize, currentVoxelSize);
 
-        if(showVoxels) handleVoxelVisualization();
+        if (showVoxels) handleVoxelVisualization();
         if (showMapDimensions) drawGridOuterBorders();
         if (showNeighbourVoxels) visualizeNeighbourVoxels();
     }
@@ -74,7 +78,7 @@ public class VoxelMapVisualization : MonoBehaviour
 
     private void handleVoxelVisualization()
     {
-        foreach (KeyValuePair<int, VoxelContainer> voxel in saveFile.ColliderVoxels)
+        foreach (KeyValuePair<int, VoxelContainer> voxel in voxelCalculator.VoxelGridSaveFile.ColliderVoxels)
         {
             voxel.Value.ActiveColour = voxelWithColliderCol;
 
@@ -98,16 +102,9 @@ public class VoxelMapVisualization : MonoBehaviour
 
         foreach (int id in selectedNeighboursIDs)
         {
-            if (currentVoxelID < 1 || currentVoxelID > saveFile.AllVoxels.Count)
-            {
-                Debug.Log(
-                    "Exceeding voxel collection limits. Index must range from 0 to the max amount of voxels - 1.");
-                break;
-            }
+            if (id < 1 || id > voxelCalculator.VoxelGridSaveFile.AllVoxels.Count) continue;
 
-            if (id < 1 || id > saveFile.AllVoxels.Count) continue;
-
-            saveFile.AllVoxels.TryGetValue(id, out VoxelContainer neighbour);
+            voxelCalculator.VoxelGridSaveFile.AllVoxels.TryGetValue(id, out VoxelContainer neighbour);
             selectedVoxelNeigbours.Add(neighbour);
         }
 
@@ -123,7 +120,7 @@ public class VoxelMapVisualization : MonoBehaviour
     private void drawGridOuterBorders()
     {
         tempMapDimensions = voxelCalculator.GetMapDimensions();
-        float[] currentMapDimensions = saveFile.MapDimensions;
+        float[] currentMapDimensions = voxelCalculator.VoxelGridSaveFile.MapDimensions;
 
         //Required for expectedVoxelCount
         float tempVoxelSize = voxelCalculator.GetVoxelSize();
