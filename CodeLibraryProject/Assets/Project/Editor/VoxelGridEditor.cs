@@ -13,6 +13,21 @@ public class VoxelGridEditor : Editor
 {
     private VoxelGridCalculator myTarget;
     private float inspectorWidth;
+    
+    private Vector2 previousMousePos;
+    private int nearestHandle;
+    private float size = 3f;
+    private Color currentColour;
+    private HandleDirection direction;
+    private Color focusColour = Color.white;
+    private float[] sceneDimensions;
+    private VoxelGridCalculator editorTarget;
+    private Transform editorTargetTransform;
+
+    private void OnEnable()
+    {
+        SceneView.duringSceneGui += CustomOnSceneGUI;
+    }
 
     public override void OnInspectorGUI()
     {
@@ -44,21 +59,6 @@ public class VoxelGridEditor : Editor
         clearBtnStyle.fontSize = 15;
         if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 50), "Clear voxels", clearBtnStyle))
             myTarget.ClearVoxelData();
-    }
-    
-    private Vector2 previousMousePos;
-    private int nearestHandle;
-    private float size = 3f;
-    private Color currentColour;
-    private HandleDirection direction;
-    private Color focusColour = Color.white;
-    private float[] sceneDimensions;
-    private VoxelGridCalculator editorTarget;
-    private Transform editorTargetTransform;
-
-    private void OnEnable()
-    {
-        SceneView.duringSceneGui += CustomOnSceneGUI;
     }
 
     private void CustomOnSceneGUI(SceneView pView)
@@ -159,5 +159,6 @@ public class VoxelGridEditor : Editor
         previousMousePos = Event.current.mousePosition;
 
         pView.Repaint();
+        EditorUtility.SetDirty( target );
     }
 }

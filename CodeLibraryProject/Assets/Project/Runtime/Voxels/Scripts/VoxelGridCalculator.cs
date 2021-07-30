@@ -25,7 +25,7 @@ public class VoxelGridCalculator : MonoBehaviour
     [HideInInspector] public float xAxisDelta;
     [HideInInspector] public float yAxisDelta;
     [HideInInspector] public float zAxisDelta;
-    [HideInInspector] public Vector3 HandlesDelta;
+     public Vector3 HandlesDelta;
 
     [Header("Grid properties")] 
     [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels;
@@ -45,7 +45,6 @@ public class VoxelGridCalculator : MonoBehaviour
     private int octreeCellCountY;
     private int octreeCellCountZ;
 
-    private float[] mapDimensionsFloat;
     private Vector3Int currentGridPosition;
     private Vector3Int neighbourGridPosition;
     private int convertedNeighbourID;
@@ -55,11 +54,18 @@ public class VoxelGridCalculator : MonoBehaviour
 
     private void Update()
     {
+        sceneWidth += HandlesDelta.x;
+        sceneHeight += HandlesDelta.y;
+        sceneDepth += HandlesDelta.z;
+        
+        HandlesDelta = Vector3.zero;
+
         voxelCountX = (int) Math.Ceiling(sceneWidth / voxelSize);
         voxelCountY = (int) Math.Ceiling(sceneHeight / voxelSize);
         voxelCountZ = (int) Math.Ceiling(sceneDepth / voxelSize);
 
         totalExpectedVoxels = voxelCountX * voxelCountY * voxelCountZ;
+        
         sceneDimensionsVector = new Vector3(sceneWidth, sceneHeight, sceneDepth);
     }
 

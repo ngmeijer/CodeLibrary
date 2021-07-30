@@ -722,35 +722,51 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDepth
-      value: 45
+      value: 47.8868
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneWidth
-      value: 45
+      value: 46
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneHeight
-      value: 45
+      value: 95.710655
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: HandlesDelta.x
-      value: -21.191345
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
-      propertyPath: totalExpectedVoxels
+      propertyPath: totalCurrentVoxels
       value: 91125
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
+      propertyPath: totalExpectedVoxels
+      value: 211968
+      objectReference: {fileID: 0}
+    - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
+      propertyPath: calculationTimeMinutes
+      value: 0.027075196
+      objectReference: {fileID: 0}
+    - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
+      propertyPath: calculationTimeSeconds
+      value: 1.6245117
+      objectReference: {fileID: 0}
+    - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDimensionsVector.x
-      value: 45
+      value: 46
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDimensionsVector.y
-      value: 45
+      value: 95.710655
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDimensionsVector.z
-      value: 45
+      value: 47.8868
+      objectReference: {fileID: 0}
+    - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
+      propertyPath: calculationTimeMilliseconds
+      value: 1624.5117
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752401, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: m_IsActive
