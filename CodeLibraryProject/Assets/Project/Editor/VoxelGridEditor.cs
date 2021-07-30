@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,8 +9,43 @@ public enum HandleDirection
 };
 
 [CustomEditor(typeof(VoxelGridCalculator))]
-public class DotExampleEditor : Editor
+public class VoxelGridEditor : Editor
 {
+    private VoxelGridCalculator myTarget;
+    private float inspectorWidth;
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        myTarget = (VoxelGridCalculator)target;
+        inspectorWidth = EditorGUIUtility.currentViewWidth;
+
+        drawCalculateVoxelsGUI();
+        drawClearVoxelsGUI();
+    }
+
+    private void drawCalculateVoxelsGUI()
+    {
+        GUI.backgroundColor = Color.green;
+        GUIStyle recalculateBtnStyle = new GUIStyle(GUI.skin.button);
+        recalculateBtnStyle.fontSize = 15;
+        if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 50), "Recalculate voxels", recalculateBtnStyle))
+        {
+            GUI.backgroundColor = Color.green;
+            myTarget.RecalculateVoxelGrid();
+        }
+    }
+
+    private void drawClearVoxelsGUI()
+    {
+        GUI.backgroundColor = Color.red;
+        GUIStyle clearBtnStyle = new GUIStyle(GUI.skin.button);
+        clearBtnStyle.fontSize = 15;
+        if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 50), "Clear voxels", clearBtnStyle))
+            myTarget.ClearVoxelData();
+    }
+    
     private Vector2 previousMousePos;
     private int nearestHandle;
     private float size = 3f;
