@@ -9,7 +9,6 @@ public class VoxelContainer
     public Vector3 WorldPosition;
     public Vector3Int GridPosition;
     public bool IsTraversable = true;
-    public Color ActiveColour;
 
     //total cost = G + H
     public int Fcost;

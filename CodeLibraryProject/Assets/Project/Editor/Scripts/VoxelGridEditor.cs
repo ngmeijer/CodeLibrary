@@ -13,7 +13,6 @@ public class VoxelGridEditor : Editor
 {
     private VoxelGridCalculator myTarget;
     private float inspectorWidth;
-    
     private Vector2 previousMousePos;
     private int nearestHandle;
     private float size = 3f;
@@ -23,17 +22,19 @@ public class VoxelGridEditor : Editor
     private float[] sceneDimensions;
     private VoxelGridCalculator editorTarget;
     private Transform editorTargetTransform;
-
+    private Vector3 sceneViewCameraPosition;
+    private Camera[] sceneCameras;
     private void OnEnable()
     {
         SceneView.duringSceneGui += CustomOnSceneGUI;
+        sceneCameras = SceneView.GetAllSceneCameras();
     }
 
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        myTarget = (VoxelGridCalculator)target;
+        myTarget = (VoxelGridCalculator) target;
         inspectorWidth = EditorGUIUtility.currentViewWidth;
 
         drawCalculateVoxelsGUI();
@@ -43,8 +44,7 @@ public class VoxelGridEditor : Editor
     private void drawCalculateVoxelsGUI()
     {
         GUI.backgroundColor = Color.green;
-        GUIStyle recalculateBtnStyle = new GUIStyle(GUI.skin.button);
-        recalculateBtnStyle.fontSize = 15;
+        GUIStyle recalculateBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
         if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 50), "Recalculate voxels", recalculateBtnStyle))
         {
             GUI.backgroundColor = Color.green;
@@ -55,9 +55,9 @@ public class VoxelGridEditor : Editor
     private void drawClearVoxelsGUI()
     {
         GUI.backgroundColor = Color.red;
-        GUIStyle clearBtnStyle = new GUIStyle(GUI.skin.button);
-        clearBtnStyle.fontSize = 15;
-        if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 50), "Clear voxels", clearBtnStyle))
+        GUIStyle clearBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
+        if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 50), "Clear voxels",
+            clearBtnStyle))
             myTarget.ClearVoxelData();
     }
 
@@ -65,16 +65,19 @@ public class VoxelGridEditor : Editor
     {
         editorTarget = (VoxelGridCalculator) target;
         if (editorTarget == null) return;
-
+        
         editorTargetTransform = editorTarget.transform;
         sceneDimensions = editorTarget.GetMapDimensions();
 
         Vector3 targetPosition = editorTarget.transform.position;
         Quaternion targetRotation = editorTargetTransform.rotation;
 
-        Vector3 xAxisPosition = targetPosition + new Vector3(editorTarget.sceneDimensionsVector.x, editorTarget.sceneDimensionsVector.y / 2, editorTarget.sceneDimensionsVector.z / 2);
-        Vector3 yAxisPosition = targetPosition + new Vector3(editorTarget.sceneDimensionsVector.x / 2, editorTarget.sceneDimensionsVector.y, editorTarget.sceneDimensionsVector.z / 2);
-        Vector3 zAxisPosition = targetPosition + new Vector3(editorTarget.sceneDimensionsVector.x / 2, editorTarget.sceneDimensionsVector.y / 2, editorTarget.sceneDimensionsVector.z);
+        Vector3 xAxisPosition = targetPosition + new Vector3(editorTarget.sceneDimensionsVector.x,
+            editorTarget.sceneDimensionsVector.y / 2, editorTarget.sceneDimensionsVector.z / 2);
+        Vector3 yAxisPosition = targetPosition + new Vector3(editorTarget.sceneDimensionsVector.x / 2,
+            editorTarget.sceneDimensionsVector.y, editorTarget.sceneDimensionsVector.z / 2);
+        Vector3 zAxisPosition = targetPosition + new Vector3(editorTarget.sceneDimensionsVector.x / 2,
+            editorTarget.sceneDimensionsVector.y / 2, editorTarget.sceneDimensionsVector.z);
 
         if (Event.current.type == EventType.Repaint)
         {
@@ -85,21 +88,24 @@ public class VoxelGridEditor : Editor
                 Handles.color = currentColour;
                 direction = HandleDirection.Right;
                 Handles.ConeHandleCap(
-                    (int) direction, xAxisPosition, targetRotation * Quaternion.LookRotation(Vector3.right), size, EventType.Repaint
+                    (int) direction, xAxisPosition, targetRotation * Quaternion.LookRotation(Vector3.right), size,
+                    EventType.Repaint
                 );
 
                 currentColour = hoverIndex == 2 ? focusColour : Handles.yAxisColor;
                 Handles.color = currentColour;
                 direction = HandleDirection.Up;
                 Handles.ConeHandleCap(
-                    (int) direction, yAxisPosition, targetRotation * Quaternion.LookRotation(Vector3.up), size, EventType.Repaint
+                    (int) direction, yAxisPosition, targetRotation * Quaternion.LookRotation(Vector3.up), size,
+                    EventType.Repaint
                 );
 
                 currentColour = hoverIndex == 3 ? focusColour : Handles.zAxisColor;
                 Handles.color = currentColour;
                 direction = HandleDirection.Forward;
                 Handles.ConeHandleCap(
-                    (int) direction, zAxisPosition, targetRotation * Quaternion.LookRotation(Vector3.forward), size, EventType.Repaint
+                    (int) direction, zAxisPosition, targetRotation * Quaternion.LookRotation(Vector3.forward), size,
+                    EventType.Repaint
                 );
             }
         }
@@ -159,6 +165,6 @@ public class VoxelGridEditor : Editor
         previousMousePos = Event.current.mousePosition;
 
         pView.Repaint();
-        EditorUtility.SetDirty( target );
+        EditorUtility.SetDirty(target);
     }
 }

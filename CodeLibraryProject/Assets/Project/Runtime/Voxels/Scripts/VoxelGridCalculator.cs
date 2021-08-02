@@ -22,20 +22,25 @@ public class VoxelGridCalculator : MonoBehaviour
     public string[] ColliderTagsToCompare;
     public Vector3 CalculatorPosition { get; private set; }
 
+    [HideInInspector] public Vector3 GridCenterPosition;
     [HideInInspector] public float xAxisDelta;
     [HideInInspector] public float yAxisDelta;
     [HideInInspector] public float zAxisDelta;
-     public Vector3 HandlesDelta;
+    [HideInInspector] public Vector3 HandlesDelta;
+
 
     [Header("Grid properties")] 
     [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels;
-    [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
-    
+
+     [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
+
+
     [Space] 
     [ReadOnlyInspector] [SerializeField] private float calculationTimeMilliseconds;
+
     [ReadOnlyInspector] [SerializeField] private float calculationTimeSeconds;
     [ReadOnlyInspector] [SerializeField] private float calculationTimeMinutes;
-
+    
     //Private fields
     private VoxelObstacleCalculator collisionChecker;
     private int voxelCountX;
@@ -71,7 +76,10 @@ public class VoxelGridCalculator : MonoBehaviour
 
     public void UpdateGridSizeThroughHandles()
     {
-        Debug.Log("Updating grid size");
+        GridCenterPosition = new Vector3(
+            sceneDimensionsVector.x / 2 - voxelSize / 2, 
+            sceneDimensionsVector.y / 2 - voxelSize / 2,
+            sceneDimensionsVector.z / 2 - voxelSize / 2);
     }
 
     public void RecalculateVoxelGrid()

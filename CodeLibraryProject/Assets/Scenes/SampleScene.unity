@@ -487,7 +487,7 @@ Transform:
   m_LocalPosition: {x: 100, y: 0.5, z: 100}
   m_LocalScale: {x: 25, y: 25, z: 25}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2021995795}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1269929467
@@ -695,7 +695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2021995795
 Transform:
   m_ObjectHideFlags: 0
@@ -710,8 +710,9 @@ Transform:
   - {fileID: 1269929471}
   - {fileID: 1558651365}
   - {fileID: 92543996}
+  - {fileID: 973896007}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8734136943207520599
 PrefabInstance:
@@ -721,52 +722,64 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
+      propertyPath: voxelSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDepth
-      value: 47.8868
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneWidth
-      value: 46
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneHeight
-      value: 95.710655
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: HandlesDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
+      propertyPath: HandlesDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
+      propertyPath: HandlesDelta.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: totalCurrentVoxels
-      value: 91125
+      value: 8000
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: totalExpectedVoxels
-      value: 211968
+      value: 8000
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: calculationTimeMinutes
-      value: 0.027075196
+      value: 0.0022699991
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: calculationTimeSeconds
-      value: 1.6245117
+      value: 0.13619995
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDimensionsVector.x
-      value: 46
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDimensionsVector.y
-      value: 95.710655
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: sceneDimensionsVector.z
-      value: 47.8868
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752400, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: calculationTimeMilliseconds
-      value: 1624.5117
+      value: 136.19995
       objectReference: {fileID: 0}
     - target: {fileID: 316822801448752401, guid: a33357151932c344c8b5b81bd4ad9eaf, type: 3}
       propertyPath: m_IsActive

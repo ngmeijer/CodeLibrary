@@ -78,11 +78,9 @@ public class VoxelMapVisualization : MonoBehaviour
 
     private void handleVoxelVisualization()
     {
+        Gizmos.color = voxelWithColliderCol;
         foreach (KeyValuePair<int, VoxelContainer> voxel in voxelCalculator.VoxelGridSaveFile.ColliderVoxels)
         {
-            voxel.Value.ActiveColour = voxelWithColliderCol;
-
-            Gizmos.color = voxel.Value.ActiveColour;
             Gizmos.DrawWireCube(voxel.Value.WorldPosition, voxelVisualSize);
         }
     }
@@ -120,7 +118,7 @@ public class VoxelMapVisualization : MonoBehaviour
     private void drawGridOuterBorders()
     {
         tempMapDimensions = voxelCalculator.GetMapDimensions();
-        float[] currentMapDimensions = voxelCalculator.VoxelGridSaveFile.MapDimensions;
+        float[] savedMapDimensions = voxelCalculator.VoxelGridSaveFile.MapDimensions;
 
         //Required for expectedVoxelCount
         float tempVoxelSize = voxelCalculator.GetVoxelSize();
@@ -129,14 +127,15 @@ public class VoxelMapVisualization : MonoBehaviour
         int tempVoxelCountY = (int) Math.Ceiling((tempMapDimensions[1] / tempVoxelSize));
         int tempVoxelCountZ = (int) Math.Ceiling((tempMapDimensions[2] / tempVoxelSize));
 
-        int currentVoxelCountX = (int) Math.Ceiling((currentMapDimensions[0] / currentVoxelSize));
-        int currentVoxelCountY = (int) Math.Ceiling((currentMapDimensions[1] / currentVoxelSize));
-        int currentVoxelCountZ = (int) Math.Ceiling((currentMapDimensions[2] / currentVoxelSize));
+        int currentVoxelCountX = (int) Math.Ceiling((savedMapDimensions[0] / currentVoxelSize));
+        int currentVoxelCountY = (int) Math.Ceiling((savedMapDimensions[1] / currentVoxelSize));
+        int currentVoxelCountZ = (int) Math.Ceiling((savedMapDimensions[2] / currentVoxelSize));
 
         Vector3 gridStartPosition = startingVoxelPosition -
                                     new Vector3(currentVoxelSize / 2, currentVoxelSize / 2, currentVoxelSize / 2);
-        Vector3 mapCenter = new Vector3(tempMapDimensions[0] / 2 - currentVoxelSize / 2, tempMapDimensions[1] / 2
-            - currentVoxelSize / 2,
+        Vector3 mapCenter = new Vector3(
+            tempMapDimensions[0] / 2 - currentVoxelSize / 2, 
+            tempMapDimensions[1] / 2 - currentVoxelSize / 2, 
             tempMapDimensions[2] / 2 - currentVoxelSize / 2);
         Gizmos.color = borderColour;
         Gizmos.DrawWireCube(mapCenter + transform.position,
