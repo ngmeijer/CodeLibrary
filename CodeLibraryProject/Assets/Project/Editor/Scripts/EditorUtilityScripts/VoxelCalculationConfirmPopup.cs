@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class VoxelCalculationConfirmPopup : EditorWindow
 {
+    private static bool HasContinued;
     public static bool HasClicked;
-    public static bool HasContinued;
     public static bool HasCanceled;
 
-    [MenuItem("Example/ShowPopup Example")]
     public static void Init()
     {
         HasClicked = false;

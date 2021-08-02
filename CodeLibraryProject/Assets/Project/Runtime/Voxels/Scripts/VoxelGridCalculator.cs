@@ -107,7 +107,7 @@ public class VoxelGridCalculator : MonoBehaviour
         VoxelCalculationConfirmPopup.Init();
         
         while (!VoxelCalculationConfirmPopup.HasClicked) yield return null;
-        if (!VoxelCalculationConfirmPopup.HasContinued) yield break;
+        if (VoxelCalculationConfirmPopup.HasCanceled) yield break;
         
         ClearVoxelData();
         divideLevelIntoVoxels();
