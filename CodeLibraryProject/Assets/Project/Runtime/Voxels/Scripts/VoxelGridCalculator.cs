@@ -85,6 +85,8 @@ public class VoxelGridCalculator : MonoBehaviour
     public void RecalculateVoxelGrid()
     {
         float startTime = Time.realtimeSinceStartup;
+        
+        VoxelCalculationConfirmPopup.RemoveAll();
 
         if (VoxelGridSaveFile == null)
         {
@@ -97,6 +99,8 @@ public class VoxelGridCalculator : MonoBehaviour
             Debug.Log("VoxelObstacleCalculator reference is null.");
             return;
         }
+
+        VoxelCalculationConfirmPopup.Init();
 
         ClearVoxelData();
         divideLevelIntoVoxels();
