@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,26 +83,32 @@ public class VoxelGridCalculator : MonoBehaviour
             sceneDimensionsVector.z / 2 - voxelSize / 2);
     }
 
-    public void RecalculateVoxelGrid()
+    public void StartCalculationCoroutine()
+    {
+        StartCoroutine(RecalculateVoxelGrid());
+    }
+
+    public IEnumerator RecalculateVoxelGrid()
     {
         float startTime = Time.realtimeSinceStartup;
         
-        VoxelCalculationConfirmPopup.RemoveAll();
-
         if (VoxelGridSaveFile == null)
         {
             Debug.Log("VoxelGridData save file reference is null.");
-            return;
+            yield break;
         }
 
         if (collisionChecker == null)
         {
             Debug.Log("VoxelObstacleCalculator reference is null.");
-            return;
+            yield break;
         }
 
         VoxelCalculationConfirmPopup.Init();
-
+        
+        while (!VoxelCalculationConfirmPopup.HasClicked) yield return null;
+        if (!VoxelCalculationConfirmPopup.HasContinued) yield break;
+        
         ClearVoxelData();
         divideLevelIntoVoxels();
         collisionChecker.StartCollisionCheck(voxelSize);

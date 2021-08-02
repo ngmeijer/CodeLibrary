@@ -24,6 +24,7 @@ public class VoxelGridEditor : Editor
     private Transform editorTargetTransform;
     private Vector3 sceneViewCameraPosition;
     private Camera[] sceneCameras;
+
     private void OnEnable()
     {
         SceneView.duringSceneGui += CustomOnSceneGUI;
@@ -48,7 +49,7 @@ public class VoxelGridEditor : Editor
         if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 50), "Recalculate voxels", recalculateBtnStyle))
         {
             GUI.backgroundColor = Color.green;
-            myTarget.RecalculateVoxelGrid();
+            myTarget.StartCalculationCoroutine();
         }
     }
 
@@ -65,7 +66,7 @@ public class VoxelGridEditor : Editor
     {
         editorTarget = (VoxelGridCalculator) target;
         if (editorTarget == null) return;
-        
+
         editorTargetTransform = editorTarget.transform;
         sceneDimensions = editorTarget.GetMapDimensions();
 
