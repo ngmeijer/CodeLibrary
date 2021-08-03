@@ -20,7 +20,7 @@ public class VoxelCalculationConfirmPopup : EditorWindow
     {
         GUILayout.Space(10);
         EditorGUILayout.LabelField(
-            "Are you sure you want to (re)calculate the voxel grid? This might take a while, depending on " +
+            "Are you sure you want to (re)calculate the voxel grid? This might take a while, depending on:" +
             "\n\n-The voxel grid dimensions \n-Voxel size \n-The specifications of your computer.",
             EditorStyles.wordWrappedLabel);
 

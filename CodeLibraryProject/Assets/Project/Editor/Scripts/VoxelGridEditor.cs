@@ -11,7 +11,6 @@ public enum HandleDirection
 [CustomEditor(typeof(VoxelGridCalculator))]
 public class VoxelGridEditor : Editor
 {
-    private VoxelGridCalculator myTarget;
     private float inspectorWidth;
     private Vector2 previousMousePos;
     private int nearestHandle;
@@ -35,7 +34,7 @@ public class VoxelGridEditor : Editor
     {
         DrawDefaultInspector();
 
-        myTarget = (VoxelGridCalculator) target;
+        editorTarget = (VoxelGridCalculator) target;
         inspectorWidth = EditorGUIUtility.currentViewWidth;
 
         drawCalculateVoxelsGUI();
@@ -49,7 +48,7 @@ public class VoxelGridEditor : Editor
         if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 50), "Recalculate voxels", recalculateBtnStyle))
         {
             GUI.backgroundColor = Color.green;
-            myTarget.StartCalculationCoroutine();
+            editorTarget.StartCalculationCoroutine();
         }
     }
 
@@ -59,7 +58,7 @@ public class VoxelGridEditor : Editor
         GUIStyle clearBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
         if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 50), "Clear voxels",
             clearBtnStyle))
-            myTarget.ClearVoxelData();
+            editorTarget.ClearVoxelData();
     }
 
     private void CustomOnSceneGUI(SceneView pView)
