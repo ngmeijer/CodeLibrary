@@ -1,11 +1,7 @@
 {
     "name": "Project.Runtime.Voxels",
     "rootNamespace": "",
-    "references": [
-        "GUID:a83ed2b8e3898674dab6349895dc2e5b",
-        "GUID:4a3336692c41da348beed33d8aebdd06",
-        "GUID:76a7f32741ae15540ae3d5d25209932f"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
