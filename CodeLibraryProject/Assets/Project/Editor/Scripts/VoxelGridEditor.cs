@@ -46,10 +46,7 @@ public class VoxelGridEditor : Editor
         GUI.backgroundColor = Color.green;
         GUIStyle recalculateBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
         if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 50), "Recalculate voxels", recalculateBtnStyle))
-        {
-            GUI.backgroundColor = Color.green;
             editorTarget.StartCalculationCoroutine();
-        }
     }
 
     private void drawClearVoxelsGUI()

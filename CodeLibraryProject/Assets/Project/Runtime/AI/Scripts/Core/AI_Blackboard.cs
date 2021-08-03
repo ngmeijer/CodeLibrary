@@ -20,7 +20,7 @@ public class AI_Blackboard : MonoBehaviour
 
     public List<Transform> getPossibleWaypoints() => possibleWaypoints;
 
-    public float[] GetMapDimensions() => voxelGridSaveFile.MapDimensions;
+    public Vector3 GetMapDimensions() => voxelGridSaveFile.MapDimensions;
 
     public float GetVoxelSize() => voxelGridSaveFile.VoxelSize;
 }

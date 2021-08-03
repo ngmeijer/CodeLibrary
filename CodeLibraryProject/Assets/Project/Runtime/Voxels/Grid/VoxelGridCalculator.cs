@@ -135,8 +135,8 @@ public class VoxelGridCalculator : MonoBehaviour
     {
         CalculatorPosition = transform.position;
         VoxelGridSaveFile.VoxelSize = voxelSize;
-        VoxelGridSaveFile.MapDimensions = new float[3]
-            {sceneWidth + xAxisDelta, sceneHeight + yAxisDelta, sceneDepth + zAxisDelta};
+        VoxelGridSaveFile.MapDimensions = new Vector3(
+            sceneWidth + xAxisDelta, sceneHeight + yAxisDelta, sceneDepth + zAxisDelta);
 
         int voxelID = 1;
 

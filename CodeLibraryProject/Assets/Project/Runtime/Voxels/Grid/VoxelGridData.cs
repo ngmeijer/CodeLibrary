@@ -12,5 +12,5 @@ public class VoxelGridData : ScriptableObject
 
     public float VoxelCount;
     public float VoxelSize;
-    public float[] MapDimensions;
+    public Vector3 MapDimensions;
 }

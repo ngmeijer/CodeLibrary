@@ -118,7 +118,7 @@ public class VoxelMapVisualization : MonoBehaviour
     private void drawGridOuterBorders()
     {
         tempMapDimensions = voxelCalculator.GetMapDimensions();
-        float[] savedMapDimensions = voxelCalculator.VoxelGridSaveFile.MapDimensions;
+        Vector3 savedMapDimensions = voxelCalculator.VoxelGridSaveFile.MapDimensions;
 
         //Required for expectedVoxelCount
         float tempVoxelSize = voxelCalculator.GetVoxelSize();
