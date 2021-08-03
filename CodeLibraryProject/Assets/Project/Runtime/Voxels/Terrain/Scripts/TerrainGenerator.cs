@@ -17,6 +17,9 @@ public class TerrainGenerator : MonoBehaviour
     {
         ClearTerrain();
 
+        float voxelSize = saveFile.VoxelSize;
+        baseMeshPrefab.transform.localScale = new Vector3(voxelSize, voxelSize, voxelSize);
+
         foreach (KeyValuePair<int, VoxelContainer> voxel in saveFile.AllVoxels)
         {
             if (voxel.Value.GridPosition.y == 0)
