@@ -36,7 +36,7 @@ public class RaycastController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 10))
             {
                 testHit = hit;
-                terrainGenerator.ReceiveSelectedVoxelPosition(hit.collider.transform.position, ActionType.Place);
+                terrainGenerator.HandleBlockAction(hit.collider.transform.position, ActionType.Place);
             }
         }
         
@@ -47,7 +47,7 @@ public class RaycastController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 10))
             {
                 testHit = hit;
-                terrainGenerator.ReceiveSelectedVoxelPosition(hit.collider.transform.position, ActionType.Remove);
+                terrainGenerator.HandleBlockAction(hit.collider.transform.position, ActionType.Remove, hit);
             }
         }
     }

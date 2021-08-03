@@ -8,9 +8,11 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private GameObject baseMeshPrefab;
     [SerializeField] private GameObject placedMeshPrefab;
     
-    [SerializeField] private Transform parent;
+    [SerializeField] private Transform pregeneratedBlockParent;
+    [SerializeField] private Transform placedBlockParent;
 
     private List<GameObject> generatedMeshes = new List<GameObject>();
+    private List<GameObject> placedMeshes = new List<GameObject>();
     [SerializeField] [ReadOnlyInspector] private int meshCount;
     
     public void GenerateTerrain()
@@ -24,7 +26,8 @@ public class TerrainGenerator : MonoBehaviour
         {
             if (voxel.Value.GridPosition.y == 0)
             {
-                GameObject instance = Instantiate(baseMeshPrefab, voxel.Value.WorldPosition, Quaternion.identity, parent);
+                GameObject instance = Instantiate(baseMeshPrefab, voxel.Value.WorldPosition, Quaternion.identity, pregeneratedBlockParent);
+                voxel.Value.BlockInstance = instance;
                 generatedMeshes.Add(instance);
                 saveFile.ColliderVoxels.Add(voxel.Key, voxel.Value);
             }
@@ -36,37 +39,54 @@ public class TerrainGenerator : MonoBehaviour
     public void ClearTerrain()
     {
         saveFile.ColliderVoxels.Clear();
-
-        GameObject[] children = new GameObject[parent.childCount];
         
-        for (int childIndex = 0; childIndex < parent.childCount; childIndex++)
+        destroyChildren(pregeneratedBlockParent.gameObject);
+        destroyChildren(placedBlockParent.gameObject);
+
+        generatedMeshes.Clear();
+    }
+
+    private void destroyChildren(GameObject pParent)
+    {
+        GameObject[] children = new GameObject[pParent.transform.childCount];
+
+        for (int childIndex = 0; childIndex < pregeneratedBlockParent.childCount; childIndex++)
         {
-            children[childIndex] = parent.GetChild(childIndex).gameObject;
+            children[childIndex] = pParent.transform.GetChild(childIndex).gameObject;
         }
 
         foreach (GameObject child in children)
         {
             DestroyImmediate(child);
         }
-
-        generatedMeshes.Clear();
     }
 
-    public void ReceiveSelectedVoxelPosition(Vector3 pPosition, ActionType pType)
+    public void HandleBlockAction(Vector3 pPosition, ActionType pType, RaycastHit pHit = new RaycastHit())
     {
-        Vector3Int convertedPos = new Vector3Int((int) pPosition.x, (int) pPosition.y, (int) pPosition.z);
+        Vector3Int convertedPos = new Vector3Int((int) pPosition.x, (int) pPosition.y + 1, (int) pPosition.z);
      
         saveFile.VoxelPositions.TryGetValue(convertedPos, out int voxelID);
         saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
 
         if (voxel == null) return;
 
-        voxel.IsTraversable = false;
-        GameObject instance = Instantiate(placedMeshPrefab, voxel.WorldPosition, Quaternion.identity, parent);
-        generatedMeshes.Add(instance);
-
-        meshCount++;
-
-        if (!saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Add(voxel.ID, voxel);
+        switch (pType)
+        {
+            case ActionType.Place:
+                voxel.IsTraversable = false;
+                GameObject instance = Instantiate(placedMeshPrefab, voxel.WorldPosition, Quaternion.identity, placedBlockParent);
+                placedMeshes.Add(instance);
+                voxel.BlockInstance = instance;
+                if (!saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Add(voxel.ID, voxel);
+                meshCount++;
+                break;
+            case ActionType.Remove:
+                Destroy(pHit.collider.gameObject);
+                voxel.IsTraversable = true;
+                if(generatedMeshes.Contains(voxel.BlockInstance)) generatedMeshes.Remove(voxel.BlockInstance);
+                if(placedMeshes.Contains(voxel.BlockInstance)) placedMeshes.Remove(voxel.BlockInstance);
+                if (saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Remove(voxel.ID);
+                break;
+        }
     }
 }
