@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(1, 10)] private float moveSpeed = 5f;
     [SerializeField] [Range(1, 5)] private float acceleration = 2f;
     [SerializeField] [Range(2, 20)] private float maxSpeed = 5f;
+    [SerializeField] [Range(1, 10)] private float jumpForce = 2f;
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     {
         trackInput();
         trackHorizontalRotation();
+        trackJumpInput();
     }
 
     private void trackInput()
@@ -38,5 +40,13 @@ public class PlayerMovement : MonoBehaviour
     {
         float horiRot = Input.GetAxisRaw("Mouse X");
         transform.Rotate(transform.up, horiRot * cameraController.MouseSensitivity * Time.deltaTime);
+    }
+
+    private void trackJumpInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        }
     }
 }

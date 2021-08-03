@@ -6,9 +6,11 @@ using UnityEngine;
 public class TerrainGenerator : MonoBehaviour
 {
     [Space(70)] [SerializeField] private VoxelGridData saveFile;
-    [SerializeField] private GameObject meshPrefab;
-    [SerializeField] private Transform parent;
+    [SerializeField] private GameObject baseMeshPrefab;
+    [SerializeField] private GameObject placedMeshPrefab;
     
+    [SerializeField] private Transform parent;
+
     [SerializeField] private List<GameObject> generatedMeshes = new List<GameObject>();
 
     public void GenerateTerrain()
@@ -19,8 +21,9 @@ public class TerrainGenerator : MonoBehaviour
         {
             if (voxel.Value.GridPosition.y == 0)
             {
-                GameObject instance = Instantiate(meshPrefab, voxel.Value.WorldPosition, Quaternion.identity, parent);
+                GameObject instance = Instantiate(baseMeshPrefab, voxel.Value.WorldPosition, Quaternion.identity, parent);
                 generatedMeshes.Add(instance);
+                saveFile.ColliderVoxels.Add(voxel.Key, voxel.Value);
             }
         }
     }
@@ -45,7 +48,9 @@ public class TerrainGenerator : MonoBehaviour
         if (voxel == null) return;
 
         voxel.IsTraversable = false;
-        GameObject instance = Instantiate(meshPrefab, voxel.WorldPosition, Quaternion.identity, parent);
+        GameObject instance = Instantiate(placedMeshPrefab, voxel.WorldPosition, Quaternion.identity, parent);
         generatedMeshes.Add(instance);
+
+        if (saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Add(voxel.ID, voxel);
     }
 }
