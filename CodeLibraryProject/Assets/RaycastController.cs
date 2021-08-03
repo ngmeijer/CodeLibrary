@@ -6,13 +6,13 @@ using UnityEngine;
 public class RaycastController : MonoBehaviour
 {
     private Camera cam;
-    private BlockUnitPlacer blockUnitPlacer;
+    private TerrainGenerator terrainGenerator;
     private RaycastHit testHit;
 
     private void Start()
     {
         cam = Camera.main;
-        blockUnitPlacer = FindObjectOfType<BlockUnitPlacer>();
+        terrainGenerator = FindObjectOfType<TerrainGenerator>();
     }
 
     private void Update()
@@ -30,7 +30,7 @@ public class RaycastController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 10))
             {
                 testHit = hit;
-                blockUnitPlacer.ReceiveSelectedVoxelPosition(hit.collider.transform.position);
+                terrainGenerator.ReceiveSelectedVoxelPosition(hit.collider.transform.position);
             }
         }
     }
