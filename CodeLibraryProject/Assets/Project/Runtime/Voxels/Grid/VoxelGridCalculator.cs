@@ -8,7 +8,7 @@ using UnityEngine;
 public class VoxelGridCalculator : MonoBehaviour
 {
     //Serialized fields
-    [Header("Grid settings")] [Space(70)] [SerializeField] [Range(1, 1000)]
+    [Header("Grid settings")] [Space(100)] [SerializeField] [Range(1, 1000)]
     private float sceneWidth = 50;
 
     [SerializeField] [Range(1, 500)] private float sceneHeight = 50;
@@ -110,12 +110,16 @@ public class VoxelGridCalculator : MonoBehaviour
 
         ClearVoxelData();
         divideLevelIntoVoxels();
-        // collisionChecker.StartCollisionCheck(voxelSize);
-        CalculateNeighboursAfterCollisionDetection();
+        CalculateVoxelNeighbours();
 
         calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
         calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);
         calculationTimeMinutes = calculationTimeSeconds / 60;
+    }
+
+    public void CalculateVoxelCollision()
+    {
+        collisionChecker.StartCollisionCheck(voxelSize);
     }
 
     public void ClearVoxelData()
@@ -171,7 +175,7 @@ public class VoxelGridCalculator : MonoBehaviour
 #endif
     }
 
-    public void CalculateNeighboursAfterCollisionDetection()
+    public void CalculateVoxelNeighbours()
     {
         int currentVoxelIndex = 1;
         ProgressBar.MaxVoxelIndex = VoxelGridSaveFile.AllVoxels.Count;

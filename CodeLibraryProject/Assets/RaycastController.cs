@@ -34,12 +34,12 @@ public class RaycastController : MonoBehaviour
             }
         }
     }
-
+    
     private void OnDrawGizmos()
     {
         if (testHit.collider == null) return;
         
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(testHit.transform.position, 1);
+        Gizmos.DrawSphere(testHit.transform.position, 0.5f);
     }
 }

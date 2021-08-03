@@ -38,14 +38,23 @@ public class VoxelGridEditor : Editor
         inspectorWidth = EditorGUIUtility.currentViewWidth;
 
         drawCalculateVoxelsGUI();
+        drawCalculateCollisionsGUI();
         drawClearVoxelsGUI();
+    }
+
+    private void drawCalculateCollisionsGUI()
+    {
+        GUI.backgroundColor = Color.yellow;
+        GUIStyle collisionBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
+        if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 85, inspectorWidth / 2 - 20, 40), "Calculate collisions", collisionBtnStyle))
+            editorTarget.CalculateVoxelCollision();
     }
 
     private void drawCalculateVoxelsGUI()
     {
         GUI.backgroundColor = Color.green;
         GUIStyle recalculateBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 50), "Recalculate voxels", recalculateBtnStyle))
+        if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 90), "Recalculate voxels", recalculateBtnStyle))
             editorTarget.StartCalculationCoroutine();
     }
 
@@ -53,7 +62,7 @@ public class VoxelGridEditor : Editor
     {
         GUI.backgroundColor = Color.red;
         GUIStyle clearBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 50), "Clear voxels",
+        if (GUI.Button(new Rect(inspectorWidth / 2 + 10, 35, inspectorWidth / 2 - 20, 40), "Clear voxels",
             clearBtnStyle))
             editorTarget.ClearVoxelData();
     }

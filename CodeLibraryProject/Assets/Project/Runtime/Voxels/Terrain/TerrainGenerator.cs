@@ -30,6 +30,7 @@ public class TerrainGenerator : MonoBehaviour
 
     public void ClearTerrain()
     {
+        saveFile.ColliderVoxels.Clear();
         foreach (GameObject instance in generatedMeshes)
         {
             DestroyImmediate(instance);
@@ -40,7 +41,7 @@ public class TerrainGenerator : MonoBehaviour
 
     public void ReceiveSelectedVoxelPosition(Vector3 pPosition)
     {
-        Vector3Int convertedPos = new Vector3Int((int) pPosition.x, (int) pPosition.y + 1, (int) pPosition.z);
+        Vector3Int convertedPos = new Vector3Int((int) pPosition.x, (int) pPosition.y, (int) pPosition.z);
         saveFile.VoxelPositions.TryGetValue(convertedPos, out int voxelID);
 
         saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
@@ -51,6 +52,6 @@ public class TerrainGenerator : MonoBehaviour
         GameObject instance = Instantiate(placedMeshPrefab, voxel.WorldPosition, Quaternion.identity, parent);
         generatedMeshes.Add(instance);
 
-        if (saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Add(voxel.ID, voxel);
+        if (!saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Add(voxel.ID, voxel);
     }
 }
