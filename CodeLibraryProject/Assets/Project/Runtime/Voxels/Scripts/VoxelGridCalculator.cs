@@ -30,18 +30,17 @@ public class VoxelGridCalculator : MonoBehaviour
     [HideInInspector] public Vector3 HandlesDelta;
 
 
-    [Header("Grid properties")] 
-    [ReadOnlyInspector] [SerializeField] private int totalExpectedVoxels;
+    [Header("Grid properties")] [ReadOnlyInspector] [SerializeField]
+    private int totalExpectedVoxels;
 
-     [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
+    [ReadOnlyInspector] [SerializeField] private int totalCurrentVoxels = 0;
 
-
-    [Space] 
-    [ReadOnlyInspector] [SerializeField] private float calculationTimeMilliseconds;
+    [Space] [ReadOnlyInspector] [SerializeField]
+    private float calculationTimeMilliseconds;
 
     [ReadOnlyInspector] [SerializeField] private float calculationTimeSeconds;
     [ReadOnlyInspector] [SerializeField] private float calculationTimeMinutes;
-    
+
     //Private fields
     private VoxelObstacleCalculator collisionChecker;
     private int voxelCountX;
@@ -63,7 +62,7 @@ public class VoxelGridCalculator : MonoBehaviour
         sceneWidth += HandlesDelta.x;
         sceneHeight += HandlesDelta.y;
         sceneDepth += HandlesDelta.z;
-        
+
         HandlesDelta = Vector3.zero;
 
         voxelCountX = (int) Math.Ceiling(sceneWidth / voxelSize);
@@ -71,14 +70,14 @@ public class VoxelGridCalculator : MonoBehaviour
         voxelCountZ = (int) Math.Ceiling(sceneDepth / voxelSize);
 
         totalExpectedVoxels = voxelCountX * voxelCountY * voxelCountZ;
-        
+
         sceneDimensionsVector = new Vector3(sceneWidth, sceneHeight, sceneDepth);
     }
 
     public void UpdateGridSizeThroughHandles()
     {
         GridCenterPosition = new Vector3(
-            sceneDimensionsVector.x / 2 - voxelSize / 2, 
+            sceneDimensionsVector.x / 2 - voxelSize / 2,
             sceneDimensionsVector.y / 2 - voxelSize / 2,
             sceneDimensionsVector.z / 2 - voxelSize / 2);
     }
@@ -91,7 +90,7 @@ public class VoxelGridCalculator : MonoBehaviour
     public IEnumerator RecalculateVoxelGrid()
     {
         float startTime = Time.realtimeSinceStartup;
-        
+
         if (VoxelGridSaveFile == null)
         {
             Debug.Log("VoxelGridData save file reference is null.");
@@ -105,10 +104,10 @@ public class VoxelGridCalculator : MonoBehaviour
         }
 
         VoxelCalculationConfirmPopup.Init();
-        
+
         while (!VoxelCalculationConfirmPopup.HasClicked) yield return null;
         if (VoxelCalculationConfirmPopup.HasCanceled) yield break;
-        
+
         ClearVoxelData();
         divideLevelIntoVoxels();
         collisionChecker.StartCollisionCheck(voxelSize);
@@ -136,7 +135,8 @@ public class VoxelGridCalculator : MonoBehaviour
     {
         CalculatorPosition = transform.position;
         VoxelGridSaveFile.VoxelSize = voxelSize;
-        VoxelGridSaveFile.MapDimensions = new float[3] {sceneWidth + xAxisDelta, sceneHeight + yAxisDelta, sceneDepth + zAxisDelta};
+        VoxelGridSaveFile.MapDimensions = new float[3]
+            {sceneWidth + xAxisDelta, sceneHeight + yAxisDelta, sceneDepth + zAxisDelta};
 
         int voxelID = 1;
 
@@ -148,7 +148,8 @@ public class VoxelGridCalculator : MonoBehaviour
                 {
                     VoxelContainer voxel = new VoxelContainer
                     {
-                        WorldPosition = new Vector3(CalculatorPosition.x + (voxelSize * x), CalculatorPosition.y + (voxelSize * y),
+                        WorldPosition = new Vector3(CalculatorPosition.x + (voxelSize * x),
+                            CalculatorPosition.y + (voxelSize * y),
                             CalculatorPosition.z + (voxelSize * z)),
                         ID = voxelID,
                         GridPosition = new Vector3Int(x, y, z)
