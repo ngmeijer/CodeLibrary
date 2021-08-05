@@ -2,7 +2,8 @@
     "name": "Project.Editor.CharacterController",
     "rootNamespace": "",
     "references": [
-        "GUID:8d1a820a9db99b14ea856d94f51910ed"
+        "GUID:8d1a820a9db99b14ea856d94f51910ed",
+        "GUID:ee2a6700c6b9c4245acf99f5aee05625"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

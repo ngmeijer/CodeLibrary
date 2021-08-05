@@ -7,14 +7,14 @@ public class TerrainGenerator : MonoBehaviour
     [Space(70)] [SerializeField] private VoxelGridData saveFile;
     [SerializeField] private GameObject baseMeshPrefab;
     [SerializeField] private GameObject placedMeshPrefab;
-    
+
     [SerializeField] private Transform pregeneratedBlockParent;
     [SerializeField] private Transform placedBlockParent;
 
     private List<GameObject> generatedMeshes = new List<GameObject>();
     private List<GameObject> placedMeshes = new List<GameObject>();
     [SerializeField] [ReadOnlyInspector] private int meshCount;
-    
+
     public void GenerateTerrain()
     {
         ClearTerrain();
@@ -26,7 +26,8 @@ public class TerrainGenerator : MonoBehaviour
         {
             if (voxel.Value.GridPosition.y == 0)
             {
-                GameObject instance = Instantiate(baseMeshPrefab, voxel.Value.WorldPosition, Quaternion.identity, pregeneratedBlockParent);
+                GameObject instance = Instantiate(baseMeshPrefab, voxel.Value.WorldPosition, Quaternion.identity,
+                    pregeneratedBlockParent);
                 voxel.Value.BlockInstance = instance;
                 generatedMeshes.Add(instance);
                 saveFile.ColliderVoxels.Add(voxel.Key, voxel.Value);
@@ -39,7 +40,7 @@ public class TerrainGenerator : MonoBehaviour
     public void ClearTerrain()
     {
         saveFile.ColliderVoxels.Clear();
-        
+
         destroyChildren(pregeneratedBlockParent.gameObject);
         destroyChildren(placedBlockParent.gameObject);
 
@@ -64,7 +65,7 @@ public class TerrainGenerator : MonoBehaviour
     public void HandleBlockAction(Vector3 pPosition, ActionType pType, RaycastHit pHit = new RaycastHit())
     {
         Vector3Int convertedPos = new Vector3Int((int) pPosition.x, (int) pPosition.y + 1, (int) pPosition.z);
-     
+
         saveFile.VoxelPositions.TryGetValue(convertedPos, out int voxelID);
         saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
 
@@ -74,7 +75,10 @@ public class TerrainGenerator : MonoBehaviour
         {
             case ActionType.Place:
                 voxel.IsTraversable = false;
-                GameObject instance = Instantiate(placedMeshPrefab, voxel.WorldPosition, Quaternion.identity, placedBlockParent);
+                GameObject instance = Instantiate(placedMeshPrefab, voxel.WorldPosition, Quaternion.identity,
+                    placedBlockParent);
+                Rigidbody rb = instance.GetComponent<Rigidbody>();
+                rb.isKinematic = false;
                 placedMeshes.Add(instance);
                 voxel.BlockInstance = instance;
                 if (!saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Add(voxel.ID, voxel);
@@ -83,8 +87,8 @@ public class TerrainGenerator : MonoBehaviour
             case ActionType.Remove:
                 Destroy(pHit.collider.gameObject);
                 voxel.IsTraversable = true;
-                if(generatedMeshes.Contains(voxel.BlockInstance)) generatedMeshes.Remove(voxel.BlockInstance);
-                if(placedMeshes.Contains(voxel.BlockInstance)) placedMeshes.Remove(voxel.BlockInstance);
+                if (generatedMeshes.Contains(voxel.BlockInstance)) generatedMeshes.Remove(voxel.BlockInstance);
+                if (placedMeshes.Contains(voxel.BlockInstance)) placedMeshes.Remove(voxel.BlockInstance);
                 if (saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Remove(voxel.ID);
                 break;
         }
