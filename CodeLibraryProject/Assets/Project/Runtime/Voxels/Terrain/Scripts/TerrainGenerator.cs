@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -111,6 +112,7 @@ public class TerrainGenerator : MonoBehaviour
         }
         
         saveFile.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
+        Debug.Log($"Expected pos: {expectedPosition}, ID: {voxelID}");
         saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
         currentVoxel = voxel;
 
@@ -138,6 +140,8 @@ public class TerrainGenerator : MonoBehaviour
         pVoxel.BlockInstance = instance;
         if (!saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Add(pVoxel.ID, pVoxel);
         meshCount++;
+        
+        EditorUtility.SetDirty(saveFile);
     }
 
     private void removeBlock(VoxelContainer pVoxel, RaycastHit pHit)
@@ -155,8 +159,7 @@ public class TerrainGenerator : MonoBehaviour
         Gizmos.DrawCube(expectedPosition, new Vector3(voxelSize * 0.9f, voxelSize * 0.9f, voxelSize * 0.9f));
         
         if (rayHitPosition == Vector3.zero) return;
-
-        Debug.Log($"Voxel pos:{currentVoxel.WorldPosition} \nVoxel size: {voxelSize} \nHit pos: {rayHitPosition}\n expected pos: {expectedPosition}");
+        
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(rayHitPosition, 0.1f);
     }

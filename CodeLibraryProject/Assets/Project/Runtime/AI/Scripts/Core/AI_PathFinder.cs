@@ -12,7 +12,7 @@ using UnityEngine.Events;
 public class AI_PathFinder : MonoBehaviour
 {
     private Dictionary<int, VoxelContainer> traversableVoxels = new Dictionary<int, VoxelContainer>();
-    private Dictionary<Vector3Int, int> voxelGridPositions = new Dictionary<Vector3Int, int>();
+    private Dictionary<Vector3, int> voxelGridPositions = new Dictionary<Vector3, int>();
     private Vector3 mapDimensions;
     private float voxelSize;
     private Vector3 thisPosition;

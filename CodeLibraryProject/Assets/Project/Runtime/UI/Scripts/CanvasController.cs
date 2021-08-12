@@ -19,4 +19,9 @@ public class CanvasController : MonoBehaviour
                 break;
         }
     }
+
+    public void UpdateBlockInventoryUI(List<BlockType> pBlocks)
+    {
+        
+    }
 }
