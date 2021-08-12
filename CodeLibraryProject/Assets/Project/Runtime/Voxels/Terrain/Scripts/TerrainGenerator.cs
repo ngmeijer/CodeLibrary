@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,15 +12,19 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private Transform pregeneratedBlockParent;
     [SerializeField] private Transform placedBlockParent;
 
+    private float voxelSize;
+    private Vector3 rayHitPosition;
+    private Vector3 expectedPosition;
     private List<GameObject> generatedMeshes = new List<GameObject>();
     private List<GameObject> placedMeshes = new List<GameObject>();
     [SerializeField] [ReadOnlyInspector] private int meshCount;
+    private VoxelContainer currentVoxel;
 
     public void GenerateTerrain()
     {
         ClearTerrain();
 
-        float voxelSize = saveFile.VoxelSize;
+        voxelSize = saveFile.VoxelSize;
         baseMeshPrefab.transform.localScale = new Vector3(voxelSize, voxelSize, voxelSize);
 
         foreach (KeyValuePair<int, VoxelContainer> voxel in saveFile.AllVoxels)
@@ -62,35 +67,97 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 
-    public void HandleBlockAction(Vector3 pPosition, ActionType pType, RaycastHit pHit = new RaycastHit())
+    public void HandleBlockAction(ActionType pType, RaycastHit pHit)
     {
-        Vector3Int convertedPos = new Vector3Int((int) pPosition.x, (int) pPosition.y + 1, (int) pPosition.z);
+        Vector3 hitVoxelPos = pHit.collider.transform.position;
+        Vector3 convertedPos = new Vector3(
+             hitVoxelPos.x,
+             hitVoxelPos.y,
+             hitVoxelPos.z);
 
-        saveFile.VoxelPositions.TryGetValue(convertedPos, out int voxelID);
+        rayHitPosition = pHit.point;
+        voxelSize = saveFile.VoxelSize;
+        
+        expectedPosition = convertedPos;
+
+        //Left/right hit
+        if (rayHitPosition.x <= convertedPos.x - voxelSize / 2)
+        {
+            expectedPosition.x -= voxelSize;
+        }
+        if (rayHitPosition.x >= convertedPos.x + voxelSize / 2)
+        {
+            expectedPosition.x += voxelSize;
+        }
+
+        //Top/bottom hit
+        if (rayHitPosition.y <= convertedPos.y - voxelSize / 2)
+        {
+            expectedPosition.y -= voxelSize;
+        }
+        if (rayHitPosition.y >= convertedPos.y + voxelSize / 2)
+        {
+            expectedPosition.y += voxelSize;
+        }
+
+        //Front/back hit
+        if (rayHitPosition.z <= convertedPos.z - voxelSize / 2)
+        {
+            expectedPosition.z -= voxelSize;
+        }
+        if (rayHitPosition.z >= convertedPos.z + voxelSize / 2)
+        {
+            expectedPosition.z += voxelSize;
+        }
+        
+        saveFile.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
         saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
+        currentVoxel = voxel;
 
         if (voxel == null) return;
 
         switch (pType)
         {
             case ActionType.Place:
-                voxel.IsTraversable = false;
-                GameObject instance = Instantiate(placedMeshPrefab, voxel.WorldPosition, Quaternion.identity,
-                    placedBlockParent);
-                Rigidbody rb = instance.GetComponent<Rigidbody>();
-                rb.isKinematic = false;
-                placedMeshes.Add(instance);
-                voxel.BlockInstance = instance;
-                if (!saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Add(voxel.ID, voxel);
-                meshCount++;
+                placeBlock(voxel);
                 break;
             case ActionType.Remove:
-                Destroy(pHit.collider.gameObject);
-                voxel.IsTraversable = true;
-                if (generatedMeshes.Contains(voxel.BlockInstance)) generatedMeshes.Remove(voxel.BlockInstance);
-                if (placedMeshes.Contains(voxel.BlockInstance)) placedMeshes.Remove(voxel.BlockInstance);
-                if (saveFile.ColliderVoxels.ContainsKey(voxel.ID)) saveFile.ColliderVoxels.Remove(voxel.ID);
+                removeBlock(voxel, pHit);
                 break;
         }
+    }
+
+    private void placeBlock(VoxelContainer pVoxel)
+    {
+        if (pVoxel.BlockInstance != null) return;
+
+        pVoxel.IsTraversable = false;
+        GameObject instance = Instantiate(placedMeshPrefab, pVoxel.WorldPosition, Quaternion.identity,
+            placedBlockParent);
+        placedMeshes.Add(instance);
+        pVoxel.BlockInstance = instance;
+        if (!saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Add(pVoxel.ID, pVoxel);
+        meshCount++;
+    }
+
+    private void removeBlock(VoxelContainer pVoxel, RaycastHit pHit)
+    {
+        Destroy(pHit.collider.gameObject);
+        pVoxel.IsTraversable = true;
+        if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
+        if (placedMeshes.Contains(pVoxel.BlockInstance)) placedMeshes.Remove(pVoxel.BlockInstance);
+        if (saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Remove(pVoxel.ID);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawCube(expectedPosition, new Vector3(voxelSize * 0.9f, voxelSize * 0.9f, voxelSize * 0.9f));
+        
+        if (rayHitPosition == Vector3.zero) return;
+
+        Debug.Log($"Voxel pos:{currentVoxel.WorldPosition} \nVoxel size: {voxelSize} \nHit pos: {rayHitPosition}\n expected pos: {expectedPosition}");
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(rayHitPosition, 0.1f);
     }
 }

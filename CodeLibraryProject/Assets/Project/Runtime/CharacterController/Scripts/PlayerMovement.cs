@@ -12,11 +12,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(1, 5)] private float acceleration = 2f;
     [SerializeField] [Range(2, 20)] private float maxSpeed = 5f;
     [SerializeField] [Range(1, 10)] private float jumpForce = 2f;
+    [SerializeField] private bool godMode = true;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         cameraController = GetComponentInChildren<CameraController>();
+        
+        if (godMode) rb.useGravity = false;
     }
 
     private void Update()

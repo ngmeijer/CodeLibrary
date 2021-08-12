@@ -64,7 +64,7 @@ public class RaycastController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 10))
             {
                 testHit = hit;
-                terrainGenerator.HandleBlockAction(hit.collider.transform.position, ActionType.Place);
+                terrainGenerator.HandleBlockAction(ActionType.Place, hit);
             }
         }
         
@@ -75,7 +75,7 @@ public class RaycastController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 10))
             {
                 testHit = hit;
-                terrainGenerator.HandleBlockAction(hit.collider.transform.position, ActionType.Remove, hit);
+                terrainGenerator.HandleBlockAction(ActionType.Remove, hit);
             }
         }
     }
