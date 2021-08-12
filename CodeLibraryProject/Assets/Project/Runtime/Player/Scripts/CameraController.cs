@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
 
     private void trackVerticalRotation()
     {
-        float vertRot = Input.GetAxisRaw("Mouse Y");
+        float vertRot = InputManager.Instance.VerticalRotation;
 
         if (isInverted) vertRot *= -1;
         

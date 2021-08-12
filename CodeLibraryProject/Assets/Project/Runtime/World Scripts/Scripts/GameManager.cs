@@ -4,33 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[Serializable]
-public class Event_BlockInventory : UnityEvent<BlockType>
-{
-    
-}
-
-[Serializable]
-public enum BlockType
-{
-    Grass,
-    Stone,
-    LightWood,
-    DarkWood,
-    Dirt,
-    BlockTypeCount
-}
-
 public class GameManager : MonoBehaviour
 {
     //
     private static GameManager _instance;
-    public static GameManager Instance { get { return _instance; } }
+    public static GameManager Instance => _instance;
     //
 
     private List<BlockType> blocksInInventory;
-
-    [SerializeField] private Event_BlockInventory blockInventoryNotification;
+    private List<string> blockTypeNames = new List<string>();
     
     private void Awake()
     {
@@ -45,5 +27,11 @@ public class GameManager : MonoBehaviour
     public void ReceiveBlockInventory(List<BlockType> pBlocks)
     {
         blocksInInventory = pBlocks;
+        foreach (BlockType type in blocksInInventory)
+        {
+            blockTypeNames.Add(type.ToString());
+        }
     }
+
+    public List<string> GetBlockNames() => blockTypeNames;
 }

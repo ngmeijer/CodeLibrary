@@ -83,36 +83,23 @@ public class TerrainGenerator : MonoBehaviour
 
         //Left/right hit
         if (rayHitPosition.x <= convertedPos.x - voxelSize / 2)
-        {
             expectedPosition.x -= voxelSize;
-        }
         if (rayHitPosition.x >= convertedPos.x + voxelSize / 2)
-        {
             expectedPosition.x += voxelSize;
-        }
 
         //Top/bottom hit
         if (rayHitPosition.y <= convertedPos.y - voxelSize / 2)
-        {
             expectedPosition.y -= voxelSize;
-        }
         if (rayHitPosition.y >= convertedPos.y + voxelSize / 2)
-        {
             expectedPosition.y += voxelSize;
-        }
 
         //Front/back hit
         if (rayHitPosition.z <= convertedPos.z - voxelSize / 2)
-        {
             expectedPosition.z -= voxelSize;
-        }
         if (rayHitPosition.z >= convertedPos.z + voxelSize / 2)
-        {
             expectedPosition.z += voxelSize;
-        }
-        
+
         saveFile.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
-        Debug.Log($"Expected pos: {expectedPosition}, ID: {voxelID}");
         saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
         currentVoxel = voxel;
 
@@ -151,16 +138,5 @@ public class TerrainGenerator : MonoBehaviour
         if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
         if (placedMeshes.Contains(pVoxel.BlockInstance)) placedMeshes.Remove(pVoxel.BlockInstance);
         if (saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Remove(pVoxel.ID);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawCube(expectedPosition, new Vector3(voxelSize * 0.9f, voxelSize * 0.9f, voxelSize * 0.9f));
-        
-        if (rayHitPosition == Vector3.zero) return;
-        
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(rayHitPosition, 0.1f);
     }
 }

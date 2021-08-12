@@ -31,8 +31,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void trackInput()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        float horizontal = InputManager.Instance.Horizontal;
+        float vertical = InputManager.Instance.Vertical;
 
         Vector3 movement = new Vector3(horizontal, 0, vertical).normalized;
 
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void trackHorizontalRotation()
     {
-        float horiRot = Input.GetAxisRaw("Mouse X");
+        float horiRot = InputManager.Instance.HorizontalRotation;
         transform.Rotate(transform.up, horiRot * cameraController.MouseSensitivity * Time.deltaTime);
     }
 

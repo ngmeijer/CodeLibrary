@@ -25,6 +25,7 @@ public class RaycastController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
     
+    
     private void Start()
     {
         cam = Camera.main;
@@ -49,8 +50,7 @@ public class RaycastController : MonoBehaviour
         Debug.DrawRay(transform.position, transform.forward * 10, Color.yellow);
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject bulletInstance =
-                Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+            GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
         }
     }
 
