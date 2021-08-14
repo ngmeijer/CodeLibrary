@@ -23,7 +23,9 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private int index;
     private string currentBlockName;
     public List<string> blockNames;
-    private SerializableDictionary<string, GameObject> blockCollection = new SerializableDictionary<string, GameObject>();
+
+    private SerializableDictionary<string, GameObject> blockCollection =
+        new SerializableDictionary<string, GameObject>();
 
     private void Start()
     {
@@ -44,8 +46,12 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
             GameObject prefab = GetProperBlockPrefab(block.BlockType);
             Instantiate(prefab, block.WorldPosition, Quaternion.identity, placedBlockParent);
             block.voxel.IsTraversable = false;
+
+            voxelData.VoxelPositions.TryGetValue(block.WorldPosition, out int voxelID);
+            voxelData.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
+            voxelData.ColliderVoxels.Add(voxelID, voxel);
         }
-        
+
         EditorUtility.SetDirty(voxelData);
     }
 
@@ -80,9 +86,9 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private void fillBlockDict()
     {
         string path = "Prefabs/Blocks/Prefab_";
-        
+
         blockCollection.Clear();
-        
+
         LoadResourceFromAssets("Grass");
         LoadResourceFromAssets("Stone");
         LoadResourceFromAssets("DarkWood");
@@ -110,7 +116,11 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     public void ClearPlacedBlocks()
     {
-        voxelData.ColliderVoxels.Clear();
+        foreach (GameObject block in placedMeshes)
+        {
+            voxelData.VoxelPositions.TryGetValue(block.transform.position, out int voxelID);
+            voxelData.ColliderVoxels.Remove(voxelID);
+        }
         destroyChildren(placedBlockParent);
         placedMeshes.Clear();
     }
@@ -186,7 +196,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         GameObject instance = Instantiate(currentSelectedBlockPrefab, pVoxel.WorldPosition, Quaternion.identity,
             placedBlockParent);
         placedMeshes.Add(instance);
-        
+
         //Handle voxel modifications
         pVoxel.IsTraversable = false;
         pVoxel.BlockInstance = instance;
@@ -199,7 +209,8 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
             WorldPosition = pVoxel.WorldPosition,
             voxel = pVoxel
         };
-        sceneData.PlacedBlocks.Add(block.WorldPosition, block);
+        if (!sceneData.PlacedBlocks.ContainsKey(block.WorldPosition))
+            sceneData.PlacedBlocks.Add(block.WorldPosition, block);
         EditorUtility.SetDirty(voxelData);
         EditorUtility.SetDirty(sceneData);
 
@@ -210,18 +221,17 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     {
         Destroy(pHit.collider.gameObject);
         pVoxel.IsTraversable = true;
+        
         if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
         if (placedMeshes.Contains(pVoxel.BlockInstance)) placedMeshes.Remove(pVoxel.BlockInstance);
         if (voxelData.ColliderVoxels.ContainsKey(pVoxel.ID)) voxelData.ColliderVoxels.Remove(pVoxel.ID);
-
-        if (sceneData.PlacedBlocks.ContainsKey(pVoxel.WorldPosition))
-            sceneData.PlacedBlocks.Remove(pVoxel.WorldPosition);
+        if (sceneData.PlacedBlocks.ContainsKey(pVoxel.WorldPosition)) sceneData.PlacedBlocks.Remove(pVoxel.WorldPosition);
     }
 
     public void CycleThroughBlocks()
     {
         if (!Application.isPlaying) return;
-        
+
         float mouseWheel = InputManager.Instance.MouseWheel;
         int highestIndex = blockNames.Count - 1;
 
@@ -238,9 +248,9 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
                 index = 0;
             else index++;
         }
-        
+
         currentBlockName = blockNames[index];
-        
+
         blockCollection.TryGetValue(currentBlockName, out currentSelectedBlockPrefab);
     }
 
