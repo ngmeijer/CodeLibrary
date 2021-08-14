@@ -9032,10 +9032,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveFile: {fileID: 11400000, guid: 9aeb5783b13728348b0b340127cb82ce, type: 2}
   baseMeshPrefab: {fileID: 6335866310152709553, guid: 0dc36425dff54f84693366aaac0fb1de, type: 3}
-  placedMeshPrefab: {fileID: 6335866310152709553, guid: cfe1d2765a2f90b4e9369e65e50f5062, type: 3}
+  currentSelectedBlockPrefab: {fileID: 6335866310152709553, guid: 768b319e977b5b64b9acef93a6ba658a, type: 3}
   pregeneratedBlockParent: {fileID: 2105430402}
   placedBlockParent: {fileID: 1289522756}
   meshCount: 1260
+  blockCollection:
+    keys:
+    - Grass
+    - Stone
+    - LightWood
+    - Dirt
+    - DarkWood
+    values:
+    - {fileID: 6335866310152709553, guid: 768b319e977b5b64b9acef93a6ba658a, type: 3}
+    - {fileID: 6335866310152709553, guid: cf78e5c44df817a43b2fb3745dcbc68c, type: 3}
+    - {fileID: 6335866310152709553, guid: bcf8ce6d073e2664db29c2937ae05304, type: 3}
+    - {fileID: 6335866310152709553, guid: 908a6c2de9f50344eb5c78f4880dcbe4, type: 3}
+    - {fileID: 6335866310152709553, guid: e610668150ba54f40b48bccd534e1fb0, type: 3}
 --- !u!1 &166526613
 GameObject:
   m_ObjectHideFlags: 0
@@ -48750,7 +48763,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modeText: {fileID: 1275743984}
   inventoryBlocks: []
-  inventoryBlockUI: []
   inventoryItemParent: {fileID: 1994827183}
 --- !u!1 &825357290
 GameObject:

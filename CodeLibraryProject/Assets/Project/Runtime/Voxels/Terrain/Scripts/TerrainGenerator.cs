@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ExecuteAlways]
-public class TerrainGenerator : MonoBehaviour
+public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 {
     [Space(70)] [SerializeField] private VoxelGridData saveFile;
     [SerializeField] private GameObject baseMeshPrefab;
-    [SerializeField] private GameObject placedMeshPrefab;
+    [SerializeField]private GameObject currentSelectedBlockPrefab;
 
     [SerializeField] private Transform pregeneratedBlockParent;
     [SerializeField] private Transform placedBlockParent;
@@ -20,6 +21,21 @@ public class TerrainGenerator : MonoBehaviour
     private List<GameObject> placedMeshes = new List<GameObject>();
     [SerializeField] [ReadOnlyInspector] private int meshCount;
     private VoxelContainer currentVoxel;
+    private int index;
+    private List<string> blockNames;
+    public SerializableDictionary<string, GameObject> blockCollection;
+
+    private void Start()
+    {
+        blockNames = GameManager.Instance.GetBlockNames();
+        fillBlockDict();
+        blockCollection.TryGetValue("Grass", out currentSelectedBlockPrefab);
+    }
+
+    private void Update()
+    {
+        CycleThroughBlocks();
+    }
 
     public void GenerateTerrain()
     {
@@ -41,6 +57,35 @@ public class TerrainGenerator : MonoBehaviour
         }
 
         meshCount = generatedMeshes.Count;
+    }
+
+    private void fillBlockDict()
+    {
+        string path = "Prefabs/Blocks/Prefab_";
+        string extension = ".prefab";
+        string type = "";
+        
+        blockCollection.Clear();
+
+        type = "Grass";
+        GameObject grassPrefab = Resources.Load(path + type) as GameObject;
+        blockCollection.Add("Grass", grassPrefab);
+
+        type = "Stone";
+        GameObject stonePrefab = Resources.Load(path + type) as GameObject;
+        blockCollection.Add("Stone", stonePrefab);
+
+        type = "LightWood";
+        GameObject lightWoodPrefab = Resources.Load(path + type) as GameObject;
+        blockCollection.Add("LightWood", lightWoodPrefab);
+
+        type = "Dirt";
+        GameObject dirtPrefab = Resources.Load(path + type) as GameObject;
+        blockCollection.Add("Dirt", dirtPrefab);
+
+        type = "DarkWood";
+        GameObject darkWoodPrefab = Resources.Load(path + type) as GameObject;
+        blockCollection.Add("DarkWood", darkWoodPrefab);
     }
 
     public void ClearTerrain()
@@ -72,13 +117,13 @@ public class TerrainGenerator : MonoBehaviour
     {
         Vector3 hitVoxelPos = pHit.collider.transform.position;
         Vector3 convertedPos = new Vector3(
-             hitVoxelPos.x,
-             hitVoxelPos.y,
-             hitVoxelPos.z);
+            hitVoxelPos.x,
+            hitVoxelPos.y,
+            hitVoxelPos.z);
 
         rayHitPosition = pHit.point;
         voxelSize = saveFile.VoxelSize;
-        
+
         expectedPosition = convertedPos;
 
         //Left/right hit
@@ -121,13 +166,13 @@ public class TerrainGenerator : MonoBehaviour
         if (pVoxel.BlockInstance != null) return;
 
         pVoxel.IsTraversable = false;
-        GameObject instance = Instantiate(placedMeshPrefab, pVoxel.WorldPosition, Quaternion.identity,
+        GameObject instance = Instantiate(currentSelectedBlockPrefab, pVoxel.WorldPosition, Quaternion.identity,
             placedBlockParent);
         placedMeshes.Add(instance);
         pVoxel.BlockInstance = instance;
         if (!saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Add(pVoxel.ID, pVoxel);
         meshCount++;
-        
+
         EditorUtility.SetDirty(saveFile);
     }
 
@@ -138,5 +183,29 @@ public class TerrainGenerator : MonoBehaviour
         if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
         if (placedMeshes.Contains(pVoxel.BlockInstance)) placedMeshes.Remove(pVoxel.BlockInstance);
         if (saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Remove(pVoxel.ID);
+    }
+
+    public void CycleThroughBlocks()
+    {
+        float mouseWheel = InputManager.Instance.MouseWheel;
+        if (mouseWheel == 0) return;
+
+        if (mouseWheel < 0)
+        {
+            if (index <= 0)
+                index = blockNames.Count - 1;
+            else index--;
+        }
+
+        if (mouseWheel > 0)
+        {
+            if (index >= blockNames.Count - 1)
+                index = 0;
+            else index++;
+        }
+
+        string currentBlock = blockNames[index];
+
+        blockCollection.TryGetValue(currentBlock, out currentSelectedBlockPrefab);
     }
 }

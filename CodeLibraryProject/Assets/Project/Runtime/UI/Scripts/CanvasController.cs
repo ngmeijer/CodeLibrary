@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CanvasController : MonoBehaviour
+public class CanvasController : MonoBehaviour, IBlockInventoryHandler
 {
     [SerializeField] private TextMeshProUGUI modeText;
     [SerializeField] private List<string> inventoryBlocks;
@@ -33,7 +33,7 @@ public class CanvasController : MonoBehaviour
 
     private void Update()
     {
-        CycleThroughInventoryUI();
+        CycleThroughBlocks();
     }
 
     public void ChangeEditMode(int pType)
@@ -81,7 +81,7 @@ public class CanvasController : MonoBehaviour
         }
     }
 
-    public void CycleThroughInventoryUI()
+    public void CycleThroughBlocks()
     {
         float mouseWheel = InputManager.Instance.MouseWheel;
         if (mouseWheel == 0) return;
@@ -100,7 +100,6 @@ public class CanvasController : MonoBehaviour
         }
 
         inventoryBlockBackground[index].color = Color.magenta;
-        Debug.Log(index);
 
         foreach (Image background in inventoryBlockBackground)
         {
