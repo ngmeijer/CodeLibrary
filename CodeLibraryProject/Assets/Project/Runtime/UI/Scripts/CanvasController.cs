@@ -8,11 +8,12 @@ using UnityEngine.UI;
 public class CanvasController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI modeText;
-
     [SerializeField] private List<string> inventoryBlocks;
-    [SerializeField] private List<Image> inventoryBlockUI = new List<Image>();
     [SerializeField] private Transform inventoryItemParent;
-    private int index;
+    
+    private List<Image> inventoryBlockBackground = new List<Image>();
+    private List<Image> inventoryBlockTexture = new List<Image>();
+    private int index = 1;
 
     private void Start()
     {
@@ -21,10 +22,12 @@ public class CanvasController : MonoBehaviour
         for (int i = 0; i < childCount; i++)
         {
             GameObject itemParent = inventoryItemParent.GetChild(i).gameObject;
-            inventoryBlockUI.Add(itemParent.transform.GetChild(1).GetComponent<Image>());
+            inventoryBlockBackground.Add(itemParent.transform.GetChild(0).GetComponent<Image>());
+            inventoryBlockTexture.Add(itemParent.transform.GetChild(1).GetComponent<Image>());
         }
 
         inventoryBlocks = GameManager.Instance.GetBlockNames();
+        inventoryBlockBackground[0].color = Color.magenta;
         UpdateBlockInventoryUI();
     }
 
@@ -49,7 +52,7 @@ public class CanvasController : MonoBehaviour
     public void UpdateBlockInventoryUI()
     {
         int imageIndex = 0;
-        foreach (Image img in inventoryBlockUI)
+        foreach (Image img in inventoryBlockTexture)
         {
             string currentType = inventoryBlocks[imageIndex];
             imageIndex++;
@@ -81,7 +84,29 @@ public class CanvasController : MonoBehaviour
     public void CycleThroughInventoryUI()
     {
         float mouseWheel = InputManager.Instance.MouseWheel;
-        if (mouseWheel < 0) index--;
-        if (mouseWheel > 0) index++;
+        if (mouseWheel == 0) return;
+        
+        if (mouseWheel < 0)
+        {
+            if (index <= 0)
+                index = inventoryBlockTexture.Count - 1;
+            else index--;
+        }
+        if (mouseWheel > 0)
+        {
+            if (index >= inventoryBlockTexture.Count - 1)
+                index = 0;
+            else index++;
+        }
+
+        inventoryBlockBackground[index].color = Color.magenta;
+        Debug.Log(index);
+
+        foreach (Image background in inventoryBlockBackground)
+        {
+            if (inventoryBlockBackground[index] == background) continue;
+
+            background.color = new Color(0,0,0, 0.5f);
+        }
     }
 }
