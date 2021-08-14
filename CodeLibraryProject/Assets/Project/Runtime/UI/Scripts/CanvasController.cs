@@ -8,12 +8,13 @@ using UnityEngine.UI;
 public class CanvasController : MonoBehaviour, IBlockInventoryHandler
 {
     [SerializeField] private TextMeshProUGUI modeText;
-    [SerializeField] private List<string> inventoryBlocks;
     [SerializeField] private Transform inventoryItemParent;
-    
+
+    private List<string> inventoryBlocks;
     private List<Image> inventoryBlockBackground = new List<Image>();
     private List<Image> inventoryBlockTexture = new List<Image>();
     private int index = 1;
+    public SerializableDictionary<string, Sprite> blockUISprites;
 
     private void Start()
     {
@@ -28,12 +29,33 @@ public class CanvasController : MonoBehaviour, IBlockInventoryHandler
 
         inventoryBlocks = GameManager.Instance.GetBlockNames();
         inventoryBlockBackground[0].color = Color.magenta;
+        
+        loadUIBlockTextures();
         UpdateBlockInventoryUI();
     }
 
     private void Update()
     {
         CycleThroughBlocks();
+    }
+
+    private void loadUIBlockTextures()
+    {
+        blockUISprites.Clear();
+
+        LoadResourceFromAssets("Grass");
+        LoadResourceFromAssets("Stone");
+        LoadResourceFromAssets("DarkWood");
+        LoadResourceFromAssets("Dirt");
+        LoadResourceFromAssets("LightWood");
+    }
+
+    public void LoadResourceFromAssets(string pType)
+    {
+        const string path = "UI/Texture_";
+        Sprite itemUISprite = Resources.Load <Sprite>(path + pType);
+        Debug.Log(itemUISprite);
+        blockUISprites.Add(pType, itemUISprite);
     }
 
     public void ChangeEditMode(int pType)
@@ -56,22 +78,29 @@ public class CanvasController : MonoBehaviour, IBlockInventoryHandler
         {
             string currentType = inventoryBlocks[imageIndex];
             imageIndex++;
+            Sprite sprite;
+            
             switch (currentType)
             {
                 case "Grass":
-                    img.color = Color.green;
+                    blockUISprites.TryGetValue("Grass", out sprite);
+                    img.sprite = sprite;
                     break;
                 case "Stone":
-                    img.color = Color.grey;
+                    blockUISprites.TryGetValue("Stone", out sprite);
+                    img.sprite = sprite;
                     break;
                 case "LightWood":
-                    img.color = Color.yellow;
+                    blockUISprites.TryGetValue("LightWood", out sprite);
+                    img.sprite = sprite;
                     break;
                 case "DarkWood":
-                    img.color = Color.red;
+                    blockUISprites.TryGetValue("DarkWood", out sprite);
+                    img.sprite = sprite;
                     break;
                 case "Dirt":
-                    img.color = Color.black;
+                    blockUISprites.TryGetValue("Dirt", out sprite);
+                    img.sprite = sprite;
                     break;
                 case "BlockTypeCount":
                     Debug.Log($"Invalid block ({currentType} in inventory.");

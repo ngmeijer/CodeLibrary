@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IBlockInventoryHandler
 {
     public void CycleThroughBlocks();
+    public void LoadResourceFromAssets(string pType);
 }

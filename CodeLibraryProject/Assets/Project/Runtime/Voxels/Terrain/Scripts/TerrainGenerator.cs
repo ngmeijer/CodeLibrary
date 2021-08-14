@@ -62,30 +62,22 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private void fillBlockDict()
     {
         string path = "Prefabs/Blocks/Prefab_";
-        string extension = ".prefab";
-        string type = "";
         
         blockCollection.Clear();
+        
+        LoadResourceFromAssets("Grass");
+        LoadResourceFromAssets("Stone");
+        LoadResourceFromAssets("DarkWood");
+        LoadResourceFromAssets("Dirt");
+        LoadResourceFromAssets("LightWood");
+    }
 
-        type = "Grass";
-        GameObject grassPrefab = Resources.Load(path + type) as GameObject;
-        blockCollection.Add("Grass", grassPrefab);
+    public void LoadResourceFromAssets(string pType)
+    {
+        const string path = "Prefabs/Blocks/Prefab_";
 
-        type = "Stone";
-        GameObject stonePrefab = Resources.Load(path + type) as GameObject;
-        blockCollection.Add("Stone", stonePrefab);
-
-        type = "LightWood";
-        GameObject lightWoodPrefab = Resources.Load(path + type) as GameObject;
-        blockCollection.Add("LightWood", lightWoodPrefab);
-
-        type = "Dirt";
-        GameObject dirtPrefab = Resources.Load(path + type) as GameObject;
-        blockCollection.Add("Dirt", dirtPrefab);
-
-        type = "DarkWood";
-        GameObject darkWoodPrefab = Resources.Load(path + type) as GameObject;
-        blockCollection.Add("DarkWood", darkWoodPrefab);
+        GameObject blockPrefab = Resources.Load(path + pType) as GameObject;
+        blockCollection.Add(pType, blockPrefab);
     }
 
     public void ClearTerrain()
