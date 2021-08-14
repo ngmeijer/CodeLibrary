@@ -43,12 +43,16 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         {
             GameObject prefab = GetProperBlockPrefab(block.BlockType);
             Instantiate(prefab, block.WorldPosition, Quaternion.identity, placedBlockParent);
-            voxelData.VoxelPositions.TryGetValue(block.WorldPosition, out int voxelID);
-            voxelData.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
-            voxel.IsTraversable = false;
+            block.voxel.IsTraversable = false;
         }
         
         EditorUtility.SetDirty(voxelData);
+    }
+
+    public void UnloadScene()
+    {
+        ClearPlacedBlocks();
+        GenerateTerrain();
     }
 
     public void GenerateTerrain()
@@ -98,19 +102,26 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     {
         voxelData.ColliderVoxels.Clear();
 
-        destroyChildren(pregeneratedBlockParent.gameObject);
-        destroyChildren(placedBlockParent.gameObject);
+        destroyChildren(pregeneratedBlockParent);
+        destroyChildren(placedBlockParent);
 
         generatedMeshes.Clear();
     }
 
-    private void destroyChildren(GameObject pParent)
+    public void ClearPlacedBlocks()
     {
-        GameObject[] children = new GameObject[pParent.transform.childCount];
+        voxelData.ColliderVoxels.Clear();
+        destroyChildren(placedBlockParent);
+        placedMeshes.Clear();
+    }
 
-        for (int childIndex = 0; childIndex < pregeneratedBlockParent.childCount; childIndex++)
+    private void destroyChildren(Transform pParent)
+    {
+        GameObject[] children = new GameObject[pParent.childCount];
+
+        for (int childIndex = 0; childIndex < pParent.childCount; childIndex++)
         {
-            children[childIndex] = pParent.transform.GetChild(childIndex).gameObject;
+            children[childIndex] = pParent.GetChild(childIndex).gameObject;
         }
 
         foreach (GameObject child in children)
@@ -168,24 +179,31 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     private void placeBlock(VoxelContainer pVoxel)
     {
+        //Check if block is already in voxel
         if (pVoxel.BlockInstance != null) return;
 
-        pVoxel.IsTraversable = false;
+        //Create block GameObject
         GameObject instance = Instantiate(currentSelectedBlockPrefab, pVoxel.WorldPosition, Quaternion.identity,
             placedBlockParent);
         placedMeshes.Add(instance);
+        
+        //Handle voxel modifications
+        pVoxel.IsTraversable = false;
         pVoxel.BlockInstance = instance;
         if (!voxelData.ColliderVoxels.ContainsKey(pVoxel.ID)) voxelData.ColliderVoxels.Add(pVoxel.ID, pVoxel);
 
+        //Create block data for scene saving & loading
         BlockContainer block = new BlockContainer()
         {
             BlockType = currentBlockName,
-            WorldPosition = pVoxel.WorldPosition
+            WorldPosition = pVoxel.WorldPosition,
+            voxel = pVoxel
         };
         sceneData.PlacedBlocks.Add(block.WorldPosition, block);
-        meshCount++;
-
         EditorUtility.SetDirty(voxelData);
+        EditorUtility.SetDirty(sceneData);
+
+        meshCount++;
     }
 
     private void removeBlock(VoxelContainer pVoxel, RaycastHit pHit)

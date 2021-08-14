@@ -19,6 +19,7 @@ public class TerrainGeneratorEditor : Editor
         drawGenerateButton();
         drawClearButton();
         drawLoadFileButton();
+        drawResetSceneButton();
     }
 
     private void drawGenerateButton()
@@ -45,7 +46,7 @@ public class TerrainGeneratorEditor : Editor
     {
         GUI.backgroundColor = Color.yellow;
         GUIStyle saveSceneStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(inspectorWidth / 2 +10, 85, inspectorWidth / 2 - 20, 40), "Load saved scene", saveSceneStyle))
+        if (GUI.Button(new Rect(10, 85, inspectorWidth / 2 - 20, 40), "Load saved scene", saveSceneStyle))
         {
             editorTarget.LoadSavedScene();
         }
@@ -53,11 +54,11 @@ public class TerrainGeneratorEditor : Editor
     
     private void drawResetSceneButton()
     {
-        GUI.backgroundColor = Color.yellow;
+        GUI.backgroundColor = Color.grey;
         GUIStyle saveSceneStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(inspectorWidth / 2 +10, 100, inspectorWidth / 2 - 20, 40), "Unload saved scene", saveSceneStyle))
+        if (GUI.Button(new Rect(inspectorWidth / 2 +10, 85, inspectorWidth / 2 - 20, 40), "Unload saved scene", saveSceneStyle))
         {
-            editorTarget.LoadSavedScene();
+            editorTarget.UnloadScene();
         }
     }
 }
