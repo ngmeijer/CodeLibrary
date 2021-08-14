@@ -13,7 +13,7 @@ public class CanvasController : MonoBehaviour, IBlockInventoryHandler
     private List<string> inventoryBlocks;
     private List<Image> inventoryBlockBackground = new List<Image>();
     private List<Image> inventoryBlockTexture = new List<Image>();
-    private int index = 1;
+    private int index = 0;
     public SerializableDictionary<string, Sprite> blockUISprites;
 
     private void Start()
@@ -54,7 +54,6 @@ public class CanvasController : MonoBehaviour, IBlockInventoryHandler
     {
         const string path = "UI/Texture_";
         Sprite itemUISprite = Resources.Load <Sprite>(path + pType);
-        Debug.Log(itemUISprite);
         blockUISprites.Add(pType, itemUISprite);
     }
 

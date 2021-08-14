@@ -20,16 +20,14 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private List<GameObject> generatedMeshes = new List<GameObject>();
     private List<GameObject> placedMeshes = new List<GameObject>();
     [SerializeField] [ReadOnlyInspector] private int meshCount;
-    private VoxelContainer currentVoxel;
     private int index;
-    private List<string> blockNames;
-    public SerializableDictionary<string, GameObject> blockCollection;
+    public List<string> blockNames;
+    private SerializableDictionary<string, GameObject> blockCollection = new SerializableDictionary<string, GameObject>();
 
     private void Start()
     {
         blockNames = GameManager.Instance.GetBlockNames();
         fillBlockDict();
-        blockCollection.TryGetValue("Grass", out currentSelectedBlockPrefab);
     }
 
     private void Update()
@@ -138,7 +136,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
         saveFile.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
         saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
-        currentVoxel = voxel;
 
         if (voxel == null) return;
 
@@ -179,25 +176,27 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     public void CycleThroughBlocks()
     {
+        if (!Application.isPlaying) return;
+        
         float mouseWheel = InputManager.Instance.MouseWheel;
-        if (mouseWheel == 0) return;
+        int highestIndex = blockNames.Count - 1;
 
         if (mouseWheel < 0)
         {
             if (index <= 0)
-                index = blockNames.Count - 1;
+                index = highestIndex;
             else index--;
         }
 
         if (mouseWheel > 0)
         {
-            if (index >= blockNames.Count - 1)
+            if (index >= highestIndex)
                 index = 0;
             else index++;
         }
 
         string currentBlock = blockNames[index];
-
+        
         blockCollection.TryGetValue(currentBlock, out currentSelectedBlockPrefab);
     }
 }
