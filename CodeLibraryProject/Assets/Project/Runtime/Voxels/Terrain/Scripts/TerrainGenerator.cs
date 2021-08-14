@@ -7,13 +7,13 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 {
-    [Space(70)] [SerializeField] private VoxelGridData saveFile;
+    [Space(110)] [SerializeField] private VoxelGridData voxelData;
+    [SerializeField] private SceneData sceneData;
     [SerializeField] private GameObject baseMeshPrefab;
-    [SerializeField]private GameObject currentSelectedBlockPrefab;
-
     [SerializeField] private Transform pregeneratedBlockParent;
     [SerializeField] private Transform placedBlockParent;
 
+    private GameObject currentSelectedBlockPrefab;
     private float voxelSize;
     private Vector3 rayHitPosition;
     private Vector3 expectedPosition;
@@ -21,6 +21,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private List<GameObject> placedMeshes = new List<GameObject>();
     [SerializeField] [ReadOnlyInspector] private int meshCount;
     private int index;
+    private string currentBlockName;
     public List<string> blockNames;
     private SerializableDictionary<string, GameObject> blockCollection = new SerializableDictionary<string, GameObject>();
 
@@ -35,14 +36,29 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         CycleThroughBlocks();
     }
 
+    public void LoadSavedScene()
+    {
+        GenerateTerrain();
+        foreach (BlockContainer block in sceneData.PlacedBlocks.Values)
+        {
+            GameObject prefab = GetProperBlockPrefab(block.BlockType);
+            Instantiate(prefab, block.WorldPosition, Quaternion.identity, placedBlockParent);
+            voxelData.VoxelPositions.TryGetValue(block.WorldPosition, out int voxelID);
+            voxelData.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
+            voxel.IsTraversable = false;
+        }
+        
+        EditorUtility.SetDirty(voxelData);
+    }
+
     public void GenerateTerrain()
     {
         ClearTerrain();
 
-        voxelSize = saveFile.VoxelSize;
+        voxelSize = voxelData.VoxelSize;
         baseMeshPrefab.transform.localScale = new Vector3(voxelSize, voxelSize, voxelSize);
 
-        foreach (KeyValuePair<int, VoxelContainer> voxel in saveFile.AllVoxels)
+        foreach (KeyValuePair<int, VoxelContainer> voxel in voxelData.AllVoxels)
         {
             if (voxel.Value.GridPosition.y == 0)
             {
@@ -50,7 +66,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
                     pregeneratedBlockParent);
                 voxel.Value.BlockInstance = instance;
                 generatedMeshes.Add(instance);
-                saveFile.ColliderVoxels.Add(voxel.Key, voxel.Value);
+                voxelData.ColliderVoxels.Add(voxel.Key, voxel.Value);
             }
         }
 
@@ -80,7 +96,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     public void ClearTerrain()
     {
-        saveFile.ColliderVoxels.Clear();
+        voxelData.ColliderVoxels.Clear();
 
         destroyChildren(pregeneratedBlockParent.gameObject);
         destroyChildren(placedBlockParent.gameObject);
@@ -112,7 +128,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
             hitVoxelPos.z);
 
         rayHitPosition = pHit.point;
-        voxelSize = saveFile.VoxelSize;
+        voxelSize = voxelData.VoxelSize;
 
         expectedPosition = convertedPos;
 
@@ -134,8 +150,8 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         if (rayHitPosition.z >= convertedPos.z + voxelSize / 2)
             expectedPosition.z += voxelSize;
 
-        saveFile.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
-        saveFile.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
+        voxelData.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
+        voxelData.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
 
         if (voxel == null) return;
 
@@ -159,10 +175,17 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
             placedBlockParent);
         placedMeshes.Add(instance);
         pVoxel.BlockInstance = instance;
-        if (!saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Add(pVoxel.ID, pVoxel);
+        if (!voxelData.ColliderVoxels.ContainsKey(pVoxel.ID)) voxelData.ColliderVoxels.Add(pVoxel.ID, pVoxel);
+
+        BlockContainer block = new BlockContainer()
+        {
+            BlockType = currentBlockName,
+            WorldPosition = pVoxel.WorldPosition
+        };
+        sceneData.PlacedBlocks.Add(block.WorldPosition, block);
         meshCount++;
 
-        EditorUtility.SetDirty(saveFile);
+        EditorUtility.SetDirty(voxelData);
     }
 
     private void removeBlock(VoxelContainer pVoxel, RaycastHit pHit)
@@ -171,7 +194,10 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         pVoxel.IsTraversable = true;
         if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
         if (placedMeshes.Contains(pVoxel.BlockInstance)) placedMeshes.Remove(pVoxel.BlockInstance);
-        if (saveFile.ColliderVoxels.ContainsKey(pVoxel.ID)) saveFile.ColliderVoxels.Remove(pVoxel.ID);
+        if (voxelData.ColliderVoxels.ContainsKey(pVoxel.ID)) voxelData.ColliderVoxels.Remove(pVoxel.ID);
+
+        if (sceneData.PlacedBlocks.ContainsKey(pVoxel.WorldPosition))
+            sceneData.PlacedBlocks.Remove(pVoxel.WorldPosition);
     }
 
     public void CycleThroughBlocks()
@@ -194,9 +220,15 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
                 index = 0;
             else index++;
         }
-
-        string currentBlock = blockNames[index];
         
-        blockCollection.TryGetValue(currentBlock, out currentSelectedBlockPrefab);
+        currentBlockName = blockNames[index];
+        
+        blockCollection.TryGetValue(currentBlockName, out currentSelectedBlockPrefab);
+    }
+
+    public GameObject GetProperBlockPrefab(string pType)
+    {
+        blockCollection.TryGetValue(pType, out GameObject block);
+        return block;
     }
 }
