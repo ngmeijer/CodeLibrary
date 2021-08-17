@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -272,10 +273,13 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private void createSceneDataContainer()
     {
         SceneData container = ScriptableObject.CreateInstance<SceneData>();
-        container.DateCreated = DateTime.Now.ToShortDateString();
-        container.name = "testing again.";
-        
+
         string path = AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/SceneData/SceneData.asset");
         AssetDatabase.CreateAsset(container, path);
+        FileInfo info = new FileInfo(path);
+
+        container.DateCreated = DateTime.Now.ToShortDateString();
+        container.SaveName = "testing again.";
+        container.FileSize = info.Length.ToString();
     }
 }
