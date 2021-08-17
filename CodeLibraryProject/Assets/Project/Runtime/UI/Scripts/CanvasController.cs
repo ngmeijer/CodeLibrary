@@ -27,7 +27,7 @@ public class CanvasController : MonoBehaviour, IBlockInventoryHandler
             inventoryBlockTexture.Add(itemParent.transform.GetChild(1).GetComponent<Image>());
         }
 
-        inventoryBlocks = GameManager.Instance.GetBlockNames();
+        inventoryBlocks = GameManager.Inst.GetBlockNames();
         inventoryBlockBackground[0].color = Color.magenta;
         
         loadUIBlockTextures();
@@ -111,7 +111,7 @@ public class CanvasController : MonoBehaviour, IBlockInventoryHandler
 
     public void CycleThroughBlocks()
     {
-        float mouseWheel = InputManager.Instance.MouseWheel;
+        float mouseWheel = InputManager.Inst.MouseWheel;
         if (mouseWheel == 0) return;
         
         if (mouseWheel < 0)

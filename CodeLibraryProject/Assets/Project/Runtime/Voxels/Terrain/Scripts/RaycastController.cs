@@ -35,6 +35,7 @@ public class RaycastController : MonoBehaviour
 
     private void Update()
     {
+        if (!InputManager.Inst.CanInteract) return;
         switchEditType();
         trackEditMode();
     }
@@ -56,7 +57,6 @@ public class RaycastController : MonoBehaviour
 
     private void trackPlaceRemoving()
     {
-        Debug.DrawRay(transform.position, transform.forward * 10, Color.yellow);
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));

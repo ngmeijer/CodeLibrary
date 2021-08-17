@@ -1,14 +1,11 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     //
-    private static GameManager _instance;
-    public static GameManager Instance => _instance;
+    private static GameManager _inst;
+    public static GameManager Inst => _inst;
     //
 
     private List<BlockType> blocksInInventory;
@@ -16,11 +13,11 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (_inst != null && _inst != this)
         {
             Destroy(this.gameObject);
         } else {
-            _instance = this;
+            _inst = this;
         }
     }
 

@@ -15,30 +15,31 @@ public class TerrainGeneratorEditor : Editor
 
         editorTarget = (TerrainGenerator) target;
         inspectorWidth = EditorGUIUtility.currentViewWidth;
-        
+
         drawGenerateButton();
-        drawClearButton();
+        drawDeleteButton();
         drawLoadFileButton();
-        drawResetSceneButton();
+        drawUnloadSceneButton();
     }
 
     private void drawGenerateButton()
     {
         GUI.backgroundColor = Color.green;
         GUIStyle generateBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(10, 35, inspectorWidth / 2 - 20, 40), "Generate terrain", generateBtnStyle))
+        if (GUI.Button(new Rect(inspectorWidth / 2, 35, inspectorWidth / 2 - 20, 25), "Generate terrain",
+            generateBtnStyle))
         {
             editorTarget.GenerateTerrain();
         }
     }
-    
-    private void drawClearButton()
+
+    private void drawDeleteButton()
     {
         GUI.backgroundColor = Color.red;
-        GUIStyle clearBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(inspectorWidth / 2 +10, 35, inspectorWidth / 2 - 20, 40), "Clear terrain", clearBtnStyle))
+        GUIStyle deleteBtnStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
+        if (GUI.Button(new Rect(inspectorWidth / 2, 65, inspectorWidth / 2 - 20, 25), "Delete terrain", deleteBtnStyle))
         {
-            editorTarget.ClearTerrain();
+            editorTarget.DeleteTerrain();
         }
     }
 
@@ -46,17 +47,19 @@ public class TerrainGeneratorEditor : Editor
     {
         GUI.backgroundColor = Color.yellow;
         GUIStyle saveSceneStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(10, 85, inspectorWidth / 2 - 20, 40), "Load saved scene", saveSceneStyle))
+        if (GUI.Button(new Rect(inspectorWidth / 2, 95, inspectorWidth / 2 - 20, 25), "Load saved scene",
+            saveSceneStyle))
         {
             editorTarget.LoadSavedScene();
         }
     }
-    
-    private void drawResetSceneButton()
+
+    private void drawUnloadSceneButton()
     {
         GUI.backgroundColor = Color.grey;
         GUIStyle saveSceneStyle = new GUIStyle(GUI.skin.button) {fontSize = 15};
-        if (GUI.Button(new Rect(inspectorWidth / 2 +10, 85, inspectorWidth / 2 - 20, 40), "Unload saved scene", saveSceneStyle))
+        if (GUI.Button(new Rect(inspectorWidth / 2, 125, inspectorWidth / 2 - 20, 25), "Unload saved scene",
+            saveSceneStyle))
         {
             editorTarget.UnloadScene();
         }

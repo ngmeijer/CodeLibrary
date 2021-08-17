@@ -7,6 +7,6 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.ReceiveBlockInventory(blocksInInventory);
+        GameManager.Inst.ReceiveBlockInventory(blocksInInventory);
     }
 }

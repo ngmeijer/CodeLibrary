@@ -15,15 +15,17 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (!InputManager.Inst.CanInteract) return;
+        
         trackVerticalRotation();
     }
 
     private void trackVerticalRotation()
     {
-        float vertRot = InputManager.Instance.VerticalRotation;
+        float vertRot = InputManager.Inst.VerticalRotation;
 
         if (isInverted) vertRot *= -1;
-        
+
         transform.Rotate(Vector3.right, vertRot * MouseSensitivity * Time.deltaTime);
     }
 }

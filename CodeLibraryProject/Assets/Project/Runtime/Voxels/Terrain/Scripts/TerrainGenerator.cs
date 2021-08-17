@@ -7,7 +7,7 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 {
-    [Space(110)] [SerializeField] private VoxelGridData voxelData;
+    [Space(130)] [SerializeField] private VoxelGridData voxelData;
     [SerializeField] private SceneData sceneData;
     [SerializeField] private GameObject baseMeshPrefab;
     [SerializeField] private Transform pregeneratedBlockParent;
@@ -29,8 +29,11 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     private void Start()
     {
-        blockNames = GameManager.Instance.GetBlockNames();
-        fillBlockDict();
+        if (Application.isPlaying)
+        {
+            blockNames = GameManager.Inst.GetBlockNames();
+            fillBlockDict();
+        }
     }
 
     private void Update()
@@ -43,12 +46,13 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         GenerateTerrain();
         foreach (BlockContainer block in sceneData.PlacedBlocks.Values)
         {
-            GameObject prefab = GetProperBlockPrefab(block.BlockType);
+            GameObject prefab = getProperBlockPrefab(block.BlockType);
             Instantiate(prefab, block.WorldPosition, Quaternion.identity, placedBlockParent);
-            block.voxel.IsTraversable = false;
 
             voxelData.VoxelPositions.TryGetValue(block.WorldPosition, out int voxelID);
             voxelData.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
+            if (voxel != null && !voxelData.ColliderVoxels.ContainsKey(voxelID)) voxel.IsTraversable = false;
+            else continue;
             voxelData.ColliderVoxels.Add(voxelID, voxel);
         }
 
@@ -63,7 +67,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     public void GenerateTerrain()
     {
-        ClearTerrain();
+        DeleteTerrain();
 
         voxelSize = voxelData.VoxelSize;
         baseMeshPrefab.transform.localScale = new Vector3(voxelSize, voxelSize, voxelSize);
@@ -104,7 +108,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         blockCollection.Add(pType, blockPrefab);
     }
 
-    public void ClearTerrain()
+    public void DeleteTerrain()
     {
         voxelData.ColliderVoxels.Clear();
 
@@ -207,7 +211,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         {
             BlockType = currentBlockName,
             WorldPosition = pVoxel.WorldPosition,
-            voxel = pVoxel
+            voxelID = pVoxel.ID
         };
         if (!sceneData.PlacedBlocks.ContainsKey(block.WorldPosition))
             sceneData.PlacedBlocks.Add(block.WorldPosition, block);
@@ -232,7 +236,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     {
         if (!Application.isPlaying) return;
 
-        float mouseWheel = InputManager.Instance.MouseWheel;
+        float mouseWheel = InputManager.Inst.MouseWheel;
         int highestIndex = blockNames.Count - 1;
 
         if (mouseWheel < 0)
@@ -254,7 +258,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         blockCollection.TryGetValue(currentBlockName, out currentSelectedBlockPrefab);
     }
 
-    public GameObject GetProperBlockPrefab(string pType)
+    private GameObject getProperBlockPrefab(string pType)
     {
         blockCollection.TryGetValue(pType, out GameObject block);
         return block;

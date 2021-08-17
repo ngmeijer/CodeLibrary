@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if(!InputManager.Inst.CanInteract) return;
+
         trackInput();
         trackHorizontalRotation();
         trackJumpInput();
@@ -31,8 +33,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void trackInput()
     {
-        float horizontal = InputManager.Instance.Horizontal;
-        float vertical = InputManager.Instance.Vertical;
+        float horizontal = InputManager.Inst.Horizontal;
+        float vertical = InputManager.Inst.Vertical;
 
         Vector3 movement = new Vector3(horizontal, 0, vertical).normalized;
 
@@ -41,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void trackHorizontalRotation()
     {
-        float horiRot = InputManager.Instance.HorizontalRotation;
+        float horiRot = InputManager.Inst.HorizontalRotation;
         transform.Rotate(transform.up, horiRot * cameraController.MouseSensitivity * Time.deltaTime);
     }
 
