@@ -33,6 +33,8 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        if (!CanInteract) return;
+        
         Horizontal = Input.GetAxisRaw("Horizontal");
         Vertical = Input.GetAxisRaw("Vertical");
         

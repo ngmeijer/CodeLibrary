@@ -15,8 +15,6 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (!InputManager.Inst.CanInteract) return;
-        
         trackVerticalRotation();
     }
 

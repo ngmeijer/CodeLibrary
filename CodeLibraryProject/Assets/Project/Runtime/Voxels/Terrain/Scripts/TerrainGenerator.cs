@@ -18,7 +18,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private Vector3 rayHitPosition;
     private Vector3 expectedPosition;
     private List<GameObject> generatedMeshes = new List<GameObject>();
-    private List<GameObject> placedMeshes = new List<GameObject>();
     [SerializeField] [ReadOnlyInspector] private int meshCount;
     private int index;
     private string currentBlockName;
@@ -27,8 +26,8 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private SerializableDictionary<string, GameObject> blockCollection =
         new SerializableDictionary<string, GameObject>();
 
-    private SerializableDictionary<VoxelContainer, BlockContainer> tempBlocks =
-        new SerializableDictionary<VoxelContainer, BlockContainer>();
+    private SerializableDictionary<Vector3, BlockContainer> placedBlocks =
+        new SerializableDictionary<Vector3, BlockContainer>();
 
     private void Start()
     {
@@ -123,13 +122,13 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     public void ClearPlacedBlocks()
     {
-        foreach (GameObject block in placedMeshes)
+        foreach (BlockContainer block in placedBlocks.Values)
         {
-            voxelData.VoxelPositions.TryGetValue(block.transform.position, out int voxelID);
+            voxelData.VoxelPositions.TryGetValue(block.WorldPosition, out int voxelID);
             voxelData.ColliderVoxels.Remove(voxelID);
         }
         destroyChildren(placedBlockParent);
-        placedMeshes.Clear();
+        placedBlocks.Clear();
     }
 
     private void destroyChildren(Transform pParent)
@@ -202,7 +201,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         //Create block GameObject
         GameObject instance = Instantiate(currentSelectedBlockPrefab, pVoxel.WorldPosition, Quaternion.identity,
             placedBlockParent);
-        placedMeshes.Add(instance);
 
         //Handle voxel modifications
         pVoxel.IsTraversable = false;
@@ -230,7 +228,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         pVoxel.IsTraversable = true;
         
         if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
-        if (placedMeshes.Contains(pVoxel.BlockInstance)) placedMeshes.Remove(pVoxel.BlockInstance);
         if (voxelData.ColliderVoxels.ContainsKey(pVoxel.ID)) voxelData.ColliderVoxels.Remove(pVoxel.ID);
         if (sceneData.PlacedBlocks.ContainsKey(pVoxel.WorldPosition)) sceneData.PlacedBlocks.Remove(pVoxel.WorldPosition);
     }
@@ -269,6 +266,16 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     public void SaveScene()
     {
+        createSceneDataContainer();
+    }
+    
+    private void createSceneDataContainer()
+    {
+        SceneData container = ScriptableObject.CreateInstance<SceneData>();
+        container.DateCreated = DateTime.Now.ToShortDateString();
+        container.name = "testing again.";
         
+        string path = AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/SceneData/SceneData.asset");
+        AssetDatabase.CreateAsset(container, path);
     }
 }

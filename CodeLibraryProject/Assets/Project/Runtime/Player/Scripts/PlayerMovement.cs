@@ -24,8 +24,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(!InputManager.Inst.CanInteract) return;
-
         trackInput();
         trackHorizontalRotation();
         trackJumpInput();
