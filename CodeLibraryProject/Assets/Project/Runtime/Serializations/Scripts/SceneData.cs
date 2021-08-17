@@ -7,6 +7,5 @@ public class SceneData : ScriptableObject
 {
     public string SaveName;
     public string DateCreated;
-    public string FileSize;
     public SerializableDictionary<Vector3, BlockContainer> PlacedBlocks = new SerializableDictionary<Vector3, BlockContainer>();
 }

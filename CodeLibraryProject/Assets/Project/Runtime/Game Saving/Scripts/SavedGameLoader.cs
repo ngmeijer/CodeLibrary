@@ -37,7 +37,7 @@ public class SavedGameLoader : MonoBehaviour
         {
             GameObject UIInstance = Instantiate(uiPrefab, savesParent.transform);
             SaveDataProcessor processor = UIInstance.GetComponent<SaveDataProcessor>();
-            processor.ReceiveData(save.SaveName, save.DateCreated, save.FileSize);
+            processor.ReceiveData(save.SaveName, save.DateCreated);
         }
     }
 

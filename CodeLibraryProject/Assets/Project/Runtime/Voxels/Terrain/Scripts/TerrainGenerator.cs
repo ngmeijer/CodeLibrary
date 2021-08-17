@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 [ExecuteAlways]
 public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
@@ -215,8 +213,8 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
             WorldPosition = pVoxel.WorldPosition,
             voxelID = pVoxel.ID
         };
-        if (!sceneData.PlacedBlocks.ContainsKey(block.WorldPosition))
-            sceneData.PlacedBlocks.Add(block.WorldPosition, block);
+        if (!placedBlocks.ContainsKey(block.WorldPosition))
+            placedBlocks.Add(block.WorldPosition, block);
         EditorUtility.SetDirty(voxelData);
         EditorUtility.SetDirty(sceneData);
 
@@ -276,10 +274,12 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
         string path = AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/SceneData/SceneData.asset");
         AssetDatabase.CreateAsset(container, path);
-        FileInfo info = new FileInfo(path);
-
+        
         container.DateCreated = DateTime.Now.ToShortDateString();
-        container.SaveName = "testing again.";
-        container.FileSize = info.Length.ToString();
+        container.SaveName = container.name;
+        container.PlacedBlocks = placedBlocks;
+        Debug.Log("Created container");
+        
+        EditorUtility.SetDirty(container);
     }
 }
