@@ -1,29 +1,47 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
 public class SavedGameLoader : MonoBehaviour
 {
-    [Space(130)] [SerializeField] private VoxelGridData voxelData;
-    [SerializeField] private SceneData sceneData;
-
     private TerrainGenerator terrainGenerator;
     
+    [SerializeField] private GameObject savesParent;
+    [SerializeField] private GameObject uiPrefab;
+
     private void Start()
     {
         terrainGenerator = FindObjectOfType<TerrainGenerator>();
+        
+        findSavedGames();
     }
-
-
-    public void LoadSavedScene()
+    
+    private void findSavedGames()
     {
-        terrainGenerator.LoadSavedScene();
+        // search for a ScriptObject called ScriptObj
+        string[] assetNames = AssetDatabase.FindAssets("t:SceneData", new[] { "Assets/Resources/SceneData" });
+        List<SceneData> foundSaves = new List<SceneData>();
+        foreach (string SOName in assetNames)
+        {
+            var SOpath= AssetDatabase.GUIDToAssetPath(SOName);
+            var save = AssetDatabase.LoadAssetAtPath<SceneData>(SOpath);
+            foundSaves.Add(save);
+        }
+        
+        Debug.Log(foundSaves.Count);
+
+        foreach (SceneData save in foundSaves)
+        {
+            GameObject UIInstance = Instantiate(uiPrefab, savesParent.transform);
+            SaveDataProcessor processor = UIInstance.GetComponent<SaveDataProcessor>();
+            processor.ReceiveData(save.SaveName, save.DateCreated, save.FileSize);
+        }
     }
 
-    public void UnloadScene()
-    {
-        terrainGenerator.UnloadScene();
-    }
+    public void LoadSavedScene() => terrainGenerator.LoadSavedScene();
+
+    public void SaveGame() => terrainGenerator.SaveScene();
 }

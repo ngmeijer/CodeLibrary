@@ -27,6 +27,9 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private SerializableDictionary<string, GameObject> blockCollection =
         new SerializableDictionary<string, GameObject>();
 
+    private SerializableDictionary<VoxelContainer, BlockContainer> tempBlocks =
+        new SerializableDictionary<VoxelContainer, BlockContainer>();
+
     private void Start()
     {
         if (Application.isPlaying)
@@ -262,5 +265,10 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     {
         blockCollection.TryGetValue(pType, out GameObject block);
         return block;
+    }
+
+    public void SaveScene()
+    {
+        
     }
 }
