@@ -278,7 +278,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         container.DateCreated = DateTime.Now.ToShortDateString();
         container.SaveName = container.name;
         container.PlacedBlocks = placedBlocks;
-        Debug.Log("Created container");
         
         EditorUtility.SetDirty(container);
     }
