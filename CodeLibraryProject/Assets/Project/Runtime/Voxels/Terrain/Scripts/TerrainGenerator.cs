@@ -42,10 +42,10 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         CycleThroughBlocks();
     }
 
-    public void LoadSavedScene()
+    public void LoadSavedScene(SceneData pData)
     {
         GenerateTerrain();
-        foreach (BlockContainer block in sceneData.PlacedBlocks.Values)
+        foreach (BlockContainer block in pData.PlacedBlocks.Values)
         {
             GameObject prefab = getProperBlockPrefab(block.BlockType);
             Instantiate(prefab, block.WorldPosition, Quaternion.identity, placedBlockParent);

@@ -17,8 +17,6 @@ public class SaveDataProcessor : MonoBehaviour
 
     private string saveName;
     private string dateCreated;
-
-    public int Index;
     
     public void ReceiveData(string pName, string pDate)
     {
@@ -31,6 +29,6 @@ public class SaveDataProcessor : MonoBehaviour
 
     public void SendNameOnClick()
     {
-        SavedGameLoader.Inst.SelectSaveGame(Index);
+        SavedGameLoader.Inst.SelectSaveGame(saveName);
     }
 }

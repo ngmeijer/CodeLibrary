@@ -20,8 +20,9 @@ public class SavedGameLoader : MonoBehaviour
     [SerializeField] private GameObject uiPrefab;
     private Dictionary<string, SaveDataProcessor> saveGameCollection = new Dictionary<string, SaveDataProcessor>();
     private List<string> savesToDelete = new List<string>();
-    private List<GameObject> saveInstanceHighlights = new List<GameObject>();
-    private int currentlySelectedSave;
+    private Dictionary<string, GameObject> saveInstanceHighlights = new Dictionary<string, GameObject>();
+    private string currentlySelectedSave;
+    private Dictionary<string, SceneData> foundSaves = new Dictionary<string, SceneData>();
     
     private void Awake()
     {
@@ -42,37 +43,31 @@ public class SavedGameLoader : MonoBehaviour
     
     private void findSavedGames()
     {
-        // search for a ScriptObject called ScriptObj
         string[] assetNames = AssetDatabase.FindAssets("t:SceneData", new[] { "Assets/Resources/SceneData" });
-        List<SceneData> foundSaves = new List<SceneData>();
         foreach (string SOName in assetNames)
         {
             var SOpath= AssetDatabase.GUIDToAssetPath(SOName);
             var save = AssetDatabase.LoadAssetAtPath<SceneData>(SOpath);
-            foundSaves.Add(save);
+            foundSaves.Add(save.SaveName, save);
         }
 
         int index = 0;
         
-        foreach (SceneData save in foundSaves)
+        foreach (KeyValuePair<string, SceneData> save in foundSaves)
         {
             GameObject UIInstance = Instantiate(uiPrefab, savesParent.transform);
             SaveDataProcessor processor = UIInstance.GetComponent<SaveDataProcessor>();
-            processor.ReceiveData(save.SaveName, save.DateCreated);
-            saveGameCollection.Add(save.SaveName, processor);
-            processor.Index = index;
-            index++;
-
+            processor.ReceiveData(save.Value.SaveName, save.Value.DateCreated);
+            saveGameCollection.Add(save.Value.SaveName, processor);
+            
             GameObject highlightBackground = UIInstance.transform.GetChild(1).gameObject;
             highlightBackground.SetActive(false);
-            saveInstanceHighlights.Add(highlightBackground);
+            saveInstanceHighlights.Add(save.Value.SaveName, highlightBackground);
         }
     }
 
     public void AddToDeleteList(string pName)=> savesToDelete.Add(pName);
-
-    public void LoadSavedScene() => terrainGenerator.LoadSavedScene();
-
+    
     public void SaveGame() => terrainGenerator.SaveScene();
 
     public void DeleteSaveGames()
@@ -85,16 +80,24 @@ public class SavedGameLoader : MonoBehaviour
         savesToDelete.Clear();
     }
 
-    public void SelectSaveGame(int pIndex)
+    public void SelectSaveGame(string pName)
     {
-        currentlySelectedSave = pIndex;
+        currentlySelectedSave = pName;
         
-        foreach(GameObject background in saveInstanceHighlights)
+        foreach(KeyValuePair<string, GameObject> background in saveInstanceHighlights)
         {
-            background.SetActive(false); 
+            background.Value.SetActive(false); 
         }
+
+        saveInstanceHighlights.TryGetValue(pName, out GameObject currentBackground);
+        currentBackground.SetActive(true);
+    }
+
+    public void LoadSaveGame()
+    {
+        foundSaves.TryGetValue(currentlySelectedSave, out SceneData data);
         
-        saveInstanceHighlights[pIndex].SetActive(true);
+        terrainGenerator.LoadSavedScene(data);
     }
     
     public void HandleDelete(bool pState)
