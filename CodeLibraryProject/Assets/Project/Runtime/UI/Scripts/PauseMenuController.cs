@@ -5,6 +5,7 @@ public class PauseMenuController : MonoBehaviour
 {
     private GameObject pauseMenu;
     private GameObject gameSavesMenu;
+    private GameObject settingsMenu;
 
     private void Start()
     {
@@ -13,6 +14,9 @@ public class PauseMenuController : MonoBehaviour
         
         gameSavesMenu = GameObject.Find("Saved Games Data");
         gameSavesMenu.SetActive(false); 
+        
+        settingsMenu = GameObject.Find("SettingsMenu");
+        settingsMenu.SetActive(false);
     }
 
     private void Update()
