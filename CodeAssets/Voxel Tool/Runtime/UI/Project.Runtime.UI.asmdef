@@ -1,0 +1,19 @@
+{
+    "name": "Project.Runtime.UI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:26671899fe3434840b0bd3cb9255dac2",
+        "GUID:a3e7b8d9a7dd7b94bae65e1db4852883",
+        "GUID:4a3336692c41da348beed33d8aebdd06"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

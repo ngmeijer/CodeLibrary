@@ -1,0 +1,16 @@
+{
+    "name": "Project.Runtime.Input",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a3e7b8d9a7dd7b94bae65e1db4852883"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

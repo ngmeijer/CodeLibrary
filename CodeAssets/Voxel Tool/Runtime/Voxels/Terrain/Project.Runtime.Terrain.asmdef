@@ -1,0 +1,22 @@
+{
+    "name": "Project.Runtime.Terrain",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a70c38c435ea1ce4581ee539a8bb1eba",
+        "GUID:4a3336692c41da348beed33d8aebdd06",
+        "GUID:a83ed2b8e3898674dab6349895dc2e5b",
+        "GUID:ee2a6700c6b9c4245acf99f5aee05625",
+        "GUID:a3e7b8d9a7dd7b94bae65e1db4852883",
+        "GUID:26671899fe3434840b0bd3cb9255dac2",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,18 @@
+{
+    "name": "Project.Editor.CharacterController",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8d1a820a9db99b14ea856d94f51910ed",
+        "GUID:a3e7b8d9a7dd7b94bae65e1db4852883",
+        "GUID:26671899fe3434840b0bd3cb9255dac2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
