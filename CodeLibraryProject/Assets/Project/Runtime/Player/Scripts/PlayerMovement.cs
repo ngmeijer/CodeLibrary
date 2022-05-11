@@ -24,12 +24,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        trackInput();
+        trackMovementInput();
         trackHorizontalRotation();
         trackJumpInput();
+        if(godMode) trackDescendingInput();
     }
 
-    private void trackInput()
+    private void trackMovementInput()
     {
         float horizontal = InputManager.Inst.Horizontal;
         float vertical = InputManager.Inst.Vertical;
@@ -47,9 +48,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void trackJumpInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+        if (Input.GetKeyDown(KeyCode.Space) && !godMode)
+        { 
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        }
+
+        if (Input.GetKey(KeyCode.Space) && godMode)
+        {
+            transform.Translate(new Vector3(0, 1, 0) * (10 * Time.deltaTime), Space.World);
+        }
+    }
+
+    private void trackDescendingInput()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            transform.Translate(new Vector3(0, -1, 0) * (10 * Time.deltaTime), Space.World);
         }
     }
 }

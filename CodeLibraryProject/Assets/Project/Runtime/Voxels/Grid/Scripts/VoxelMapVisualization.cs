@@ -51,11 +51,9 @@ public class VoxelMapVisualization : MonoBehaviour
         if (voxelCalculator.SaveFile.AllVoxels.Count <= 0) return;
 
         currentVoxelID = Mathf.Clamp(currentVoxelID, 0, voxelCalculator.SaveFile.AllVoxels.Count);
-        if (currentVoxelID < 1 || currentVoxelID > voxelCalculator.SaveFile.AllVoxels.Count)
-        {
-            Debug.Log(
-                $"Exceeding voxel collection limits. Index must range from 1 to the max amount of voxels ({voxelCalculator.SaveFile.AllVoxels.Count}).");
-        }
+        if (currentVoxelID < 1) currentVoxelID = 1;
+        else if (currentVoxelID > voxelCalculator.SaveFile.AllVoxels.Count)
+            currentVoxelID = voxelCalculator.SaveFile.AllVoxels.Count;
         else currentVoxel = voxelCalculator.SaveFile.AllVoxels[currentVoxelID];
 
         currentVoxelSize = voxelCalculator.SaveFile.VoxelSize;
@@ -134,8 +132,8 @@ public class VoxelMapVisualization : MonoBehaviour
         Vector3 gridStartPosition = startingVoxelPosition -
                                     new Vector3(currentVoxelSize / 2, currentVoxelSize / 2, currentVoxelSize / 2);
         Vector3 mapCenter = new Vector3(
-            tempMapDimensions[0] / 2 - currentVoxelSize / 2, 
-            tempMapDimensions[1] / 2 - currentVoxelSize / 2, 
+            tempMapDimensions[0] / 2 - currentVoxelSize / 2,
+            tempMapDimensions[1] / 2 - currentVoxelSize / 2,
             tempMapDimensions[2] / 2 - currentVoxelSize / 2);
         Gizmos.color = borderColour;
         Gizmos.DrawWireCube(mapCenter + transform.position,

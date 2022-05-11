@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ExecuteAlways]
 public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
@@ -11,6 +13,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     [SerializeField] private GameObject baseMeshPrefab;
     [SerializeField] private Transform pregeneratedBlockParent;
     [SerializeField] private Transform placedBlockParent;
+    [SerializeField] private TMP_InputField inputField;
 
     private GameObject currentSelectedBlockPrefab;
     private float voxelSize;
@@ -28,7 +31,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private SerializableDictionary<Vector3, BlockContainer> placedBlocks =
         new SerializableDictionary<Vector3, BlockContainer>();
 
-    private void OnEnable()
+    private void Start()
     {
         blockNames = GameManager.Inst.GetBlockNames();
         fillBlockDict();
@@ -42,6 +45,8 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     public void LoadSavedScene(SceneData pData = null)
     {
         if (pData == null) pData = sceneData;
+
+        UnloadScene();
 
         GenerateTerrain();
         foreach (BlockContainer block in pData.PlacedBlocks.Values)
@@ -61,7 +66,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     public void UnloadScene()
     {
-        ClearPlacedBlocks();
         GenerateTerrain();
     }
 
@@ -179,7 +183,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         voxelData.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
         voxelData.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
 
-        Debug.Log(voxel);
         if (voxel == null) return;
 
         switch (pType)
@@ -195,7 +198,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     private void placeBlock(VoxelContainer pVoxel)
     {
-        Debug.Log(pVoxel.BlockInstance);
         //Check if block is already in voxel
         if (pVoxel.BlockInstance != null) return;
 
@@ -218,7 +220,6 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         if (!placedBlocks.ContainsKey(block.WorldPosition))
             placedBlocks.Add(block.WorldPosition, block);
         EditorUtility.SetDirty(voxelData);
-        EditorUtility.SetDirty(sceneData);
 
         meshCount++;
     }
@@ -230,6 +231,8 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
         if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
         if (voxelData.ColliderVoxels.ContainsKey(pVoxel.ID)) voxelData.ColliderVoxels.Remove(pVoxel.ID);
+ 
+        if (sceneData == null) return;
         if (sceneData.PlacedBlocks.ContainsKey(pVoxel.WorldPosition))
             sceneData.PlacedBlocks.Remove(pVoxel.WorldPosition);
     }
@@ -280,14 +283,15 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private void createSceneDataContainer()
     {
         SceneData container = ScriptableObject.CreateInstance<SceneData>();
-
-        string path = AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/SceneData/SceneData.asset");
+        container.name = inputField.text;
+        string path = AssetDatabase.GenerateUniqueAssetPath($"Assets/Resources/SceneData/{container.name}.asset");
         AssetDatabase.CreateAsset(container, path);
 
         container.DateCreated = DateTime.Now.ToShortDateString();
         container.SaveName = container.name;
         container.PlacedBlocks = placedBlocks;
         container.voxelData = voxelData;
+        Debug.Log(container.SaveName);
 
         EditorUtility.SetDirty(container);
     }
