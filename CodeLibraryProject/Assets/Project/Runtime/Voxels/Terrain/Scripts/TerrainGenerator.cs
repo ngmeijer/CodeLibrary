@@ -28,13 +28,10 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     private SerializableDictionary<Vector3, BlockContainer> placedBlocks =
         new SerializableDictionary<Vector3, BlockContainer>();
 
-    private void Start()
+    private void OnEnable()
     {
-        if (Application.isPlaying)
-        {
-            blockNames = GameManager.Inst.GetBlockNames();
-            fillBlockDict();
-        }
+        blockNames = GameManager.Inst.GetBlockNames();
+        fillBlockDict();
     }
 
     private void Update()
@@ -42,8 +39,10 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         CycleThroughBlocks();
     }
 
-    public void LoadSavedScene(SceneData pData)
+    public void LoadSavedScene(SceneData pData = null)
     {
+        if (pData == null) pData = sceneData;
+
         GenerateTerrain();
         foreach (BlockContainer block in pData.PlacedBlocks.Values)
         {
@@ -126,6 +125,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
             voxelData.VoxelPositions.TryGetValue(block.WorldPosition, out int voxelID);
             voxelData.ColliderVoxels.Remove(voxelID);
         }
+
         destroyChildren(placedBlockParent);
         placedBlocks.Clear();
     }
@@ -179,6 +179,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         voxelData.VoxelPositions.TryGetValue(expectedPosition, out int voxelID);
         voxelData.AllVoxels.TryGetValue(voxelID, out VoxelContainer voxel);
 
+        Debug.Log(voxel);
         if (voxel == null) return;
 
         switch (pType)
@@ -194,6 +195,7 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
 
     private void placeBlock(VoxelContainer pVoxel)
     {
+        Debug.Log(pVoxel.BlockInstance);
         //Check if block is already in voxel
         if (pVoxel.BlockInstance != null) return;
 
@@ -225,10 +227,11 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
     {
         Destroy(pHit.collider.gameObject);
         pVoxel.IsTraversable = true;
-        
+
         if (generatedMeshes.Contains(pVoxel.BlockInstance)) generatedMeshes.Remove(pVoxel.BlockInstance);
         if (voxelData.ColliderVoxels.ContainsKey(pVoxel.ID)) voxelData.ColliderVoxels.Remove(pVoxel.ID);
-        if (sceneData.PlacedBlocks.ContainsKey(pVoxel.WorldPosition)) sceneData.PlacedBlocks.Remove(pVoxel.WorldPosition);
+        if (sceneData.PlacedBlocks.ContainsKey(pVoxel.WorldPosition))
+            sceneData.PlacedBlocks.Remove(pVoxel.WorldPosition);
     }
 
     public void CycleThroughBlocks()
@@ -263,22 +266,29 @@ public class TerrainGenerator : MonoBehaviour, IBlockInventoryHandler
         return block;
     }
 
-    public void SaveScene()
+    public void SaveSceneToNewFile()
     {
         createSceneDataContainer();
     }
-    
+
+    public void SaveSceneToCurrentFile()
+    {
+        sceneData.DateCreated = DateTime.Now.ToShortDateString();
+        sceneData.PlacedBlocks = placedBlocks;
+    }
+
     private void createSceneDataContainer()
     {
         SceneData container = ScriptableObject.CreateInstance<SceneData>();
 
         string path = AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/SceneData/SceneData.asset");
         AssetDatabase.CreateAsset(container, path);
-        
+
         container.DateCreated = DateTime.Now.ToShortDateString();
         container.SaveName = container.name;
         container.PlacedBlocks = placedBlocks;
-        
+        container.voxelData = voxelData;
+
         EditorUtility.SetDirty(container);
     }
 }

@@ -1,7 +1,9 @@
 {
     "name": "Project.Runtime.Serializations",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        ""
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

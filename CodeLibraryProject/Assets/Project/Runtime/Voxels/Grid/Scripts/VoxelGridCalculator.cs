@@ -111,6 +111,8 @@ public class VoxelGridCalculator : MonoBehaviour
         ClearVoxelData();
         divideLevelIntoVoxels();
         CalculateVoxelNeighbours();
+        
+        collisionChecker.StartCollisionCheck(voxelSize);
 
         calculationTimeMilliseconds = (Time.realtimeSinceStartup - startTime) * 1000f;
         calculationTimeSeconds = (Time.realtimeSinceStartup - startTime);

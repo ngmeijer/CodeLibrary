@@ -7,6 +7,7 @@ TagManager:
   - Bee_NPC
   - Ignore
   - Skunk_NPC
+  - Block
   layers:
   - Default
   - TransparentFX

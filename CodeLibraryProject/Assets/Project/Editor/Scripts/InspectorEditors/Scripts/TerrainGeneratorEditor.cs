@@ -50,7 +50,7 @@ public class TerrainGeneratorEditor : Editor
         if (GUI.Button(new Rect(inspectorWidth / 2, 95, inspectorWidth / 2 - 20, 25), "Load saved scene",
             saveSceneStyle))
         {
-            // editorTarget.LoadSavedScene();
+            editorTarget.LoadSavedScene();
         }
     }
 

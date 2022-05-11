@@ -10,7 +10,7 @@ public class VoxelObstacleCalculator : MonoBehaviour
 {
     private VoxelContainer currentVoxel;
     private VoxelGridCalculator calculator;
-    
+
     private void Awake()
     {
         calculator = GetComponent<VoxelGridCalculator>();
@@ -28,9 +28,13 @@ public class VoxelObstacleCalculator : MonoBehaviour
         Dictionary<int, VoxelContainer> allVoxels = calculator.SaveFile.AllVoxels;
         SerializableDictionary<int, VoxelContainer> colliderVoxels = calculator.SaveFile.ColliderVoxels;
 
-        Vector3 colliderSize = new Vector3(pVoxelSize / 2, pVoxelSize / 2, pVoxelSize / 2);
+        Vector3 colliderSize = new Vector3
+        (pVoxelSize / 2 - (0.01f * pVoxelSize),
+            pVoxelSize / 2 - (0.01f * pVoxelSize),
+            pVoxelSize / 2 - (0.01f * pVoxelSize));
 
         ProgressBar.MaxVoxelIndex = allVoxels.Count;
+
         for (int voxelIndex = 1; voxelIndex < allVoxels.Count; voxelIndex++)
         {
             ProgressBar.ShowVoxelCollisionProgress(voxelIndex);
@@ -41,16 +45,16 @@ public class VoxelObstacleCalculator : MonoBehaviour
 
             foreach (Collider foundCollider in allColliders)
             {
-                if (tags.Contains(foundCollider.tag))
+                if (!tags.Contains(foundCollider.tag))
                     continue;
 
                 currentVoxel.IsTraversable = false;
-                if(!colliderVoxels.ContainsKey(currentVoxel.ID))
+                if (!colliderVoxels.ContainsKey(currentVoxel.ID))
                     colliderVoxels.Add(currentVoxel.ID, currentVoxel);
                 calculator.SaveFile.TraversableVoxels.Remove(currentVoxel.ID);
             }
         }
-        
+
         ProgressBar.ShowVoxelCollisionProgress(allVoxels.Count);
     }
 }

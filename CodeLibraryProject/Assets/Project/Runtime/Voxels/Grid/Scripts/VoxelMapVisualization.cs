@@ -21,7 +21,7 @@ public class VoxelMapVisualization : MonoBehaviour
     [Header("General visuals")] [SerializeField]
     private bool showVisualization = true;
 
-    [SerializeField] private bool showVoxels;
+    [SerializeField] private bool showColliderVoxels;
     [SerializeField] private Color voxelWithColliderCol = new Color(1, 0, 0, 0.2f);
 
     [Header("Map borders")] [SerializeField]
@@ -61,7 +61,7 @@ public class VoxelMapVisualization : MonoBehaviour
         currentVoxelSize = voxelCalculator.SaveFile.VoxelSize;
         voxelVisualSize = new Vector3(currentVoxelSize, currentVoxelSize, currentVoxelSize);
 
-        if (showVoxels) handleVoxelVisualization();
+        if (showColliderVoxels) handleVoxelVisualization();
         if (showMapDimensions) drawGridOuterBorders();
         if (showNeighbourVoxels) visualizeNeighbourVoxels();
     }

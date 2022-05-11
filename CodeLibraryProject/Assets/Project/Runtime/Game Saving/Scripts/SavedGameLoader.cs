@@ -68,7 +68,7 @@ public class SavedGameLoader : MonoBehaviour
 
     public void AddToDeleteList(string pName)=> savesToDelete.Add(pName);
     
-    public void SaveGame() => terrainGenerator.SaveScene();
+    public void SaveGame() => terrainGenerator.SaveSceneToNewFile();
 
     public void DeleteSaveGames()
     {
